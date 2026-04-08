@@ -1,4 +1,120 @@
-/* MODAL BASE */
+/* RESET */
+body {
+    margin: 0;
+    background: black;
+    font-family: 'Playfair Display', serif;
+    overflow: hidden;
+}
+
+/* =========================
+   INTRO
+========================= */
+#start-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1a001f, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+    color: white;
+}
+
+#rabbit {
+    font-size: clamp(60px, 10vw, 100px);
+    cursor: pointer;
+    animation: move 1s infinite alternate;
+}
+
+@keyframes move {
+    from { transform: translateX(-10px); }
+    to { transform: translateX(10px); }
+}
+
+/* =========================
+   ESCENA
+========================= */
+.scene {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+/* =========================
+   FONDO
+========================= */
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #2b0033, #000);
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 90%;
+    max-width: 500px;
+}
+
+/* =========================
+   TIPOGRAFÍA
+========================= */
+h1 {
+    font-family: 'Great Vibes';
+    font-size: clamp(40px, 8vw, 70px);
+    color: #ff66cc;
+}
+
+h2 {
+    font-size: clamp(16px, 3vw, 22px);
+    margin: 5px 0;
+}
+
+.dulces span {
+    font-size: clamp(40px, 10vw, 80px);
+    color: gold;
+    text-shadow:
+        0 0 10px gold,
+        0 0 20px gold,
+        0 0 40px rgba(255,215,0,0.8);
+}
+
+/* =========================
+   BOTÓN
+========================= */
+#open-form {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: gold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+#open-form:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px gold;
+}
+
+/* =========================
+   MODAL (CORREGIDO)
+========================= */
 #form-modal {
     position: fixed;
     top: 0;
@@ -6,27 +122,32 @@
     width: 100%;
     height: 100%;
 
-    display: flex;
+    display: none; /* 🔥 clave */
+
     justify-content: center;
     align-items: center;
 
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(5px);
 
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(1.1);
-    transition: all 0.3s ease;
+    z-index: 1000;
 }
 
-/* CUANDO SE ACTIVA */
+/* ACTIVO */
 #form-modal.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
+    display: flex;
+    animation: fadeIn 0.3s ease;
 }
 
-/* CAJA */
+/* ANIMACIÓN */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* =========================
+   CAJA FORMULARIO
+========================= */
 .form-box {
     background: linear-gradient(145deg, #1a001f, #2b0033);
     padding: 25px;
@@ -51,6 +172,48 @@
     }
 }
 
+/* INPUTS */
+.form-box input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+/* BOTONES */
+.form-box button {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#send {
+    background: gold;
+}
+
+#close {
+    background: gray;
+    color: white;
+}
+
+/* =========================
+   PARTÍCULAS FONDO
+========================= */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* =========================
+   EFECTO HUMO
+========================= */
 .smoke {
     position: fixed;
     width: 10px;
@@ -59,4 +222,17 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+    .content {
+        width: 95%;
+    }
+
+    .form-box {
+        max-width: 90%;
+    }
 }
