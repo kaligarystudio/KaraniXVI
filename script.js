@@ -71,8 +71,8 @@ const openBtn = document.getElementById("open-form");
 const modal = document.getElementById("form-modal");
 const closeBtn = document.getElementById("close");
 
-openBtn.onclick = () => modal.classList.remove("hidden");
-closeBtn.onclick = () => modal.classList.add("hidden");
+openBtn.onclick = () => modal.classList.add("active");
+closeBtn.onclick = () => modal.classList.remove("active");
 
 /* ENVÍO */
 document.getElementById("send").onclick = async () => {
