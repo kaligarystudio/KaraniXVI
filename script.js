@@ -1,170 +1,78 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const rabbit = document.getElementById("rabbit");
-    const startScreen = document.getElementById("start-screen");
-    const scene = document.querySelector(".scene");
-    const music = document.getElementById("bg-music");
+const rabbit = document.getElementById("rabbit");
+const startScreen = document.getElementById("start-screen");
+const scene = document.querySelector(".scene");
+const modal = document.getElementById("form-modal");
 
-    const openBtn = document.getElementById("open-form");
-    const modal = document.getElementById("form-modal");
-    const closeBtn = document.getElementById("close");
-    const sendBtn = document.getElementById("send");
+const API_URL = "https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec";
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec";
+/* ENTRADA DIMENSIÓN */
+rabbit.onclick = () => {
+    startScreen.style.opacity = "0";
 
-    /* =========================
-       INICIO (conejo)
-    ========================== */
-    rabbit.addEventListener("click", () => {
+    setTimeout(() => {
+        startScreen.style.display = "none";
+        scene.classList.remove("hidden");
+        startFloating();
+    }, 1000);
+};
 
-        startScreen.style.opacity = "0";
-        startScreen.style.transition = "1s";
+/* OBJETOS FLOTANTES */
+function startFloating() {
+    const container = document.getElementById("floating");
 
-        setTimeout(() => {
-            startScreen.style.display = "none";
-            scene.classList.remove("hidden");
-        }, 1000);
+    setInterval(() => {
+        const el = document.createElement("div");
+        el.className = "floating";
 
-        if (music) {
-            music.volume = 0;
-            music.play();
+        const items = ["🎩","🃏","⏱️"];
+        el.innerText = items[Math.floor(Math.random()*items.length)];
 
-            let vol = 0;
-            const fade = setInterval(() => {
-                vol += 0.05;
-                music.volume = vol;
-                if (vol >= 0.5) clearInterval(fade);
-            }, 200);
-        }
+        el.style.left = Math.random()*100 + "vw";
 
-        startParticles();
-        startCountdown();
-    });
+        container.appendChild(el);
 
-    /* =========================
-       MODAL
-    ========================== */
-    openBtn.addEventListener("click", () => {
-        modal.classList.add("active");
-    });
+        setTimeout(() => el.remove(), 6000);
+    }, 500);
+}
 
-    closeBtn.addEventListener("click", () => {
-        modal.classList.remove("active");
-    });
+/* MODAL */
+document.getElementById("open-form").onclick = () => modal.classList.add("active");
+document.getElementById("close").onclick = () => modal.classList.remove("active");
 
-    /* Cerrar si hacen clic fuera */
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.remove("active");
-        }
-    });
+/* HUMO */
+function humo(x,y){
+    for(let i=0;i<25;i++){
+        let s=document.createElement("div");
+        s.className="smoke";
+        s.style.left=x+"px";
+        s.style.top=y+"px";
+        document.body.appendChild(s);
 
-    /* =========================
-       EFECTO HUMO MÁGICO
-    ========================== */
-    function humoMagico(x, y) {
-        for (let i = 0; i < 30; i++) {
-            const s = document.createElement("div");
-            s.className = "smoke";
+        s.animate([
+            {transform:"translate(0,0)",opacity:1},
+            {transform:`translate(${Math.random()*200-100}px,-200px)`,opacity:0}
+        ],{duration:1000});
 
-            s.style.left = x + "px";
-            s.style.top = y + "px";
-
-            document.body.appendChild(s);
-
-            s.animate([
-                { transform: "translate(0,0) scale(1)", opacity: 1 },
-                { transform: `translate(${Math.random()*200-100}px, ${Math.random()*-200}px) scale(2)`, opacity: 0 }
-            ], {
-                duration: 1200,
-                easing: "ease-out"
-            });
-
-            setTimeout(() => s.remove(), 1200);
-        }
+        setTimeout(()=>s.remove(),1000);
     }
+}
 
-    /* =========================
-       ENVÍO
-    ========================== */
-    sendBtn.addEventListener("click", async (e) => {
+/* ENVÍO */
+document.getElementById("send").onclick = async (e)=>{
+    const nombre=document.getElementById("nombre").value;
+    const personas=document.getElementById("personas").value;
 
-        const nombre = document.getElementById("nombre").value.trim();
-        const personas = document.getElementById("personas").value.trim();
-        const status = document.getElementById("status");
-
-        if (!nombre || !personas) {
-            status.innerText = "Completa todos los campos";
-            return;
-        }
-
-        status.innerText = "Enviando...";
-
-        try {
-            await fetch(API_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify({ nombre, personas })
-            });
-
-            status.innerText = "Confirmado 🎉";
-
-            /* ✨ EFECTO */
-            humoMagico(
-                e.clientX || window.innerWidth / 2,
-                e.clientY || window.innerHeight / 2
-            );
-
-            /* LIMPIAR */
-            document.getElementById("nombre").value = "";
-            document.getElementById("personas").value = "";
-
-            /* CERRAR AUTOMÁTICO */
-            setTimeout(() => {
-                modal.classList.remove("active");
-                status.innerText = "";
-            }, 1000);
-
-        } catch (err) {
-            status.innerText = "Error al enviar";
-        }
+    await fetch(API_URL,{
+        method:"POST",
+        mode:"no-cors",
+        body:JSON.stringify({nombre,personas})
     });
 
-    /* =========================
-       PARTÍCULAS
-    ========================== */
-    function startParticles() {
-        setInterval(() => {
-            const p = document.createElement("div");
-            p.className = "particle";
+    humo(e.clientX||200,e.clientY||200);
 
-            p.style.left = Math.random() * window.innerWidth + "px";
-            p.style.top = window.innerHeight + "px";
-
-            p.animate([
-                { transform: "translateY(0)", opacity: 1 },
-                { transform: "translateY(-300px)", opacity: 0 }
-            ], { duration: 4000 });
-
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 4000);
-        }, 200);
-    }
-
-    /* =========================
-       COUNTDOWN
-    ========================== */
-    function startCountdown() {
-        const el = document.getElementById("countdown");
-        const target = new Date("2026-08-08T19:00:00").getTime();
-
-        setInterval(() => {
-            const diff = target - new Date().getTime();
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff / (1000*60*60)) % 24);
-
-            el.innerHTML = `${d} días ${h} horas`;
-        }, 1000);
-    }
+    setTimeout(()=>modal.classList.remove("active"),1000);
+};
 
 });
