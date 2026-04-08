@@ -1,8 +1,8 @@
 body {
     margin: 0;
-    overflow: hidden;
     background: black;
     font-family: 'Playfair Display', serif;
+    overflow: hidden;
 }
 
 /* INTRO */
@@ -15,26 +15,19 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: #fff;
     z-index: 10;
+    color: white;
 }
 
-/* CONEJO */
 #rabbit {
-    font-size: 70px;
+    font-size: clamp(60px, 10vw, 100px);
     cursor: pointer;
-    animation: runRabbit 1s infinite alternate;
+    animation: move 1s infinite alternate;
 }
 
-/* ANIMACIÓN CORRER */
-@keyframes runRabbit {
-    0% { transform: translateX(-10px) rotate(-5deg); }
-    100% { transform: translateX(10px) rotate(5deg); }
-}
-
-.start-text {
-    margin-top: 20px;
-    font-size: 18px;
+@keyframes move {
+    from { transform: translateX(-10px); }
+    to { transform: translateX(10px); }
 }
 
 /* ESCENA */
@@ -49,14 +42,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(#2b0033, #000);
-    animation: swirl 20s linear infinite;
-}
-
-/* EFECTO MADRIGUERA */
-@keyframes swirl {
-    from { transform: rotate(0deg) scale(1); }
-    to { transform: rotate(360deg) scale(1.2); }
+    background: radial-gradient(circle, #2b0033, #000);
 }
 
 /* CONTENIDO */
@@ -66,46 +52,80 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: #f5e6c8;
+    color: white;
+    width: 90%;
+    max-width: 500px;
 }
 
 /* TIPOGRAFÍA */
 h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: clamp(40px, 8vw, 80px);
+    font-family: 'Great Vibes';
+    font-size: clamp(40px, 8vw, 70px);
     color: #ff66cc;
 }
 
-/* DULCES */
 .dulces span {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(40px, 10vw, 90px);
-    color: #ffd700;
-
-    text-shadow:
-        0 0 10px gold,
-        0 0 30px #ff00ff;
-
-    animation: glitch 2s infinite alternate;
+    font-size: clamp(40px, 10vw, 80px);
+    color: gold;
+    text-shadow: 0 0 20px gold;
 }
 
-/* EFECTO LOCO (Wonderland) */
-@keyframes glitch {
-    0% { transform: skew(0deg); }
-    50% { transform: skew(3deg); }
-    100% { transform: skew(-3deg); }
+/* BOTÓN */
+#open-form {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: gold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
 }
+
+/* MODAL */
+#form-modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box {
+    background: #1a001f;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.form-box input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+.form-box button {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#send { background: gold; }
+#close { background: gray; }
+
+.hidden { display: none; }
 
 /* PARTÍCULAS */
 .particle {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     background: white;
     border-radius: 50%;
-}
-
-/* OCULTO */
-.hidden {
-    display: none;
 }
