@@ -82,13 +82,15 @@ h1 {
 
 /* MODAL */
 #form-modal {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+#form-modal.active {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .form-box {
