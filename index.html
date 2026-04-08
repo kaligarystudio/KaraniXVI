@@ -18,6 +18,9 @@
     <p>¡Voy tarde! ¿Vienes conmigo?</p>
 </div>
 
+<!-- TÚNEL -->
+<div id="tunnel"></div>
+
 <!-- ESCENA -->
 <div class="scene hidden">
     <div class="background"></div>
@@ -28,18 +31,14 @@
 
         <h1>Karani</h1>
         <h2>te invita a sus</h2>
-        <h3 class="dulces"><span>Dulces 16</span></h3>
 
-        <p class="details">
-            8 de agosto 2026 · 19:00 hrs<br>
-            Toluca, Estado de México
-        </p>
+        <h3 class="dulces"><span>Dulces 16</span></h3>
 
         <button id="open-form">Confirmar asistencia</button>
     </div>
 </div>
 
-<!-- MODAL (SOLO UNO) -->
+<!-- MODAL -->
 <div id="form-modal">
     <div class="form-box">
         <h3>Confirmar asistencia</h3>
@@ -53,6 +52,10 @@
         <p id="status"></p>
     </div>
 </div>
+
+<audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script src="script.js" defer></script>
 
