@@ -1,4 +1,3 @@
-/* RESET */
 body {
     margin: 0;
     background: black;
@@ -6,9 +5,7 @@ body {
     overflow: hidden;
 }
 
-/* =========================
-   INTRO
-========================= */
+/* INTRO */
 #start-screen {
     position: fixed;
     width: 100%;
@@ -23,7 +20,7 @@ body {
 }
 
 #rabbit {
-    font-size: clamp(60px, 10vw, 100px);
+    font-size: 80px;
     cursor: pointer;
     animation: move 1s infinite alternate;
 }
@@ -33,32 +30,31 @@ body {
     to { transform: translateX(10px); }
 }
 
-/* =========================
-   ESCENA
-========================= */
+/* ESCENA */
 .scene {
     width: 100vw;
     height: 100vh;
     position: relative;
 }
 
-.hidden {
-    display: none;
-}
+.hidden { display: none; }
 
-/* =========================
-   FONDO
-========================= */
+/* FONDO DIMENSIÓN */
 .background {
     position: absolute;
     width: 100%;
     height: 100%;
     background: radial-gradient(circle, #2b0033, #000);
+    animation: portal 10s infinite linear;
 }
 
-/* =========================
-   CONTENIDO
-========================= */
+@keyframes portal {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* CONTENIDO */
 .content {
     position: absolute;
     top: 50%;
@@ -66,110 +62,51 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    width: 90%;
-    max-width: 500px;
 }
 
-/* =========================
-   TIPOGRAFÍA
-========================= */
+/* TEXTO */
 h1 {
     font-family: 'Great Vibes';
-    font-size: clamp(40px, 8vw, 70px);
+    font-size: 70px;
     color: #ff66cc;
 }
 
-h2 {
-    font-size: clamp(16px, 3vw, 22px);
-    margin: 5px 0;
-}
-
 .dulces span {
-    font-size: clamp(40px, 10vw, 80px);
+    font-size: 80px;
     color: gold;
-    text-shadow:
-        0 0 10px gold,
-        0 0 20px gold,
-        0 0 40px rgba(255,215,0,0.8);
+    text-shadow: 0 0 20px gold;
 }
 
-/* =========================
-   BOTÓN
-========================= */
+/* BOTÓN */
 #open-form {
     margin-top: 20px;
     padding: 12px 25px;
     background: gold;
-    border: none;
     border-radius: 30px;
+    border: none;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
 }
 
-#open-form:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px gold;
-}
-
-/* =========================
-   MODAL (CORREGIDO)
-========================= */
+/* MODAL */
 #form-modal {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-
-    display: none; /* 🔥 clave */
-
+    display: none;
     justify-content: center;
     align-items: center;
-
     background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-
-    z-index: 1000;
 }
 
-/* ACTIVO */
 #form-modal.active {
     display: flex;
-    animation: fadeIn 0.3s ease;
 }
 
-/* ANIMACIÓN */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* =========================
-   CAJA FORMULARIO
-========================= */
 .form-box {
-    background: linear-gradient(145deg, #1a001f, #2b0033);
-    padding: 25px;
+    background: #1a001f;
+    padding: 20px;
     border-radius: 15px;
-    width: 90%;
-    max-width: 300px;
-    text-align: center;
-
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-
-    animation: aparecer 0.4s ease;
-}
-
-@keyframes aparecer {
-    from {
-        transform: scale(0.7);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+    width: 300px;
 }
 
 /* INPUTS */
@@ -177,62 +114,25 @@ h2 {
     width: 100%;
     margin: 10px 0;
     padding: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
 }
 
-/* BOTONES */
-.form-box button {
-    margin: 5px;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-}
-
-#send {
-    background: gold;
-}
-
-#close {
-    background: gray;
-    color: white;
-}
-
-/* =========================
-   PARTÍCULAS FONDO
-========================= */
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: white;
-    border-radius: 50%;
-}
-
-/* =========================
-   EFECTO HUMO
-========================= */
+/* EFECTO HUMO */
 .smoke {
     position: fixed;
     width: 10px;
     height: 10px;
-    background: radial-gradient(circle, white, transparent);
+    background: white;
     border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 600px) {
-    .content {
-        width: 95%;
-    }
+/* OBJETOS */
+.floating {
+    position: absolute;
+    font-size: 30px;
+    animation: float 6s infinite linear;
+}
 
-    .form-box {
-        max-width: 90%;
-    }
+@keyframes float {
+    from { transform: translateY(100vh) rotate(0deg); }
+    to { transform: translateY(-100vh) rotate(360deg); }
 }
