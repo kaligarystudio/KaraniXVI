@@ -3,20 +3,20 @@ const startScreen = document.getElementById("start-screen");
 const scene = document.querySelector(".scene");
 const music = document.getElementById("bg-music");
 
-/* CLICK CONEJO */
+/* GOOGLE SCRIPT URL */
+const API_URL = "https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec";
+
+/* INICIO */
 rabbit.addEventListener("click", () => {
 
-    /* EFECTO CAÍDA */
-    startScreen.style.transition = "transform 1s ease-in, opacity 1s";
-    startScreen.style.transform = "translateY(-100%) scale(0.5)";
     startScreen.style.opacity = "0";
+    startScreen.style.transition = "1s";
 
     setTimeout(() => {
         startScreen.style.display = "none";
         scene.classList.remove("hidden");
     }, 1000);
 
-    /* MÚSICA */
     if (music) {
         music.volume = 0;
         music.play();
@@ -30,29 +30,78 @@ rabbit.addEventListener("click", () => {
     }
 
     startParticles();
+    startCountdown();
 });
 
-/* PARTÍCULAS LOCAS */
-const container = document.getElementById("particles");
-
-function createParticle() {
-    const p = document.createElement("div");
-    p.classList.add("particle");
-
-    p.style.left = Math.random() * window.innerWidth + "px";
-    p.style.top = window.innerHeight + "px";
-
-    p.animate([
-        { transform: "translateY(0)", opacity: 1 },
-        { transform: "translateY(-300px)", opacity: 0 }
-    ], {
-        duration: 4000 + Math.random()*2000
-    });
-
-    container.appendChild(p);
-    setTimeout(() => p.remove(), 5000);
-}
-
+/* PARTÍCULAS */
 function startParticles() {
-    setInterval(createParticle, 200);
+    setInterval(() => {
+        const p = document.createElement("div");
+        p.className = "particle";
+
+        p.style.left = Math.random() * window.innerWidth + "px";
+        p.style.top = window.innerHeight + "px";
+
+        p.animate([
+            { transform: "translateY(0)", opacity: 1 },
+            { transform: "translateY(-300px)", opacity: 0 }
+        ], { duration: 4000 });
+
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 4000);
+    }, 200);
 }
+
+/* COUNTDOWN */
+function startCountdown() {
+    const el = document.getElementById("countdown");
+    const target = new Date("2026-08-08T19:00:00").getTime();
+
+    setInterval(() => {
+        const diff = target - new Date().getTime();
+        const d = Math.floor(diff / (1000*60*60*24));
+        const h = Math.floor((diff / (1000*60*60)) % 24);
+
+        el.innerHTML = `${d} días ${h} horas`;
+    }, 1000);
+}
+
+/* MODAL */
+const openBtn = document.getElementById("open-form");
+const modal = document.getElementById("form-modal");
+const closeBtn = document.getElementById("close");
+
+openBtn.onclick = () => modal.classList.remove("hidden");
+closeBtn.onclick = () => modal.classList.add("hidden");
+
+/* ENVÍO */
+document.getElementById("send").onclick = async () => {
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const personas = document.getElementById("personas").value.trim();
+    const status = document.getElementById("status");
+
+    if (!nombre || !personas) {
+        status.innerText = "Completa todos los campos";
+        return;
+    }
+
+    status.innerText = "Enviando...";
+
+    try {
+        await fetch(API_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, personas })
+        });
+
+        status.innerText = "Confirmación enviada 🎉";
+
+        document.getElementById("nombre").value = "";
+        document.getElementById("personas").value = "";
+
+    } catch (err) {
+        status.innerText = "Error al enviar";
+    }
+};
