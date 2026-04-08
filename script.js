@@ -74,7 +74,9 @@ function humo(x,y){
 }
 
 /* ENVÍO */
-document.getElementById("send").onclick = async (e)=>{
+const sendBtn = document.getElementById("send");
+
+sendBtn.addEventListener("click", async (e) => {
     await fetch("https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec",{
         method:"POST",
         mode:"no-cors",
@@ -87,6 +89,6 @@ document.getElementById("send").onclick = async (e)=>{
     humo(e.clientX||200,e.clientY||200);
 
     setTimeout(()=>modal.classList.remove("active"),1000);
-};
+});
 
 });
