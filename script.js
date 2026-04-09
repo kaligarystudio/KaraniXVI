@@ -73,22 +73,36 @@ function humo(x,y){
     }
 }
 
-/* ENVÍO */
-const sendBtn = document.getElementById("send");
+document.getElementById("send").onclick = async (e) => {
 
-sendBtn.addEventListener("click", async (e) => {
-    await fetch("https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec",{
-        method:"POST",
-        mode:"no-cors",
-        body: JSON.stringify({
-            nombre: document.getElementById("nombre").value,
-            personas: document.getElementById("personas").value
-        })
-    });
+    const nombre = document.getElementById("nombre").value;
+    const personas = document.getElementById("personas").value;
 
-    humo(e.clientX||200,e.clientY||200);
+    try {
+        const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    personas: personas
+                })
+            }
+        );
 
-    setTimeout(()=>modal.classList.remove("active"),1000);
-});
+        const data = await response.json();
+
+        alert("✨ Confirmación enviada");
+        humo(e.clientX || 200, e.clientY || 200);
+        setTimeout(() => modal.classList.remove("active"), 1000);
+
+    } catch (error) {
+        console.error(error);
+        alert("Error al enviar");
+    }
+};
 
 });
