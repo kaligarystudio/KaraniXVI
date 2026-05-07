@@ -759,6 +759,8 @@ h2{
 
     animation:
     dragonJourney 42s linear infinite;
+    
+    animation: dragonJourneyMobile 45s linear infinite;
 }/* IMAGEN DEL DRAGÓN */
 
 .dragon-img{
@@ -1072,5 +1074,112 @@ h2{
     body{
 
         overflow-y: auto;
+    }
+}
+
+/* =====================================
+   MOBILE DRAGON FIX
+===================================== */
+
+@media (max-width: 768px){
+
+    .dragon-scene{
+
+        width: 650px;
+        height: 650px;
+
+        left: 50%;
+
+        bottom: -8vh;
+
+        transform: translateX(-50%);
+
+        opacity: 0.95;
+
+        animation:
+        dragonJourneyMobile 32s linear infinite;
+    }
+
+    .dragon-img{
+
+        opacity: 0.9;
+
+        filter:
+        brightness(1.3)
+        saturate(1.35)
+        drop-shadow(0 0 15px #9be8ff)
+        drop-shadow(0 0 40px rgba(120,220,255,0.95))
+        drop-shadow(0 0 90px rgba(120,220,255,0.55));
+    }
+
+}
+@keyframes dragonJourneyMobile{
+
+    0%{
+
+        transform:
+        translateX(-50%)
+        translateY(20vh)
+        scale(0.12)
+        rotate(-8deg);
+
+        opacity:0;
+
+        filter:blur(10px);
+    }
+
+    15%{
+
+        transform:
+        translateX(-50%)
+        translateY(5vh)
+        scale(0.28)
+        rotate(-5deg);
+
+        opacity:0.45;
+    }
+
+    30%{
+
+        transform:
+        translateX(-38%)
+        translateY(-8vh)
+        scale(0.55)
+        rotate(4deg);
+
+        opacity:0.82;
+    }
+
+    50%{
+
+        transform:
+        translateX(-10%)
+        translateY(-16vh)
+        scale(0.9)
+        rotate(-2deg);
+
+        opacity:1;
+    }
+
+    70%{
+
+        transform:
+        translateX(30%)
+        translateY(-20vh)
+        scale(1)
+        rotate(5deg);
+
+        opacity:0.9;
+    }
+
+    100%{
+
+        transform:
+        translateX(85%)
+        translateY(-30vh)
+        scale(0.55)
+        rotate(0deg);
+
+        opacity:0;
     }
 }
