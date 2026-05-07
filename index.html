@@ -54,7 +54,95 @@
 
     <!-- FONDO -->
 <div class="forest">
+
+    <!-- DRAGÓN GIGANTE -->
+    <div class="giant-dragon">
+
+    <!-- NUBE MÁGICA -->
+    <div class="dragon-aura"></div>
+
+    <!-- PARTÍCULAS -->
+    <div class="dragon-particles"></div>
+
+    <!-- SILUETA -->
+    <svg class="dragon-svg"
+         viewBox="0 0 1200 700"
+         xmlns="http://www.w3.org/2000/svg">
+
+        <defs>
+
+            <filter id="glow">
+
+                <feGaussianBlur stdDeviation="8"
+                result="coloredBlur"/>
+
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+
+            </filter>
+
+        </defs>
+
+        <!-- ALA -->
+        <path class="dragon-wing-left"
+        d="
+        M500 330
+        C350 150, 180 180, 80 60
+        C120 250, 250 360, 460 400
+        Z"/>
+
+        <!-- ALA -->
+        <path class="dragon-wing-right"
+        d="
+        M700 330
+        C850 150, 1020 180, 1120 60
+        C1080 250, 950 360, 740 400
+        Z"/>
+
+        <!-- CUERPO -->
+        <path class="dragon-body"
+        d="
+        M470 350
+        C530 220, 720 220, 820 330
+        C910 430, 900 560, 760 620
+        C610 670, 420 590, 370 470
+        C340 400, 390 370, 470 350
+        Z"/>
+
+        <!-- COLA -->
+        <path class="dragon-tail"
+        d="
+        M780 560
+        C930 640, 1050 720, 1180 650"/>
+
+        <!-- CUELLO -->
+        <path class="dragon-neck"
+        d="
+        M430 350
+        C300 300, 240 210, 290 120"/>
+
+        <!-- CABEZA -->
+        <path class="dragon-head"
+        d="
+        M250 70
+        C190 120, 190 180, 260 210
+        C340 230, 390 180, 370 120
+        C350 70, 300 50, 250 70
+        Z"/>
+
+        <!-- OJOS -->
+        <circle class="dragon-eye"
+        cx="285"
+        cy="130"
+        r="8"/>
+
+    </svg>
+
+</div>
     <div class="forest-overlay"></div>
+
 </div>
     <!-- CAPAS -->
     <div id="lights"></div>
