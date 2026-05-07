@@ -1,108 +1,329 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-const rabbit = document.getElementById("rabbit");
-const startScreen = document.getElementById("start-screen");
+/* =========================
+   ELEMENTOS
+========================= */
+
+const intro = document.getElementById("intro");
+const portal = document.getElementById("portal");
+const enterBtn = document.getElementById("enter-btn");
+
 const scene = document.querySelector(".scene");
-const tunnel = document.getElementById("tunnel");
+
 const music = document.getElementById("bg-music");
 
+const openBtn = document.getElementById("open-form");
 const modal = document.getElementById("form-modal");
 
-/* ENTRADA */
-rabbit.onclick = () => {
+const closeBtn = document.getElementById("close");
+const sendBtn = document.getElementById("send");
 
-    tunnel.classList.add("active");
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec";
 
-    if (music) {
+/* =========================
+   ENTRADA
+========================= */
+
+enterBtn.addEventListener("click", () => {
+
+    portal.classList.add("active");
+
+    if(music){
+
         music.volume = 0;
-        music.play();
 
-        let v = 0;
-        const fade = setInterval(()=>{
-            v += 0.05;
-            music.volume = v;
-            if(v>=0.5) clearInterval(fade);
-        },200);
+        music.play().catch(()=>{});
+
+        let volume = 0;
+
+        const fade = setInterval(() => {
+
+            volume += 0.05;
+
+            music.volume = volume;
+
+            if(volume >= 0.5){
+                clearInterval(fade);
+            }
+
+        }, 200);
     }
 
     setTimeout(() => {
-        startScreen.style.display = "none";
-        scene.classList.remove("hidden");
-        startFloating();
-    }, 1500);
-};
 
-/* OBJETOS */
-function startFloating() {
-    const container = document.getElementById("floating");
+        intro.style.display = "none";
+
+        scene.classList.remove("hidden");
+
+        startLights();
+        startFairies();
+        startClocks();
+        startDragons();
+
+    }, 1700);
+
+});
+
+/* =========================
+   LUCES
+========================= */
+
+function startLights(){
+
+    const container =
+    document.getElementById("lights");
 
     setInterval(() => {
-        const el = document.createElement("div");
-        el.className = "floating";
 
-        const items = ["🎩","🃏","♠️","♥️"];
-        el.innerText = items[Math.floor(Math.random()*items.length)];
+        const light =
+        document.createElement("div");
 
-        el.style.left = Math.random()*100 + "vw";
+        light.className = "light";
 
-        container.appendChild(el);
+        light.style.left =
+        Math.random() * 100 + "vw";
 
-        setTimeout(()=>el.remove(),6000);
-    }, 400);
+        light.style.animationDuration =
+        (6 + Math.random() * 6) + "s";
+
+        container.appendChild(light);
+
+        setTimeout(() => {
+            light.remove();
+        }, 12000);
+
+    }, 200);
 }
 
-/* MODAL */
-document.getElementById("open-form").onclick = () => modal.classList.add("active");
-document.getElementById("close").onclick = () => modal.classList.remove("active");
+/* =========================
+   HADAS
+========================= */
 
-/* HUMO */
-function humo(x,y){
-    for(let i=0;i<20;i++){
-        let s=document.createElement("div");
-        s.className="smoke";
-        s.style.left=x+"px";
-        s.style.top=y+"px";
-        document.body.appendChild(s);
+function startFairies(){
 
-        s.animate([
-            {transform:"translate(0,0)",opacity:1},
-            {transform:`translate(${Math.random()*200-100}px,-200px)`,opacity:0}
-        ],{duration:1000});
+    const container =
+    document.getElementById("fairies");
 
-        setTimeout(()=>s.remove(),1000);
+    setInterval(() => {
+
+        const fairy =
+        document.createElement("div");
+
+        fairy.className = "fairy";
+
+        fairy.innerHTML = "🧚";
+
+        fairy.style.left =
+        Math.random() * 100 + "vw";
+
+        fairy.style.animationDuration =
+        (10 + Math.random() * 8) + "s";
+
+        container.appendChild(fairy);
+
+        setTimeout(() => {
+            fairy.remove();
+        }, 18000);
+
+    }, 3000);
+}
+
+/* =========================
+   RELOJES
+========================= */
+
+function startClocks(){
+
+    const container =
+    document.getElementById("clocks");
+
+    setInterval(() => {
+
+        const clock =
+        document.createElement("div");
+
+        clock.className = "clock";
+
+        clock.innerHTML = "🕰️";
+
+        clock.style.left =
+        Math.random() * 100 + "vw";
+
+        clock.style.top =
+        Math.random() * 100 + "vh";
+
+        container.appendChild(clock);
+
+        setTimeout(() => {
+            clock.remove();
+        }, 15000);
+
+    }, 4000);
+}
+
+/* =========================
+   DRAGONES
+========================= */
+
+function startDragons(){
+
+    const container =
+    document.getElementById("dragons");
+
+    setInterval(() => {
+
+        const dragon =
+        document.createElement("div");
+
+        dragon.className = "dragon";
+
+        dragon.innerHTML = "🐉";
+
+        dragon.style.top =
+        Math.random() * 60 + "vh";
+
+        container.appendChild(dragon);
+
+        setTimeout(() => {
+            dragon.remove();
+        }, 25000);
+
+    }, 12000);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+openBtn.addEventListener("click", () => {
+
+    modal.classList.add("active");
+
+});
+
+closeBtn.addEventListener("click", () => {
+
+    modal.classList.remove("active");
+
+});
+
+/* =========================
+   HUMO
+========================= */
+
+function smokeEffect(x, y){
+
+    for(let i = 0; i < 25; i++){
+
+        const smoke =
+        document.createElement("div");
+
+        smoke.className = "smoke";
+
+        smoke.style.left = x + "px";
+        smoke.style.top = y + "px";
+
+        document.body.appendChild(smoke);
+
+        smoke.animate([
+            {
+                transform:"translate(0,0) scale(1)",
+                opacity:1
+            },
+            {
+                transform:
+                `translate(
+                ${Math.random()*200-100}px,
+                -200px
+                ) scale(3)`,
+
+                opacity:0
+            }
+        ],{
+            duration:1400
+        });
+
+        setTimeout(() => {
+            smoke.remove();
+        }, 1400);
     }
 }
 
-document.getElementById("send").onclick = async (e) => {
+/* =========================
+   ENVÍO
+========================= */
 
-    const nombre = document.getElementById("nombre").value;
-    const personas = document.getElementById("personas").value;
+sendBtn.addEventListener("click", async (e) => {
 
-    try {
-        const response = await fetch(
-            "https://script.google.com/macros/s/AKfycbxdDHLQBnv5YX-TLp6CwjZVQ5dJ6yh-N44M6MSiNIQ8rdw7rSTW4ahTTmafGbdmGGqh/exec",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    personas: personas
-                })
-            }
+    const nombre =
+    document.getElementById("nombre")
+    .value
+    .trim();
+
+    const personas =
+    document.getElementById("personas")
+    .value
+    .trim();
+
+    const status =
+    document.getElementById("status");
+
+    if(!nombre || !personas){
+
+        status.innerText =
+        "Completa todos los datos ✨";
+
+        return;
+    }
+
+    status.innerText =
+    "Enviando magia...";
+
+    try{
+
+        await fetch(API_URL,{
+
+            method:"POST",
+
+            mode:"no-cors",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                nombre,
+                personas
+            })
+        });
+
+        status.innerText =
+        "¡Asistencia confirmada! ✨";
+
+        smokeEffect(
+            e.clientX || window.innerWidth / 2,
+            e.clientY || window.innerHeight / 2
         );
 
-        const data = await response.json();
+        setTimeout(() => {
 
-        alert("✨ Confirmación enviada");
-        humo(e.clientX || 200, e.clientY || 200);
-        setTimeout(() => modal.classList.remove("active"), 1000);
+            modal.classList.remove("active");
 
-    } catch (error) {
+            status.innerText = "";
+
+            document.getElementById("nombre").value = "";
+            document.getElementById("personas").value = "";
+
+        }, 1800);
+
+    }catch(error){
+
+        status.innerText =
+        "Error al enviar";
+
         console.error(error);
-        alert("Error al enviar");
     }
-};
 
+});
 });

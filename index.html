@@ -1,63 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Invitación Karani</title>
+<title>Karani · Dulces 16</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
 
 <!-- INTRO -->
-<div id="start-screen">
-    <div id="rabbit">🐇</div>
-    <p>¡Voy tarde! ¿Vienes conmigo?</p>
-</div>
+<section id="intro">
 
-<!-- TÚNEL -->
-<div id="tunnel"></div>
+    <div class="mist"></div>
+
+    <div class="intro-content">
+
+        <div id="rabbit-container">
+
+            <div id="rabbit">🐇</div>
+
+            <div class="clock-intro">🕰️</div>
+
+        </div>
+
+        <h2 class="intro-title">
+            El tiempo se ha detenido...
+        </h2>
+
+        <p class="intro-text">
+            Un bosque encantado está por abrir sus puertas
+        </p>
+
+        <button id="enter-btn">
+            Entrar al reino mágico ✨
+        </button>
+
+    </div>
+
+</section>
+
+<!-- PORTAL -->
+<div id="portal"></div>
 
 <!-- ESCENA -->
-<div class="scene hidden">
-    <div class="background"></div>
-    <div id="floating"></div>
+<main class="scene hidden">
 
-    <div class="content">
-        <p>Bienvenido a un mundo mágico…</p>
+    <!-- FONDO -->
+<div class="forest">
+    <div class="forest-overlay"></div>
+</div>
+    <!-- CAPAS -->
+    <div id="lights"></div>
+    <div id="fairies"></div>
+    <div id="clocks"></div>
+    <div id="dragons"></div>
+
+    <!-- CONTENIDO -->
+    <section class="content">
+
+        <p class="welcome">
+            Bienvenido al bosque donde la magia despierta...
+        </p>
 
         <h1>Karani</h1>
+
         <h2>te invita a sus</h2>
 
-        <h3 class="dulces"><span>Dulces 16</span></h3>
+        <h3 class="dulces">
+            <span>Dulces 16</span>
+        </h3>
 
-        <button id="open-form">Confirmar asistencia</button>
-    </div>
-</div>
+        <div class="details">
+
+            <p>8 de Agosto 2026</p>
+            <p>19:00 hrs</p>
+            <p>Toluca, Estado de México</p>
+
+        </div>
+
+        <button id="open-form">
+            Confirmar asistencia ✨
+        </button>
+
+    </section>
+
+</main>
 
 <!-- MODAL -->
 <div id="form-modal">
+
     <div class="form-box">
+
         <h3>Confirmar asistencia</h3>
 
-        <input type="text" id="nombre" placeholder="Tu nombre">
-        <input type="number" id="personas" placeholder="¿Cuántas personas?" min="1">
+        <input
+            type="text"
+            id="nombre"
+            placeholder="Tu nombre"
+        >
 
-        <button id="send">Enviar</button>
-        <button id="close">Cancelar</button>
+        <input
+            type="number"
+            id="personas"
+            placeholder="¿Cuántas personas?"
+            min="1"
+        >
+
+        <button id="send">
+            Enviar ✨
+        </button>
+
+        <button id="close">
+            Cancelar
+        </button>
 
         <p id="status"></p>
+
     </div>
+
 </div>
 
+<!-- AUDIO -->
 <audio id="bg-music" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 
 </body>
 </html>

@@ -1,230 +1,650 @@
-body {
-    margin: 0;
-    background: black;
-    font-family: 'Playfair Display', serif;
-    overflow: hidden;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* INTRO */
-#start-screen {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, #1a001f, #000);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: white;
-    z-index: 10;
+body{
+    overflow:hidden;
+    background:black;
+    font-family:'Playfair Display', serif;
+    color:white;
 }
 
-#rabbit {
-    font-size: 80px;
-    cursor: pointer;
-    animation: move 1s infinite alternate;
+/* =========================
+   INTRO
+========================= */
+
+#intro{
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle at center,
+    rgba(10,10,25,0.8),
+    rgba(0,0,0,0.95));
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:100;
 }
 
-@keyframes move {
-    from { transform: translateX(-10px); }
-    to { transform: translateX(10px); }
+.mist{
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(circle,
+    rgba(255,255,255,0.05),
+    transparent 70%);
+
+    animation:fog 10s infinite alternate;
 }
 
-/* OBJETOS */
-.floating {
-    position: absolute;
-    font-size: 30px;
-    animation: float 6s linear;
+@keyframes fog{
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.15);
+    }
 }
 
-@keyframes float {
-    from { transform: translateY(100vh) rotate(0deg); }
-    to { transform: translateY(-100vh) rotate(360deg); }
+.intro-content{
+    text-align:center;
+    width:90%;
+    z-index:2;
+}
+
+#rabbit-container{
+    position:relative;
+    display:inline-block;
+}
+
+#rabbit{
+    font-size:85px;
+    animation:rabbitMove 1.5s infinite alternate;
+    filter:drop-shadow(0 0 12px rgba(255,255,255,0.5));
+}
+
+.clock-intro{
+    position:absolute;
+    right:-25px;
+    top:-10px;
+
+    font-size:38px;
+
+    animation:clockFloat 3s infinite ease-in-out;
+}
+
+@keyframes rabbitMove{
+    from{
+        transform:translateX(-8px);
+    }
+
+    to{
+        transform:translateX(8px);
+    }
+}
+
+@keyframes clockFloat{
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+.intro-title{
+    margin-top:25px;
+
+    font-size:clamp(30px,5vw,52px);
+
+    font-family:'Cinzel', serif;
+
+    color:#f6e7c8;
+
+    text-shadow:
+    0 0 10px rgba(255,215,150,0.4);
+}
+
+.intro-text{
+    margin-top:14px;
+
+    color:#d9d9d9;
+
+    font-size:18px;
+}
+
+#enter-btn{
+    margin-top:35px;
+
+    padding:14px 34px;
+
+    border:none;
+    border-radius:40px;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(45deg,#e8c77a,#fff0bf);
+
+    color:#1a1a1a;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    transition:0.3s;
+}
+
+#enter-btn:hover{
+    transform:scale(1.05);
+}
+
+/* =========================
+   PORTAL
+========================= */
+
+#portal{
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle,
+    transparent 10%,
+    rgba(0,0,0,0.95) 60%);
+
+    opacity:0;
+    pointer-events:none;
+
+    z-index:90;
+}
+
+#portal.active{
+    animation:portalZoom 1.8s forwards;
+}
+
+@keyframes portalZoom{
+
+    0%{
+        opacity:1;
+        transform:scale(0.5);
+    }
+
+    100%{
+        opacity:0;
+        transform:scale(6);
+    }
 }
 
 /* =========================
    ESCENA
 ========================= */
-.scene {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
+
+.scene{
+    width:100vw;
+    height:100vh;
+    position:relative;
 }
 
-.hidden {
-    display: none;
-}
-/* CONTENIDO */
-.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-}
-
-/* TEXTO */
-h1 {
-    font-family: 'Great Vibes';
-    font-size: 70px;
-    color: #ff66cc;
-}
-
-/* ✨ DULCES 16 ANIMADO */
-.dulces span {
-    font-size: 80px;
-    color: gold;
-    position: relative;
-    text-shadow: 0 0 20px gold;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px gold; }
-    to { text-shadow: 0 0 30px gold, 0 0 60px gold; }
+.hidden{
+    display:none;
 }
 
 /* =========================
-   BOTÓN
+   BOSQUE
 ========================= */
-#open-form {
-    margin-top: 20px;
-    padding: 12px 25px;
-    background: gold;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+
+.forest{
+    position:absolute;
+    inset:0;
+
+    background-image:url("bosque.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    animation:forestMove 25s ease-in-out infinite alternate;
 }
 
-#open-form:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px gold;
-}
-
-/* =========================
-   MODAL (CORREGIDO)
-========================= */
-#form-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    display: none; /* 🔥 clave */
-
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-
-    z-index: 1000;
-}
-
-/* ACTIVO */
-#form-modal.active {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-}
-
-/* ANIMACIÓN */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* =========================
-   CAJA FORMULARIO
-========================= */
-.form-box {
-    background: linear-gradient(145deg, #1a001f, #2b0033);
-    padding: 25px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 300px;
-    text-align: center;
-
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-
-    animation: aparecer 0.4s ease;
-}
-
-@keyframes aparecer {
-    from {
-        transform: scale(0.7);
-        opacity: 0;
+@keyframes forestMove{
+    from{
+        transform:scale(1);
     }
-    to {
-        transform: scale(1);
-        opacity: 1;
+
+    to{
+        transform:scale(1.05);
     }
 }
 
-/* INPUTS */
-.form-box input {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-}
+.forest-overlay{
+    position:absolute;
+    inset:0;
 
-/* BOTONES */
-.form-box button {
-    margin: 5px;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-}
+    background:
+    linear-gradient(
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.65));
 
-#send {
-    background: gold;
-}
-
-#close {
-    background: gray;
-    color: white;
+    backdrop-filter:brightness(0.9);
 }
 
 /* =========================
-   PARTÍCULAS FONDO
+   LUCES
 ========================= */
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: white;
-    border-radius: 50%;
+
+.light{
+    position:absolute;
+
+    width:5px;
+    height:5px;
+
+    border-radius:50%;
+
+    background:#ffe6a6;
+
+    box-shadow:
+    0 0 8px #ffe6a6,
+    0 0 18px #ffe6a6;
+
+    animation:floatLight linear infinite;
+}
+
+@keyframes floatLight{
+
+    from{
+        transform:translateY(100vh);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
 }
 
 /* =========================
-   EFECTO HUMO
+   HADAS
 ========================= */
-.smoke {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, white, transparent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
+
+.fairy{
+    position:absolute;
+
+    font-size:20px;
+
+    filter:
+    drop-shadow(0 0 10px rgba(255,255,255,0.8));
+
+    animation:fairyMove linear infinite;
+}
+
+@keyframes fairyMove{
+
+    from{
+        transform:
+        translateY(100vh)
+        translateX(0px);
+    }
+
+    to{
+        transform:
+        translateY(-120vh)
+        translateX(100px);
+    }
+}
+
+/* =========================
+   RELOJES
+========================= */
+
+.clock{
+    position:absolute;
+
+    font-size:28px;
+
+    opacity:0.25;
+
+    animation:clockSpin 15s linear infinite;
+}
+
+@keyframes clockSpin{
+
+    from{
+        transform:
+        rotate(0deg)
+        translateY(0px);
+    }
+
+    to{
+        transform:
+        rotate(360deg)
+        translateY(-40px);
+    }
+}
+
+/* =========================
+   DRAGONES
+========================= */
+
+.dragon{
+    position:absolute;
+
+    font-size:40px;
+
+    opacity:0.12;
+
+    animation:dragonFly 25s linear infinite;
+}
+
+@keyframes dragonFly{
+
+    from{
+        transform:
+        translateX(-20vw)
+        translateY(25vh);
+    }
+
+    to{
+        transform:
+        translateX(120vw)
+        translateY(-10vh);
+    }
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.content{
+    position:relative;
+    z-index:5;
+
+    width:90%;
+    max-width:650px;
+
+    top:50%;
+    margin:auto;
+
+    transform:translateY(-50%);
+
+    text-align:center;
+}
+
+.welcome{
+    margin-bottom:22px;
+
+    font-size:18px;
+
+    color:#f5e8c7;
+
+    letter-spacing:1px;
+}
+
+/* KARANI */
+
+h1{
+    font-family:'Great Vibes', cursive;
+
+    font-size:clamp(70px,10vw,120px);
+
+    color:#fff3d8;
+
+    font-weight:normal;
+
+    text-shadow:
+    0 0 12px rgba(255,220,160,0.5),
+    0 0 30px rgba(255,220,160,0.3);
+}
+
+h2{
+    margin-top:10px;
+
+    font-family:'Cinzel', serif;
+
+    font-size:22px;
+
+    letter-spacing:2px;
+
+    color:#e9dcc2;
+}
+
+/* DULCES 16 */
+
+.dulces span{
+
+    display:inline-block;
+
+    margin-top:10px;
+
+    font-family:'Cinzel', serif;
+
+    font-size:clamp(48px,8vw,90px);
+
+    color:#ffe7a3;
+
+    letter-spacing:3px;
+
+    text-shadow:
+    0 0 10px rgba(255,215,120,0.8),
+    0 0 25px rgba(255,215,120,0.5),
+    0 0 40px rgba(255,215,120,0.2);
+
+    animation:magicGlow 2s infinite alternate;
+}
+
+@keyframes magicGlow{
+
+    from{
+        transform:scale(1);
+        opacity:0.9;
+    }
+
+    to{
+        transform:scale(1.03);
+        opacity:1;
+    }
+}
+
+/* DETALLES */
+
+.details{
+    margin-top:28px;
+
+    line-height:1.9;
+
+    color:#f0ece2;
+
+    font-size:18px;
+
+    text-shadow:
+    0 0 8px rgba(0,0,0,0.6);
+}
+
+/* BOTÓN */
+
+#open-form{
+    margin-top:35px;
+
+    padding:15px 34px;
+
+    border:none;
+    border-radius:40px;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(45deg,#e8c77a,#fff0bf);
+
+    color:#1a1a1a;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    transition:0.3s;
+}
+
+#open-form:hover{
+    transform:scale(1.05);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+#form-modal{
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,0.7);
+
+    backdrop-filter:blur(6px);
+
+    z-index:999;
+}
+
+#form-modal.active{
+    display:flex;
+}
+
+.form-box{
+    width:90%;
+    max-width:340px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(20,20,35,0.95),
+    rgba(8,8,18,0.95));
+
+    box-shadow:
+    0 0 30px rgba(255,215,120,0.15);
+
+    text-align:center;
+}
+
+.form-box h3{
+    margin-bottom:20px;
+
+    font-family:'Cinzel', serif;
+
+    color:#ffe6a6;
+}
+
+.form-box input{
+    width:100%;
+
+    margin:10px 0;
+
+    padding:12px;
+
+    border:none;
+    border-radius:12px;
+
+    outline:none;
+
+    background:rgba(255,255,255,0.95);
+}
+
+.form-box button{
+    margin-top:10px;
+
+    padding:12px 18px;
+
+    border:none;
+    border-radius:12px;
+
+    cursor:pointer;
+}
+
+#send{
+    background:#f2cf7f;
+}
+
+#close{
+    background:#555;
+    color:white;
+}
+
+#status{
+    margin-top:15px;
+    font-size:14px;
+}
+
+/* =========================
+   HUMO
+========================= */
+
+.smoke{
+    position:fixed;
+
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle,
+    rgba(255,255,255,0.9),
+    transparent);
+
+    pointer-events:none;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-@media (max-width: 600px) {
-    .content {
-        width: 95%;
+
+@media(max-width:768px){
+
+    #rabbit{
+        font-size:70px;
     }
 
-    .form-box {
-        max-width: 90%;
+    .clock-intro{
+        font-size:30px;
+    }
+
+    h1{
+        font-size:78px;
+    }
+
+    .dulces span{
+        font-size:58px;
+    }
+
+    h2{
+        font-size:18px;
+    }
+
+    .details{
+        font-size:16px;
+    }
+
+    .content{
+        width:92%;
     }
 }
