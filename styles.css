@@ -1,1325 +1,446 @@
+/* RESET GENERAL */
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    overflow-x:hidden;
-    overflow-y:auto;
-    background:black;
-    font-family:'Playfair Display', serif;
-    color:white;
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #0b0202; /* Negro profundo con matiz carmesí */
+    font-family: 'Playfair Display', serif;
+    color: #f5f5f5;
 }
 
-/* =========================
-   INTRO
-========================= */
-
-#intro{
-    position:fixed;
-    inset:0;
-
-    background:
-    radial-gradient(circle at center,
-    rgba(10,10,25,0.8),
-    rgba(0,0,0,0.95));
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    z-index:100;
-}
-
-.mist{
-    position:absolute;
-    inset:0;
-
-    background:
-    radial-gradient(circle,
-    rgba(255,255,255,0.05),
-    transparent 70%);
-
-    animation:fog 10s infinite alternate;
-}
-
-@keyframes fog{
-    from{
-        transform:scale(1);
-    }
-
-    to{
-        transform:scale(1.15);
-    }
-}
-
-.intro-content{
-    text-align:center;
-    width:90%;
-    z-index:2;
-}
-
-#rabbit-container{
-    position:relative;
-    display:inline-block;
-}
-
-#rabbit{
-    font-size:85px;
-    animation:rabbitMove 1.5s infinite alternate;
-    filter:drop-shadow(0 0 12px rgba(255,255,255,0.5));
-}
-
-.clock-intro{
-    position:absolute;
-    right:-25px;
-    top:-10px;
-
-    font-size:38px;
-
-    animation:clockFloat 3s infinite ease-in-out;
-}
-
-@keyframes rabbitMove{
-    from{
-        transform:translateX(-8px);
-    }
-
-    to{
-        transform:translateX(8px);
-    }
-}
-
-@keyframes clockFloat{
-    0%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-10px);
-    }
-
-    100%{
-        transform:translateY(0px);
-    }
-}
-
-.intro-title{
-    margin-top:25px;
-
-    font-size:clamp(30px,5vw,52px);
-
-    font-family:'Cinzel', serif;
-
-    color:#f6e7c8;
-
-    text-shadow:
-    0 0 10px rgba(255,215,150,0.4);
-}
-
-.intro-text{
-    margin-top:14px;
-
-    color:#d9d9d9;
-
-    font-size:18px;
-}
-
-#enter-btn{
-    margin-top:35px;
-
-    padding:14px 34px;
-
-    border:none;
-    border-radius:40px;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(45deg,#e8c77a,#fff0bf);
-
-    color:#1a1a1a;
-
-    font-weight:bold;
-
-    font-size:16px;
-
-    transition:0.3s;
-}
-
-#enter-btn:hover{
-    transform:scale(1.05);
-}
-
-/* =========================
-   PORTAL
-========================= */
-
-#portal{
-    position:fixed;
-    inset:0;
-
-    background:
-    radial-gradient(circle,
-    transparent 10%,
-    rgba(0,0,0,0.95) 60%);
-
-    opacity:0;
-    pointer-events:none;
-
-    z-index:90;
-}
-
-#portal.active{
-    animation:portalZoom 1.8s forwards;
-}
-
-@keyframes portalZoom{
-
-    0%{
-        opacity:1;
-        transform:scale(0.5);
-    }
-
-    100%{
-        opacity:0;
-        transform:scale(6);
-    }
-}
-
-/* =========================
-   ESCENA
-========================= */
-
-.scene{
-    width:100vw;
-    height:100vh;
-    position:relative;
-}
-
-.hidden{
-    display:none;
-}
-
-/* =========================
-   BOSQUE
-========================= */
-
-.forest{
-    position:absolute;
-    inset:0;
-
-    background-image:url("bosque.png");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-
-    animation:forestMove 25s ease-in-out infinite alternate;
-}
-
-@keyframes forestMove{
-    from{
-        transform:scale(1);
-    }
-
-    to{
-        transform:scale(1.05);
-    }
-}
-
-.forest-overlay{
-    position:absolute;
-    inset:0;
-
-    background:
-    linear-gradient(
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.65));
-
-    backdrop-filter:brightness(0.9);
-}
-
-/* =========================
-   LUCES
-========================= */
-
-.light{
-    position:absolute;
-
-    width:5px;
-    height:5px;
-
-    border-radius:50%;
-
-    background:#ffe6a6;
-
-    box-shadow:
-    0 0 8px #ffe6a6,
-    0 0 18px #ffe6a6;
-
-    animation:floatLight linear infinite;
-}
-
-@keyframes floatLight{
-
-    from{
-        transform:translateY(100vh);
-        opacity:0;
-    }
-
-    20%{
-        opacity:1;
-    }
-
-    to{
-        transform:translateY(-120vh);
-        opacity:0;
-    }
-}
-
-/* =========================
-   HADAS
-========================= */
-
-.fairy{
-    position:absolute;
-
-    font-size:38px;
-
-    filter:
-    drop-shadow(0 0 8px rgba(255,255,255,0.9))
-    drop-shadow(0 0 18px rgba(255,220,120,0.9))
-    drop-shadow(0 0 35px rgba(255,220,120,0.6));
-
-    animation:fairyMove linear infinite;
-
-    z-index:4;
-}
-
-.fairy::after{
-    content:"✨";
-
-    position:absolute;
-
-    left:-10px;
-    top:-10px;
-
-    font-size:18px;
-
-    animation:sparkle 1.2s infinite alternate;
-
-    opacity:0.9;
-}
-
-@keyframes sparkle{
-
-    from{
-        transform:scale(0.8) rotate(-10deg);
-        opacity:0.5;
-    }
-
-    to{
-        transform:scale(1.2) rotate(10deg);
-        opacity:1;
-    }
-}
-
-@keyframes fairyMove{
-
-    0%{
-        transform:
-        translateY(110vh)
-        translateX(0px)
-        rotate(0deg);
-
-        opacity:0;
-    }
-
-    10%{
-        opacity:1;
-    }
-
-    50%{
-        transform:
-        translateY(40vh)
-        translateX(40px)
-        rotate(8deg);
-    }
-
-    100%{
-        transform:
-        translateY(-120vh)
-        translateX(120px)
-        rotate(-8deg);
-
-        opacity:0;
-    }
-}
-
-/* =========================
-   RELOJES
-========================= */
-
-.clock{
-    position:absolute;
-
-    font-size:28px;
-
-    opacity:0.25;
-
-    animation:clockSpin 15s linear infinite;
-}
-
-@keyframes clockSpin{
-
-    from{
-        transform:
-        rotate(0deg)
-        translateY(0px);
-    }
-
-    to{
-        transform:
-        rotate(360deg)
-        translateY(-40px);
-    }
-}
-
-/* =========================
-   DRAGONES
-========================= */
-
-.dragon{
-    position:absolute;
-
-    font-size:95px;
-
-    opacity:0.55;
-
-    filter:
-    drop-shadow(0 0 12px rgba(120,220,255,0.8))
-    drop-shadow(0 0 30px rgba(120,220,255,0.5))
-    drop-shadow(0 0 50px rgba(120,220,255,0.25));
-
-    animation:dragonFly 28s linear infinite;
-
-    z-index:3;
-}
-
-@keyframes dragonFly{
-
-    0%{
-        transform:
-        translateX(-30vw)
-        translateY(30vh)
-        scale(0.7);
-
-        opacity:0;
-    }
-
-    10%{
-        opacity:0.55;
-    }
-
-    50%{
-        transform:
-        translateX(40vw)
-        translateY(5vh)
-        scale(1);
-    }
-
-    100%{
-        transform:
-        translateX(130vw)
-        translateY(-10vh)
-        scale(1.2);
-
-        opacity:0;
-    }
-}
-
-/* =========================
-   CONTENIDO
-========================= */
-
-.content{
-    position:relative;
-    z-index:5;
-
-    width:90%;
-    max-width:650px;
-
-    top:50%;
-    margin:auto;
-
-    transform:translateY(-50%);
-
-    text-align:center;
-}
-
-.welcome{
-    margin-bottom:22px;
-
-    font-size:18px;
-
-    color:#f5e8c7;
-
-    letter-spacing:1px;
-}
-
-/* KARANI */
-
-h1{
-    font-family:'Great Vibes', cursive;
-
-    font-size:clamp(70px,10vw,120px);
-
-    color:#fff3d8;
-
-    font-weight:normal;
-
-    text-shadow:
-    0 0 12px rgba(255,220,160,0.5),
-    0 0 30px rgba(255,220,160,0.3);
-}
-
-h2{
-    margin-top:10px;
-
-    font-family:'Cinzel', serif;
-
-    font-size:22px;
-
-    letter-spacing:2px;
-
-    color:#e9dcc2;
-}
-
-/* DULCES 16 */
-
-.dulces span{
-
-    display:inline-block;
-
-    margin-top:10px;
-
-    font-family:'Cinzel', serif;
-
-    font-size:clamp(48px,8vw,90px);
-
-    color:#ffe7a3;
-
-    letter-spacing:3px;
-
-    text-shadow:
-    0 0 10px rgba(255,215,120,0.8),
-    0 0 25px rgba(255,215,120,0.5),
-    0 0 40px rgba(255,215,120,0.2);
-
-    animation:magicGlow 2s infinite alternate;
-}
-
-@keyframes magicGlow{
-
-    from{
-        transform:scale(1);
-        opacity:0.9;
-    }
-
-    to{
-        transform:scale(1.03);
-        opacity:1;
-    }
-}
-
-/* DETALLES */
-
-.details{
-    margin-top:28px;
-
-    line-height:1.9;
-
-    color:#f0ece2;
-
-    font-size:18px;
-
-    text-shadow:
-    0 0 8px rgba(0,0,0,0.6);
-}
-
-/* BOTÓN */
-
-#open-form{
-    margin-top:35px;
-
-    padding:15px 34px;
-
-    border:none;
-    border-radius:40px;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(45deg,#e8c77a,#fff0bf);
-
-    color:#1a1a1a;
-
-    font-weight:bold;
-
-    font-size:16px;
-
-    transition:0.3s;
-}
-
-#open-form:hover{
-    transform:scale(1.05);
-}
-
-/* =========================
-   MODAL
-========================= */
-
-#form-modal{
-    position:fixed;
-    inset:0;
-
-    display:none;
-
-    justify-content:center;
-    align-items:center;
-
-    background:rgba(0,0,0,0.7);
-
-    backdrop-filter:blur(6px);
-
-    z-index:999;
-}
-
-#form-modal.active{
-    display:flex;
-}
-
-.form-box{
-    width:90%;
-    max-width:340px;
-
-    padding:25px;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-    145deg,
-    rgba(20,20,35,0.95),
-    rgba(8,8,18,0.95));
-
-    box-shadow:
-    0 0 30px rgba(255,215,120,0.15);
-
-    text-align:center;
-}
-
-.form-box h3{
-    margin-bottom:20px;
-
-    font-family:'Cinzel', serif;
-
-    color:#ffe6a6;
-}
-
-.form-box input{
-    width:100%;
-
-    margin:10px 0;
-
-    padding:12px;
-
-    border:none;
-    border-radius:12px;
-
-    outline:none;
-
-    background:rgba(255,255,255,0.95);
-}
-
-.form-box button{
-    margin-top:10px;
-
-    padding:12px 18px;
-
-    border:none;
-    border-radius:12px;
-
-    cursor:pointer;
-}
-
-#send{
-    background:#f2cf7f;
-}
-
-#close{
-    background:#555;
-    color:white;
-}
-
-#status{
-    margin-top:15px;
-    font-size:14px;
-}
-
-/* =========================
-   HUMO
-========================= */
-
-.smoke{
-    position:fixed;
-
-    width:10px;
-    height:10px;
-
-    border-radius:50%;
-
-    background:
-    radial-gradient(circle,
-    rgba(255,255,255,0.9),
-    transparent);
-
-    pointer-events:none;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:768px){
-
-    #rabbit{
-        font-size:70px;
-    }
-
-    .clock-intro{
-        font-size:30px;
-    }
-
-    h1{
-        font-size:78px;
-    }
-
-    .dulces span{
-        font-size:58px;
-    }
-
-    h2{
-        font-size:18px;
-    }
-
-    .details{
-        font-size:16px;
-    }
-
-    .content{
-        width:92%;
-    }
-
-    .dragon{
-        font-size:70px;
-    }
-
-    .fairy{
-        font-size:30px;
-    }
-}
-
-/* =========================================
-   DRAGÓN PATRONUS CINEMÁTICO
-   (Pegar al FINAL de tu CSS)
-========================================= */
-
-/* CONTENEDOR GENERAL */
-
-.dragon-scene{
-
+/* PALETA INTRO (MANTENIDA CON AJUSTES RECIENTES) */
+#intro {
     position: fixed;
-
-    width: 1200px;
-    height: 1200px;
-
-    left: 50%;
-
-    bottom: -45vh;
-
-    transform: translateX(-50%);
-
-    z-index: 4;
-
-    pointer-events: none;
-
-    overflow: visible;
-
-    animation:
-    dragonJourney 42s linear infinite;
-    
-    animation: dragonJourneyMobile 45s linear infinite;
-}/* IMAGEN DEL DRAGÓN */
-
-.dragon-img{
-
-    position: absolute;
-
-    width: 100%;
-    height: auto;
-
-    opacity: 0.78;
-
-    mix-blend-mode: screen;
-
-    filter:
-    brightness(1.25)
-    saturate(1.35)
-    drop-shadow(0 0 20px #a7e9ff)
-    drop-shadow(0 0 45px rgba(120,220,255,0.95))
-    drop-shadow(0 0 120px rgba(120,220,255,0.55));
-
-    animation:
-    dragonPulse 4s ease-in-out infinite;
-}
-
-/* RESPIRACIÓN MÁGICA */
-
-@keyframes dragonPulse{
-
-    0%{
-
-        transform:
-        scale(1)
-        rotate(-2deg);
-
-        opacity: 0.75;
-    }
-
-    50%{
-
-        transform:
-        scale(1.04)
-        rotate(2deg);
-
-        opacity: 1;
-    }
-
-    100%{
-
-        transform:
-        scale(1)
-        rotate(-2deg);
-
-        opacity: 0.75;
-    }
-}
-
-/* NIEBLA ALREDEDOR */
-
-.dragon-fog{
-
-    position: absolute;
-
-    inset: -12%;
-
-    background:
-    radial-gradient(circle,
-    rgba(170,220,255,0.22),
-    rgba(120,220,255,0.08),
-    transparent 72%);
-
-    filter: blur(70px);
-
-    animation:
-    fogMove 8s ease-in-out infinite;
-}
-
-@keyframes fogMove{
-
-    0%{
-
-        transform:
-        translateY(0px)
-        scale(1);
-    }
-
-    50%{
-
-        transform:
-        translateY(-20px)
-        scale(1.08);
-    }
-
-    100%{
-
-        transform:
-        translateY(0px)
-        scale(1);
-    }
-}
-
-/* PARTÍCULAS MÁGICAS */
-
-.dragon-sparkles{
-
-    position: absolute;
-
     inset: 0;
-
-    background-image:
-    radial-gradient(
-    rgba(220,245,255,0.95) 1px,
-    transparent 1px);
-
-    background-size: 35px 35px;
-
-    opacity: 0.4;
-
-    animation:
-    sparkleMove 14s linear infinite;
+    background: radial-gradient(circle at center, #3a0505 0%, #000000 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
-@keyframes sparkleMove{
-
-    from{
-
-        transform:
-        translateX(0px)
-        translateY(0px);
-    }
-
-    to{
-
-        transform:
-        translateX(-120px)
-        translateY(-60px);
-    }
-}
-
-/* VIAJE DEL DRAGÓN */
-
-@keyframes dragonJourney{
-
-    /* ESCONDIDO EN LA NIEBLA */
-
-    0%{
-
-        transform:
-        translateX(-50%)
-        translateY(35vh)
-        scale(0.12)
-        rotate(-12deg);
-
-        opacity: 0;
-
-        filter: blur(14px);
-    }
-
-    /* COMIENZA A EMERGER */
-
-    12%{
-
-        transform:
-        translateX(-50%)
-        translateY(15vh)
-        scale(0.32)
-        rotate(-8deg);
-
-        opacity: 0.35;
-
-        filter: blur(8px);
-    }
-
-    /* SALE DEL BOSQUE */
-
-    28%{
-
-        transform:
-        translateX(-40%)
-        translateY(-5vh)
-        scale(0.65)
-        rotate(5deg);
-
-        opacity: 0.72;
-
-        filter: blur(2px);
-    }
-
-    /* CRUZA LA ESCENA */
-
-    45%{
-
-        transform:
-        translateX(-10%)
-        translateY(-18vh)
-        scale(1)
-        rotate(-2deg);
-
-        opacity: 1;
-
-        filter: blur(0px);
-    }
-
-    /* SOBREVUELA */
-
-    65%{
-
-        transform:
-        translateX(25%)
-        translateY(-25vh)
-        scale(1.15)
-        rotate(4deg);
-
-        opacity: 0.95;
-    }
-
-    /* SE ALEJA */
-
-    82%{
-
-        transform:
-        translateX(70%)
-        translateY(-35vh)
-        scale(0.85)
-        rotate(-5deg);
-
-        opacity: 0.55;
-    }
-
-    /* DESAPARECE */
-
-    100%{
-
-        transform:
-        translateX(120%)
-        translateY(-45vh)
-        scale(0.45)
-        rotate(0deg);
-
-        opacity: 0;
-
-        filter: blur(10px);
-    }
-}
-/* =========================================
-   PROFUNDIDAD DEL BOSQUE
-========================================= */
-
-.forest{
-
-    position: fixed;
-
-    inset: 0;
-
-    overflow: hidden;
-
-    z-index: 1;
-}
-
-/* CAPA OSCURA */
-
-.forest-overlay{
-
+.mist {
     position: absolute;
-
     inset: 0;
+    background: radial-gradient(circle, rgba(218, 8, 8, 0.08), transparent 70%);
+    animation: fog 8s infinite alternate;
+}
 
+@keyframes fog {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+.intro-content {
+    text-align: center;
+    width: 90%;
     z-index: 2;
-
-    background:
-    linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.15),
-    rgba(0,0,0,0.55)
-    );
 }
 
-/* CONTENIDO ENCIMA */
-
-.content{
-
+#rabbit-container {
     position: relative;
-
-    z-index: 10;
+    display: inline-block;
 }
 
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width:768px){
-
-    .dragon-scene{
-
-        width: 520px;
-        height: 380px;
-
-        opacity: 0.9;
-    }
-
-    #open-form{
-
-        position: relative;
-
-        z-index: 20;
-
-        width: 100%;
-
-        max-width: 320px;
-    }
-
-    body{
-
-        overflow-y: auto;
-    }
+#rabbit {
+    font-size: 85px;
+    animation: rabbitMove 1.5s infinite alternate;
+    filter: drop-shadow(0 0 15px rgba(232, 199, 122, 0.4));
 }
 
-/* =====================================
-   MOBILE DRAGON FIX
-===================================== */
-
-@media (max-width: 768px){
-
-    .dragon-scene{
-
-        width: 650px;
-        height: 650px;
-
-        left: 50%;
-
-        bottom: -8vh;
-
-        transform: translateX(-50%);
-
-        opacity: 0.95;
-
-        animation:
-        dragonJourneyMobile 32s linear infinite;
-    }
-
-    .dragon-img{
-
-        opacity: 0.9;
-
-        filter:
-        brightness(1.3)
-        saturate(1.35)
-        drop-shadow(0 0 15px #9be8ff)
-        drop-shadow(0 0 40px rgba(120,220,255,0.95))
-        drop-shadow(0 0 90px rgba(120,220,255,0.55));
-    }
-
+.clock-intro {
+    position: absolute;
+    right: -25px;
+    top: -10px;
+    font-size: 38px;
+    animation: clockFloat 3s infinite ease-in-out;
 }
-@keyframes dragonJourneyMobile{
 
-    0%{
+@keyframes rabbitMove {
+    from { transform: translateX(-8px); }
+    to { transform: translateX(8px); }
+}
 
-        transform:
-        translateX(-50%)
-        translateY(20vh)
-        scale(0.12)
-        rotate(-8deg);
+@keyframes clockFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
 
-        opacity:0;
+.intro-title {
+    margin-top: 25px;
+    font-size: clamp(30px, 5vw, 52px);
+    font-family: 'Cinzel', serif;
+    color: #e8c77a;
+    text-shadow: 0 0 12px rgba(186, 12, 12, 0.6);
+}
 
-        filter:blur(10px);
-    }
+.intro-text {
+    margin-top: 14px;
+    color: #cccccc;
+    font-size: 18px;
+}
 
-    15%{
+#enter-btn {
+    margin-top: 35px;
+    padding: 14px 34px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ba0c0c, #ef233c);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 0 15px rgba(186, 12, 12, 0.5);
+    transition: 0.3s ease;
+}
 
-        transform:
-        translateX(-50%)
-        translateY(5vh)
-        scale(0.28)
-        rotate(-5deg);
+#enter-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 25px rgba(239, 35, 60, 0.8);
+}
 
-        opacity:0.45;
-    }
+/* EFECTO TRANSICIÓN PORTAL (VIDEO FLUIDO) */
+#portal {
+    position: fixed;
+    inset: 0;
+    background: #000000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 90;
+}
 
-    30%{
+#portal.active {
+    animation: portalCover 1.8s forwards ease-in-out;
+}
 
-        transform:
-        translateX(-38%)
-        translateY(-8vh)
-        scale(0.55)
-        rotate(4deg);
+@keyframes portalCover {
+    0% { opacity: 0; transform: scale(1); }
+    30%, 70% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+}
 
-        opacity:0.82;
-    }
+/* ESCENA PRINCIPAL */
+.scene {
+    min-height: 100vh;
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    background: linear-gradient(135deg, #0f0202 0%, #260303 50%, #000000 100%);
+}
 
-    50%{
+.hidden {
+    display: none !important;
+}
 
-        transform:
-        translateX(-10%)
-        translateY(-16vh)
-        scale(0.9)
-        rotate(-2deg);
+/* ANIMACIONES TRANSICIÓN DE VIDEOS (FADE-IN UP) */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUpMatch 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+}
 
-        opacity:1;
-    }
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
 
-    70%{
-
-        transform:
-        translateX(30%)
-        translateY(-20vh)
-        scale(1)
-        rotate(5deg);
-
-        opacity:0.9;
-    }
-
-    100%{
-
-        transform:
-        translateX(85%)
-        translateY(-30vh)
-        scale(0.55)
-        rotate(0deg);
-
-        opacity:0;
+@keyframes fadeInUpMatch {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-
-/* =====================================
-   NUEVAS SECCIONES INVITACIÓN
-===================================== */
-
-.scene{
-    min-height:100vh;
-    height:auto;
-    padding:100px 0;
+/* HERO SECTION */
+.hero-section {
+    text-align: center;
+    margin-top: 20px;
+    max-width: 600px;
 }
 
-.content{
-    max-width:800px;
-    padding:120px 0;
-    transform:none;
-    top:auto;
+.main-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(45px, 8vw, 75px);
+    color: #e8c77a; /* Dorado */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(186,12,12,0.8);
+    letter-spacing: 2px;
 }
 
-.event-card{
-    margin-top:50px;
-    padding:30px;
-    border-radius:25px;
-    background:rgba(10,10,20,.45);
-    backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.12);
-    box-shadow:0 0 25px rgba(255,220,120,.08);
+.subtitle {
+    font-size: 24px;
+    color: #ef233c;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: -10px;
+    font-weight: bold;
 }
 
-.event-card h3{
-    font-family:'Cinzel', serif;
-    color:#ffe7a3;
-    margin-bottom:20px;
+.welcome-msg {
+    margin-top: 25px;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #dddddd;
 }
 
-.countdown{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
+/* TARJETAS DE CONTENIDO ELEGANTE (ROJO/NEGRO) */
+.event-card {
+    background: rgba(15, 3, 3, 0.75);
+    border: 1px solid rgba(186, 12, 12, 0.3);
+    border-radius: 20px;
+    padding: 30px 25px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s;
 }
 
-.time-box{
-    width:90px;
-    padding:15px;
-    border-radius:15px;
-    background:rgba(255,255,255,.08);
+.event-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(239, 35, 60, 0.6);
 }
 
-.time-box span{
-    display:block;
-    font-size:32px;
-    font-weight:bold;
-    color:#fff3d8;
+.event-card h3 {
+    font-family: 'Cinzel', serif;
+    color: #e8c77a;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(232, 199, 122, 0.2);
+    padding-bottom: 10px;
 }
 
-.time-box small{
-    color:#ddd;
+/* PROGRAMA LISTA */
+.program-list {
+    list-style: none;
 }
 
-.location-text{
-    color:#eee;
-    line-height:1.8;
+.program-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+    font-size: 16px;
 }
 
-.magic-link{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-
-    border:none;
-    cursor:pointer;
-
-    border-radius:30px;
-    text-decoration:none;
-
-    background:linear-gradient(45deg,#e8c77a,#fff0bf);
-
-    color:#111;
-    font-weight:bold;
-    font-size:16px;
-
-    transition:.3s;
+.program-list li:last-child {
+    border-bottom: none;
 }
 
-.magic-link:hover{
-    transform:scale(1.05);
+.time {
+    color: #ef233c;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
 }
 
-
-/* =========================
-   MODAL LIBRO DE RECUERDOS
-========================= */
-
-#message-modal{
-    display:none;
+.activity {
+    color: #f5f5f5;
+    text-align: right;
 }
 
-#message-modal.active{
-
-    position:fixed;
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    background:rgba(0,0,0,.8);
-
-    backdrop-filter:blur(6px);
-
-    z-index:9999;
+/* CUENTA REGRESIVA */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
-#message-modal .form-box{
-
-    width:90%;
-    max-width:340px;
+.time-box {
+    width: 90px;
+    padding: 15px;
+    border-radius: 15px;
+    background: rgba(186, 12, 12, 0.15);
+    border: 1px solid rgba(186, 12, 12, 0.4);
+    text-align: center;
 }
 
-#memory-message{
+.time-box span {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(186, 12, 12, 0.5);
+}
 
-    width:100%;
+.time-box small {
+    color: #e8c77a;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
 
-    margin:10px 0;
+/* CUADRO DE ADVERTENCIA VESTIMENTA RESERVADA */
+.alert-box {
+    margin-top: 15px;
+    background: rgba(186, 12, 12, 0.2);
+    border-left: 4px solid #ba0c0c;
+    padding: 12px 15px;
+    border-radius: 4px;
+}
 
-    padding:12px;
+.reserved-colors {
+    color: #ff4d4d;
+    font-weight: bold;
+    text-decoration: underline;
+}
 
-    border:none;
-    border-radius:12px;
+/* REGALOS CONTENEDOR */
+.gifts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+}
 
-    outline:none;
+.gift-option {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+}
 
-    background:rgba(255,255,255,.95);
+.gift-icon {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
 
-    resize:none;
+.gift-option h4 {
+    color: #e8c77a;
+    margin-bottom: 5px;
+}
 
-    min-height:140px;
+.gift-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.gift-link {
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    transition: 0.2s;
+}
+
+.amazon { background: #ff9900; color: #111; }
+.liverpool { background: #e0077a; }
+.gift-link:hover { transform: scale(1.05); opacity: 0.9; }
+
+/* BOTONES MAGICOS */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.magic-link {
+    display: inline-block;
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    text-decoration: none;
+    background: linear-gradient(45deg, #ba0c0c, #ef233c);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(186, 12, 12, 0.4);
+}
+
+.magic-link.secondary {
+    background: transparent;
+    border: 2px solid #e8c77a;
+    color: #e8c77a;
+    box-shadow: none;
+}
+
+.magic-link:hover {
+    transform: scale(1.05);
+}
+
+.text-center { text-align: center; }
+.location-text { color: #dddddd; font-size: 15px; line-height: 1.6;}
+
+/* MODALES */
+#form-modal, #message-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 200;
+}
+
+#form-modal.active, #message-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.form-box {
+    background: #1c0505;
+    border: 2px solid #ba0c0c;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(186,12,12,0.4);
+}
+
+.form-box h3 {
+    color: #e8c77a;
+    margin-bottom: 20px;
+    font-family: 'Cinzel', serif;
+}
+
+.form-box input, .form-box textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(232, 199, 122, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+}
+
+.form-box button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#send, #send-message {
+    background: #ba0c0c;
+    color: white;
+}
+
+#close, #close-message {
+    background: transparent;
+    color: #ccc;
 }
