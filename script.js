@@ -20,7 +20,8 @@ const sendBtn = document.getElementById("send");
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
-
+const MESSAGE_API_URL =
+"https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1ksgkS7PrT2-KQ9D7gxcXUt3YdKxFs6GTf-aLqRhXhU5yHVRlwQWip/exec";
 /* =========================
    ENTRADA
 ========================= */
@@ -381,5 +382,105 @@ setInterval(
     updateCountdown,
     1000
 );
+
+});
+///////////
+
+const messageModal =
+document.getElementById("message-modal");
+
+const openMessageBtn =
+document.getElementById("open-message");
+
+const closeMessageBtn =
+document.getElementById("close-message");
+
+const sendMessageBtn =
+document.getElementById("send-message");
+
+const messageStatus =
+document.getElementById("message-status");
+
+openMessageBtn.addEventListener("click", () => {
+
+    messageModal.classList.add("active");
+
+});
+
+closeMessageBtn.addEventListener("click", () => {
+
+    messageModal.classList.remove("active");
+
+    messageStatus.innerText = "";
+
+});
+
+sendMessageBtn.addEventListener("click", async (e) => {
+
+    const nombre =
+    document.getElementById("message-name")
+    .value.trim();
+
+    const mensaje =
+    document.getElementById("memory-message")
+    .value.trim();
+
+    if(!nombre || !mensaje){
+
+        messageStatus.innerText =
+        "Completa todos los datos ✨";
+
+        return;
+    }
+
+    messageStatus.innerText =
+    "Guardando magia...";
+
+    try{
+
+        await fetch(MESSAGE_API_URL,{
+
+            method:"POST",
+
+            mode:"no-cors",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                nombre,
+                mensaje
+            })
+
+        });
+
+        messageStatus.innerText =
+        "Tu recuerdo quedó grabado ✨";
+
+        smokeEffect(
+            e.clientX || window.innerWidth/2,
+            e.clientY || window.innerHeight/2
+        );
+
+        setTimeout(() => {
+
+            document.getElementById("message-name").value = "";
+            document.getElementById("memory-message").value = "";
+
+            messageModal.classList.remove("active");
+
+            messageStatus.innerText = "";
+
+        },2000);
+
+    }catch(error){
+
+        messageStatus.innerText =
+        "Error al guardar";
+
+        console.error(error);
+
+    }
 
 });
