@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,23 +54,25 @@
 <main class="scene hidden">
 
     <!-- FONDO -->
-<div class="forest">
+    <div class="forest">
 
-    <div class="dragon-scene">
+        <div class="dragon-scene">
 
-    <img
-        src="img/dragon-patronus.png"
-        class="dragon-img"
-        alt="Dragon Patronus">
+            <img
+                src="img/dragon-patronus.png"
+                class="dragon-img"
+                alt="Dragon Patronus">
 
-    <div class="dragon-fog"></div>
+            <div class="dragon-fog"></div>
 
-    <div class="dragon-sparkles"></div>
+            <div class="dragon-sparkles"></div>
 
-</div>
-       <div class="forest-overlay"></div>
+        </div>
 
-</div>
+        <div class="forest-overlay"></div>
+
+    </div>
+
     <!-- CAPAS -->
     <div id="lights"></div>
     <div id="fairies"></div>
@@ -103,6 +106,74 @@
             Confirmar asistencia ✨
         </button>
 
+        <!-- CUENTA REGRESIVA -->
+        <section class="event-card">
+
+            <h3>⏳ Cuenta Regresiva</h3>
+
+            <div class="countdown">
+
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <small>Días</small>
+                </div>
+
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <small>Horas</small>
+                </div>
+
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <small>Minutos</small>
+                </div>
+
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <small>Segundos</small>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- UBICACIÓN -->
+        <section class="event-card">
+
+            <h3>📍 Ubicación</h3>
+
+            <p class="location-text">
+                Toluca, Estado de México
+            </p>
+
+            <!-- Reemplaza el enlace por tu ubicación real -->
+            <a
+                href="https://maps.google.com"
+                target="_blank"
+                class="magic-link">
+                Abrir Google Maps
+            </a>
+
+        </section>
+
+        <!-- MENSAJE PARA KARANI -->
+        <section class="event-card">
+
+            <h3>💌 Mensaje para Karani</h3>
+
+            <p class="location-text">
+                Déjale un recuerdo o una felicitación especial.
+            </p>
+
+            <a
+                href="https://keep.google.com"
+                target="_blank"
+                class="magic-link">
+                Escribir mensaje ✨
+            </a>
+
+        </section>
+
     </section>
 
 </main>
@@ -117,15 +188,13 @@
         <input
             type="text"
             id="nombre"
-            placeholder="Tu nombre"
-        >
+            placeholder="Tu nombre">
 
         <input
             type="number"
             id="personas"
             placeholder="¿Cuántas personas?"
-            min="1"
-        >
+            min="1">
 
         <button id="send">
             Enviar ✨
@@ -150,3 +219,4 @@
 
 </body>
 </html>
+```
