@@ -33,10 +33,47 @@ const MESSAGE_API_URL = "https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1k
 ========================= */
 if (enterBtn) {
     enterBtn.addEventListener("click", () => {
-        // Activa el portal de transición oscura
-        portal?.classList.add("active");
+        const explosionContainer = document.getElementById("explosion-container");
+        const introContent = document.querySelector(".intro-content");
+        
+        if (introContent) introContent.style.opacity = "0";
 
-        // Reproducción de música con Fade-In gradual
+        const particleTypes = ["⚙️", "✉️", "✨", "🕰️", "📜", "⚙️"]; 
+        const totalParticles = 75; 
+
+        for (let i = 0; i < totalParticles; i++) {
+            const particle = document.createElement("div");
+            particle.className = "particle";
+            particle.innerText = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+
+            const angle = Math.random() * Math.PI * 2;
+            // Distancia ligeramente más corta para que se concentre el efecto flotante
+            const velocity = 120 + Math.random() * 280; 
+            const x = Math.cos(angle) * velocity + "px";
+            const y = Math.sin(angle) * velocity + "px";
+            
+            // DURACIÓN EXTENDIDA: Entre 2.5 y 4 segundos para el efecto Slow-Motion
+            const duration = 2.5 + Math.random() * 1.5 + "s";
+            const size = 16 + Math.random() * 26 + "px";
+            // Rotación más sutil y elegante durante la flotación
+            const rotate = (Math.random() - 0.5) * 360 + "deg"; 
+            const scaleEnd = 0.7 + Math.random() * 0.8;
+
+            particle.style.setProperty("--x", x);
+            particle.style.setProperty("--y", y);
+            particle.style.setProperty("--duration", duration);
+            particle.style.setProperty("--size", size);
+            particle.style.setProperty("--rotate", rotate);
+            particle.style.setProperty("--scale-end", scaleEnd);
+
+            explosionContainer?.appendChild(particle);
+        }
+
+        // El portal se activa más tarde (a los 1.5 segundos) para apreciar la cámara lenta
+        setTimeout(() => {
+            portal?.classList.add("active");
+        }, 1500);
+
         if (music) {
             music.volume = 0;
             music.play().catch(() => {});
@@ -52,11 +89,11 @@ if (enterBtn) {
             }, 150);
         }
 
-        // Intercambio de pantallas sincronizado con el parpadeo del video
+        // La escena principal aparece cuando los objetos casi se desvanecen por completo
         setTimeout(() => {
             if (intro) intro.style.display = "none";
             scene?.classList.remove("hidden");
-        }, 800); // Se muestra justo en el clímax de la transición oscura
+        }, 2400); 
     });
 }
 

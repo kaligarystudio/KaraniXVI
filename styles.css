@@ -1,5 +1,7 @@
-/* RESET GENERAL */
-*{
+/* ==========================================================================
+   1. RESET GENERAL Y TIPOGRAFÍA
+   ========================================================================== */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,103 +10,265 @@
 body {
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: #0b0202; /* Negro profundo con matiz carmesí */
+    background-color: #0b0202; /* Negro con matiz carmesí de fondo */
     font-family: 'Playfair Display', serif;
     color: #f5f5f5;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* PALETA INTRO (MANTENIDA CON AJUSTES RECIENTES) */
+/* ==========================================================================
+   2. INTRO DE REVELACIÓN (ESTILO SOBRE EXPLOSIVO)
+   ========================================================================== */
 #intro {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at center, #3a0505 0%, #000000 100%);
+    background: radial-gradient(circle at center, #210303 0%, #000000 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    perspective: 1000px; /* Permite efectos 3D en las partículas */
+    overflow: hidden;
 }
 
 .mist {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle, rgba(218, 8, 8, 0.08), transparent 70%);
-    animation: fog 8s infinite alternate;
+    background: radial-gradient(circle, rgba(218, 8, 8, 0.12), transparent 65%);
+    animation: fog 6s infinite alternate ease-in-out;
 }
 
 @keyframes fog {
-    from { transform: scale(1); }
-    to { transform: scale(1.15); }
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(1.15); opacity: 0.9; }
 }
 
 .intro-content {
     text-align: center;
     width: 90%;
+    max-width: 450px;
     z-index: 2;
+    transition: opacity 0.4s ease;
 }
 
-#rabbit-container {
+.envelope-wrapper {
     position: relative;
-    display: inline-block;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#rabbit {
-    font-size: 85px;
-    animation: rabbitMove 1.5s infinite alternate;
-    filter: drop-shadow(0 0 15px rgba(232, 199, 122, 0.4));
+/* SELLO DE CERA REVESTIDO */
+.wax-seal {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #e8c77a 20%, #b8913b 70%, #805f1d 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), inset 0 -4px 10px rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: sealPulse 2.5s infinite ease-in-out;
 }
 
-.clock-intro {
+.wax-seal::before {
+    content: '';
     position: absolute;
-    right: -25px;
-    top: -10px;
-    font-size: 38px;
-    animation: clockFloat 3s infinite ease-in-out;
+    inset: -6px;
+    background: inherit;
+    border-radius: 42% 58% 45% 55% / 45% 45% 55% 55%;
+    z-index: -1;
+    transform: rotate(15deg);
 }
 
-@keyframes rabbitMove {
-    from { transform: translateX(-8px); }
-    to { transform: translateX(8px); }
+.seal-inner {
+    width: 84px;
+    height: 84px;
+    border: 2px dashed rgba(128, 95, 29, 0.5);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-@keyframes clockFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+.seal-icon { font-size: 26px; }
+.seal-initials { font-family: 'Cinzel', serif; font-size: 32px; font-weight: 700; color: #4a3407; }
+.seal-glow { position: absolute; inset: -20px; background: radial-gradient(circle, rgba(232, 199, 122, 0.25) 0%, transparent 70%); z-index: -2; }
+
+@keyframes sealPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.intro-title { margin-top: 15px; font-size: clamp(28px, 5vw, 44px); font-family: 'Cinzel', serif; color: #e8c77a; text-shadow: 0 0 15px rgba(186, 12, 12, 0.7); }
+.intro-text { margin-top: 12px; color: #b3b3b3; font-size: 16px; font-style: italic; }
+
+/* CONTENEDOR Y PARTÍCULAS VOLADORAS */
+#explosion-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.particle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: var(--size);
+    user-select: none;
+    will-change: transform, opacity;
+    animation: flyOut var(--duration) forwards cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+
+@keyframes flyOut {
+    0% {
+        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.4);
+        opacity: 0;
+    }
+    5% {
+        opacity: 1; /* Aparecen rápido en el impacto inicial */
+    }
+    85% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate)) scale(var(--scale-end));
+        opacity: 0;
+    }
+}
+
+/* ENVOLTURA DEL SELLO */
+.envelope-wrapper {
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SELLO DE CERA REVESTIDO (EL BOTÓN DE ENTRADA) */
+.wax-seal {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #e8c77a 20%, #b8913b 70%, #805f1d 100%);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.7),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.6),
+        inset 0 4px 10px rgba(255, 255, 255, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: sealPulse 2.5s infinite ease-in-out;
+}
+
+/* Borde irregular orgánico simulando cera real */
+.wax-seal::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    background: inherit;
+    border-radius: 42% 58% 45% 55% / 45% 45% 55% 55%;
+    z-index: -1;
+    opacity: 0.85;
+    transform: rotate(15deg);
+}
+
+.seal-inner {
+    width: 84px;
+    height: 84px;
+    border: 2px dashed rgba(128, 95, 29, 0.5);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(184, 145, 59, 0.15);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+}
+
+.seal-icon {
+    font-size: 26px;
+    margin-bottom: -2px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    animation: catFloat 3s infinite ease-in-out;
+}
+
+.seal-initials {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #4a3407;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+    line-height: 1;
+}
+
+/* EFECTO DE DESTELLO RADIAL DETRÁS DEL SELLO */
+.seal-glow {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(232, 199, 122, 0.3) 0%, transparent 70%);
+    z-index: -2;
+    pointer-events: none;
+    animation: glowRotate 4s infinite linear;
+}
+
+/* ANIMACIONES */
+@keyframes sealPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7); }
+    50% { transform: scale(1.05); box-shadow: 0 12px 35px rgba(232, 199, 122, 0.3); }
+}
+
+@keyframes catFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes glowRotate {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1.1); }
 }
 
 .intro-title {
-    margin-top: 25px;
-    font-size: clamp(30px, 5vw, 52px);
+    margin-top: 15px;
+    font-size: clamp(28px, 5vw, 44px);
     font-family: 'Cinzel', serif;
     color: #e8c77a;
-    text-shadow: 0 0 12px rgba(186, 12, 12, 0.6);
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(186, 12, 12, 0.7);
 }
 
 .intro-text {
-    margin-top: 14px;
-    color: #cccccc;
-    font-size: 18px;
-}
-
-#enter-btn {
-    margin-top: 35px;
-    padding: 14px 34px;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    background: linear-gradient(45deg, #ba0c0c, #ef233c);
-    color: #ffffff;
-    font-weight: bold;
+    margin-top: 12px;
+    color: #b3b3b3;
     font-size: 16px;
-    box-shadow: 0 0 15px rgba(186, 12, 12, 0.5);
-    transition: 0.3s ease;
+    font-style: italic;
+    letter-spacing: 0.5px;
 }
 
-#enter-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 25px rgba(239, 35, 60, 0.8);
+/* Animación de ruptura al hacer clic */
+.wax-seal.shatter {
+    animation: shatterEffect 0.6s forwards ease-in-out;
+    pointer-events: none;
 }
 
-/* EFECTO TRANSICIÓN PORTAL (VIDEO FLUIDO) */
+@keyframes shatterEffect {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.2); filter: brightness(2) drop-shadow(0 0 30px #e8c77a); }
+    100% { transform: scale(0.8); opacity: 0; filter: blur(5px); }
+}
+
+/* ==========================================================================
+   3. EFECTO PORTAL PARA TRANSICIÓN FLUIDA
+   ========================================================================== */
 #portal {
     position: fixed;
     inset: 0;
@@ -124,7 +288,9 @@ body {
     100% { opacity: 0; transform: scale(1); }
 }
 
-/* ESCENA PRINCIPAL */
+/* ==========================================================================
+   4. ESCENA PRINCIPAL (CONTENIDO DE LA INVITACIÓN)
+   ========================================================================== */
 .scene {
     min-height: 100vh;
     width: 100%;
@@ -190,7 +356,9 @@ body {
     color: #dddddd;
 }
 
-/* TARJETAS DE CONTENIDO ELEGANTE (ROJO/NEGRO) */
+/* ==========================================================================
+   5. TARJETAS DE CONTENIDO (ESTILO REINO CARMESÍ)
+   ========================================================================== */
 .event-card {
     background: rgba(15, 3, 3, 0.75);
     border: 1px solid rgba(186, 12, 12, 0.3);
@@ -200,7 +368,7 @@ body {
     max-width: 550px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
-    transition: transform 0.3s;
+    transition: transform 0.3s, border-color 0.3s;
 }
 
 .event-card:hover {
@@ -218,7 +386,14 @@ body {
     padding-bottom: 10px;
 }
 
-/* PROGRAMA LISTA */
+.location-text {
+    color: #dddddd;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* SECCIÓN: PROGRAMA DEL EVENTO */
 .program-list {
     list-style: none;
 }
@@ -226,8 +401,9 @@ body {
 .program-list li {
     display: flex;
     justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px dashed rgba(255,255,255,0.08);
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
     font-size: 16px;
 }
 
@@ -239,14 +415,16 @@ body {
     color: #ef233c;
     font-weight: bold;
     font-family: 'Cinzel', serif;
+    flex-shrink: 0;
 }
 
 .activity {
     color: #f5f5f5;
     text-align: right;
+    padding-left: 10px;
 }
 
-/* CUENTA REGRESIVA */
+/* SECCIÓN: CUENTA REGRESIVA */
 .countdown {
     display: flex;
     justify-content: center;
@@ -278,13 +456,14 @@ body {
     letter-spacing: 1px;
 }
 
-/* CUADRO DE ADVERTENCIA VESTIMENTA RESERVADA */
+/* SECCIÓN: CÓDIGO DE VESTIMENTA RESERVADA */
 .alert-box {
-    margin-top: 15px;
-    background: rgba(186, 12, 12, 0.2);
+    background: rgba(186, 12, 12, 0.18);
     border-left: 4px solid #ba0c0c;
-    padding: 12px 15px;
+    padding: 15px;
     border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .reserved-colors {
@@ -293,7 +472,7 @@ body {
     text-decoration: underline;
 }
 
-/* REGALOS CONTENEDOR */
+/* SECCIÓN: OPCIONES DE REGALO */
 .gifts-container {
     display: flex;
     flex-direction: column;
@@ -302,56 +481,72 @@ body {
 }
 
 .gift-option {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     text-align: center;
 }
 
 .gift-icon {
-    font-size: 30px;
+    font-size: 34px;
     margin-bottom: 8px;
 }
 
 .gift-option h4 {
     color: #e8c77a;
-    margin-bottom: 5px;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.gift-option p {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.4;
 }
 
 .gift-buttons {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
-    margin-top: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
 }
 
 .gift-link {
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 10px 20px;
+    border-radius: 25px;
     text-decoration: none;
     font-size: 14px;
     font-weight: bold;
-    color: white;
-    transition: 0.2s;
+    color: #ffffff;
+    transition: transform 0.2s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .amazon { background: #ff9900; color: #111; }
 .liverpool { background: #e0077a; }
-.gift-link:hover { transform: scale(1.05); opacity: 0.9; }
 
-/* BOTONES MAGICOS */
+.gift-link:hover {
+    transform: scale(1.04);
+    opacity: 0.95;
+}
+
+/* BOTONES PRINCIPALES DE ACCIÓN ACCIONABLE */
 .action-buttons {
     display: flex;
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .magic-link {
     display: inline-block;
-    padding: 12px 25px;
+    padding: 14px 28px;
     border: none;
     cursor: pointer;
     border-radius: 30px;
@@ -360,7 +555,7 @@ body {
     color: white;
     font-weight: bold;
     font-size: 16px;
-    transition: 0.3s;
+    transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 15px rgba(186, 12, 12, 0.4);
 }
 
@@ -376,20 +571,22 @@ body {
 }
 
 .text-center { text-align: center; }
-.location-text { color: #dddddd; font-size: 15px; line-height: 1.6;}
 
-/* MODALES */
+/* ==========================================================================
+   6. VENTANAS EMERGENTES (MODALES INTEGRADOS)
+   ========================================================================== */
 #form-modal, #message-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0, 0, 0, 0.88);
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: 0.3s;
+    transition: opacity 0.3s ease;
     z-index: 200;
+    padding: 15px;
 }
 
 #form-modal.active, #message-modal.active {
@@ -400,29 +597,43 @@ body {
 .form-box {
     background: #1c0505;
     border: 2px solid #ba0c0c;
-    padding: 30px;
+    padding: 30px 25px;
     border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 420px;
     text-align: center;
-    box-shadow: 0 0 30px rgba(186,12,12,0.4);
+    box-shadow: 0 0 30px rgba(186, 12, 12, 0.4);
+    animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 .form-box h3 {
     color: #e8c77a;
     margin-bottom: 20px;
     font-family: 'Cinzel', serif;
+    font-size: 22px;
 }
 
 .form-box input, .form-box textarea {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    background: rgba(0,0,0,0.5);
+    padding: 12px 15px;
+    margin-bottom: 16px;
+    background: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(232, 199, 122, 0.3);
     border-radius: 8px;
-    color: white;
+    color: #ffffff;
     font-family: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.form-box input:focus, .form-box textarea:focus {
+    outline: none;
+    border-color: #ef233c;
 }
 
 .form-box button {
@@ -433,6 +644,8 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 15px;
+    transition: background 0.2s, transform 0.1s;
 }
 
 #send, #send-message {
@@ -440,7 +653,23 @@ body {
     color: white;
 }
 
+#send:hover, #send-message:hover {
+    background: #ef233c;
+}
+
 #close, #close-message {
     background: transparent;
-    color: #ccc;
+    color: #b3b3b3;
+    margin-top: 10px;
+}
+
+#close:hover, #close-message:hover {
+    color: #ffffff;
+}
+
+#status, #message-status {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #e8c77a;
 }
