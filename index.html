@@ -155,23 +155,36 @@
 
         </section>
 
-        <!-- MENSAJE PARA KARANI -->
-        <section class="event-card">
+<!-- MODAL LIBRO DE RECUERDOS -->
+<div id="message-modal">
 
-            <h3>💌 Mensaje para Karani</h3>
+    <div class="form-box">
 
-            <p class="location-text">
-                Déjale un recuerdo o una felicitación especial.
-            </p>
+        <h3>📖 Libro de Recuerdos</h3>
 
-            <a
-                href="https://keep.google.com"
-                target="_blank"
-                class="magic-link">
-                Escribir mensaje ✨
-            </a>
+        <input
+            type="text"
+            id="message-name"
+            placeholder="Tu nombre">
 
-        </section>
+        <textarea
+            id="memory-message"
+            placeholder="Escribe tu mensaje para Karani..."
+            rows="5"></textarea>
+
+        <button id="send-message">
+            Guardar en el bosque ✨
+        </button>
+
+        <button id="close-message">
+            Cancelar
+        </button>
+
+        <p id="message-status"></p>
+
+    </div>
+
+</div>
 
     </section>
 
