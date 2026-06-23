@@ -228,22 +228,129 @@ closeBtn.addEventListener("click", () => {
 });
 
 /* =========================
-   MODAL MENSAJES
+   MODAL LIBRO DE RECUERDOS
 ========================= */
 
-openMessageBtn.addEventListener("click", () => {
+const messageModal =
+document.getElementById("message-modal");
 
-    messageModal.classList.add("active");
+const openMessageBtn =
+document.getElementById("open-message");
 
-});
+const closeMessageBtn =
+document.getElementById("close-message");
 
-closeMessageBtn.addEventListener("click", () => {
+const sendMessageBtn =
+document.getElementById("send-message");
 
-    messageModal.classList.remove("active");
+const messageStatus =
+document.getElementById("message-status");
 
-    document.getElementById("message-status").innerText = "";
+// Abrir modal
 
-});
+if(openMessageBtn){
+
+    openMessageBtn.addEventListener("click", () => {
+
+        messageModal.classList.add("active");
+
+    });
+
+}
+
+// Cerrar modal
+
+if(closeMessageBtn){
+
+    closeMessageBtn.addEventListener("click", () => {
+
+        messageModal.classList.remove("active");
+
+        if(messageStatus){
+            messageStatus.innerText = "";
+        }
+
+    });
+
+}
+
+// Enviar mensaje
+
+if(sendMessageBtn){
+
+    sendMessageBtn.addEventListener("click", async (e) => {
+
+        const nombre =
+        document.getElementById("message-name")
+        .value
+        .trim();
+
+        const mensaje =
+        document.getElementById("memory-message")
+        .value
+        .trim();
+
+        if(!nombre || !mensaje){
+
+            messageStatus.innerText =
+            "Completa todos los datos ✨";
+
+            return;
+        }
+
+        messageStatus.innerText =
+        "Guardando magia...";
+
+        try{
+
+            await fetch(MESSAGE_API_URL,{
+
+                method:"POST",
+
+                mode:"no-cors",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body: JSON.stringify({
+                    nombre,
+                    mensaje
+                })
+
+            });
+
+            messageStatus.innerText =
+            "Tu recuerdo quedó grabado ✨";
+
+            smokeEffect(
+                e.clientX || window.innerWidth / 2,
+                e.clientY || window.innerHeight / 2
+            );
+
+            setTimeout(() => {
+
+                document.getElementById("message-name").value = "";
+                document.getElementById("memory-message").value = "";
+
+                messageModal.classList.remove("active");
+
+                messageStatus.innerText = "";
+
+            }, 2000);
+
+        }catch(error){
+
+            messageStatus.innerText =
+            "Error al guardar";
+
+            console.error(error);
+
+        }
+
+    });
+
+}
 
 /* =========================
    HUMO
@@ -357,80 +464,6 @@ sendBtn.addEventListener("click", async (e) => {
 
 });
 
-/* =========================
-   ENVÍO MENSAJES
-========================= */
-
-sendMessageBtn.addEventListener("click", async (e) => {
-
-    const nombre =
-    document.getElementById("message-name").value.trim();
-
-    const mensaje =
-    document.getElementById("memory-message").value.trim();
-
-    const status =
-    document.getElementById("message-status");
-
-    if (!nombre || !mensaje) {
-
-        status.innerText =
-        "Completa todos los datos ✨";
-
-        return;
-    }
-
-    status.innerText =
-    "Guardando magia...";
-
-    try {
-
-        await fetch(MESSAGE_API_URL, {
-
-            method: "POST",
-
-            mode: "no-cors",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                nombre,
-                mensaje
-            })
-
-        });
-
-        status.innerText =
-        "Tu recuerdo quedó grabado ✨";
-
-        smokeEffect(
-            e.clientX || window.innerWidth / 2,
-            e.clientY || window.innerHeight / 2
-        );
-
-        setTimeout(() => {
-
-            messageModal.classList.remove("active");
-
-            status.innerText = "";
-
-            document.getElementById("message-name").value = "";
-            document.getElementById("memory-message").value = "";
-
-        }, 2000);
-
-    } catch (error) {
-
-        status.innerText =
-        "Error al guardar";
-
-        console.error(error);
-
-    }
-
-});
 
 /* =========================
    CUENTA REGRESIVA
