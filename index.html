@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karani · Dulces 16 ✨</title>
-    <!-- Tipografías elegantes para el estilo místico y de gala -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- INTRO REVELADORA (ESTILO SOBRE EXPLOSIVO) -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="fondo-misterioso.mp4" type="video/mp4">
+    </video>
+    <div class="forest-overlay"></div>
+
     <section id="intro">
         <div class="mist"></div>
         
-        <!-- Contenedor donde estallarán los engranajes y cartas -->
         <div id="explosion-container"></div>
 
         <div class="intro-content">
@@ -31,14 +33,11 @@
             <p class="intro-text">Toca el sello real para abrir el tiempo y el destino.</p>
         </div>
     </section>
-    <!-- EFECTO PORTAL PARA LA TRANSICIÓN DE CORTE DE VIDEO -->
+
     <div id="portal"></div>
 
-    <!-- CONTENIDO DE LA ESCENA PRINCIPAL -->
     <main class="scene hidden">
-        <div class="forest-overlay"></div>
 
-        <!-- SECCIÓN DE BIENVENIDA -->
         <header class="hero-section fade-in-up">
             <h1 class="main-title">Karani</h1>
             <p class="subtitle">Mis Dulces 16</p>
@@ -47,7 +46,6 @@
             </p>
         </header>
 
-        <!-- CUENTA REGRESIVA RE-SINCRONIZADA -->
         <section class="countdown-section fade-in-up delay-1">
             <div class="countdown">
                 <div class="time-box"><span id="days">00</span><small>Días</small></div>
@@ -57,7 +55,6 @@
             </div>
         </section>
 
-        <!-- PROGRAMA DEL EVENTO -->
         <section class="event-card fade-in-up delay-2">
             <h3>✨ Programa del Evento</h3>
             <ul class="program-list">
@@ -69,7 +66,6 @@
             </ul>
         </section>
 
-        <!-- UBICACIÓN (REINTEGRADA Y CORREGIDA) -->
         <section class="event-card fade-in-up delay-2">
             <h3>📍 Lugar de la Celebración</h3>
             <p class="location-text"><strong>Salón de Eventos "El Reino Mágico"</strong></p>
@@ -77,7 +73,6 @@
                 Av. Principal de la Magia #16, Ciudad de los Sueños.
             </p>
             
-            <!-- Botón interactivo para navegación -->
             <div class="gift-buttons" style="margin-top: 20px;">
                 <a href="https://maps.google.com" target="_blank" class="gift-link" style="background: #ba0c0c; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
                     Cómo llegar con Google Maps 🗺️
@@ -85,7 +80,6 @@
             </div>
         </section>
 
-        <!-- DRESS CODE (CÓDIGO DE VESTIMENTA RESERVADO) -->
         <section class="event-card fade-in-up delay-2">
             <h3>🌹 Código de Vestimenta</h3>
             <p class="location-text" style="text-align: center;"><strong>Semiformal elegante</strong></p>
@@ -94,7 +88,6 @@
             </div>
         </section>
 
-        <!-- OPCIONES DE REGALO (LLUVIA DE SOBRES / MESA) -->
         <section class="event-card fade-in-up delay-3">
             <h3>🎁 Opciones de Regalo</h3>
             <p class="location-text">Tu presencia es mi mayor regalo, pero si deseas obsequiarme algo, estas son mis opciones:</p>
@@ -116,7 +109,6 @@
             </div>
         </section>
 
-        <!-- RESERVACIÓN Y LIBRO DE RECUERDOS (INTERACTIVOS) -->
         <section class="event-card fade-in-up delay-3 text-center">
             <h3>Confirmación & Recuerdos</h3>
             <p class="location-text">Por favor confirma tu asistencia o déjale un mágico deseo en nuestro bosque digital.</p>
@@ -129,7 +121,6 @@
 
     </main>
 
-    <!-- MODAL CONFIRMACIÓN DE ASISTENCIA -->
     <div id="form-modal">
         <div class="form-box">
             <h3>Confirmar asistencia</h3>
@@ -141,7 +132,6 @@
         </div>
     </div>
 
-    <!-- MODAL LIBRO DE RECUERDOS -->
     <div id="message-modal">
         <div class="form-box">
             <h3>📖 Libro de Recuerdos</h3>
@@ -153,7 +143,6 @@
         </div>
     </div>
 
-    <!-- AUDIO DE FONDO -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
