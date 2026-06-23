@@ -18,10 +18,28 @@ const modal = document.getElementById("form-modal");
 const closeBtn = document.getElementById("close");
 const sendBtn = document.getElementById("send");
 
+/* LIBRO DE RECUERDOS */
+
+const messageModal =
+document.getElementById("message-modal");
+
+const openMessageBtn =
+document.getElementById("open-message");
+
+const closeMessageBtn =
+document.getElementById("close-message");
+
+const sendMessageBtn =
+document.getElementById("send-message");
+
+/* URLs */
+
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
+
 const MESSAGE_API_URL =
 "https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1ksgkS7PrT2-KQ9D7gxcXUt3YdKxFs6GTf-aLqRhXhU5yHVRlwQWip/exec";
+
 /* =========================
    ENTRADA
 ========================= */
@@ -30,11 +48,11 @@ enterBtn.addEventListener("click", () => {
 
     portal.classList.add("active");
 
-    if(music){
+    if (music) {
 
         music.volume = 0;
 
-        music.play().catch(()=>{});
+        music.play().catch(() => {});
 
         let volume = 0;
 
@@ -44,7 +62,7 @@ enterBtn.addEventListener("click", () => {
 
             music.volume = volume;
 
-            if(volume >= 0.5){
+            if (volume >= 0.5) {
                 clearInterval(fade);
             }
 
@@ -70,7 +88,7 @@ enterBtn.addEventListener("click", () => {
    LUCES
 ========================= */
 
-function startLights(){
+function startLights() {
 
     const container =
     document.getElementById("lights");
@@ -101,7 +119,7 @@ function startLights(){
    HADAS
 ========================= */
 
-function startFairies(){
+function startFairies() {
 
     const container =
     document.getElementById("fairies");
@@ -134,7 +152,7 @@ function startFairies(){
    RELOJES
 ========================= */
 
-function startClocks(){
+function startClocks() {
 
     const container =
     document.getElementById("clocks");
@@ -167,7 +185,7 @@ function startClocks(){
    DRAGONES
 ========================= */
 
-function startDragons(){
+function startDragons() {
 
     const container =
     document.getElementById("dragons");
@@ -194,7 +212,7 @@ function startDragons(){
 }
 
 /* =========================
-   MODAL
+   MODAL ASISTENCIA
 ========================= */
 
 openBtn.addEventListener("click", () => {
@@ -210,12 +228,30 @@ closeBtn.addEventListener("click", () => {
 });
 
 /* =========================
+   MODAL MENSAJES
+========================= */
+
+openMessageBtn.addEventListener("click", () => {
+
+    messageModal.classList.add("active");
+
+});
+
+closeMessageBtn.addEventListener("click", () => {
+
+    messageModal.classList.remove("active");
+
+    document.getElementById("message-status").innerText = "";
+
+});
+
+/* =========================
    HUMO
 ========================= */
 
-function smokeEffect(x, y){
+function smokeEffect(x, y) {
 
-    for(let i = 0; i < 25; i++){
+    for (let i = 0; i < 25; i++) {
 
         const smoke =
         document.createElement("div");
@@ -229,20 +265,17 @@ function smokeEffect(x, y){
 
         smoke.animate([
             {
-                transform:"translate(0,0) scale(1)",
-                opacity:1
+                transform: "translate(0,0) scale(1)",
+                opacity: 1
             },
             {
                 transform:
-                `translate(
-                ${Math.random()*200-100}px,
-                -200px
-                ) scale(3)`,
+                `translate(${Math.random()*200-100}px,-200px) scale(3)`,
 
-                opacity:0
+                opacity: 0
             }
-        ],{
-            duration:1400
+        ], {
+            duration: 1400
         });
 
         setTimeout(() => {
@@ -252,25 +285,21 @@ function smokeEffect(x, y){
 }
 
 /* =========================
-   ENVÍO
+   ENVÍO ASISTENCIA
 ========================= */
 
 sendBtn.addEventListener("click", async (e) => {
 
     const nombre =
-    document.getElementById("nombre")
-    .value
-    .trim();
+    document.getElementById("nombre").value.trim();
 
     const personas =
-    document.getElementById("personas")
-    .value
-    .trim();
+    document.getElementById("personas").value.trim();
 
     const status =
     document.getElementById("status");
 
-    if(!nombre || !personas){
+    if (!nombre || !personas) {
 
         status.innerText =
         "Completa todos los datos ✨";
@@ -281,16 +310,16 @@ sendBtn.addEventListener("click", async (e) => {
     status.innerText =
     "Enviando magia...";
 
-    try{
+    try {
 
-        await fetch(API_URL,{
+        await fetch(API_URL, {
 
-            method:"POST",
+            method: "POST",
 
-            mode:"no-cors",
+            mode: "no-cors",
 
-            headers:{
-                "Content-Type":"application/json"
+            headers: {
+                "Content-Type": "application/json"
             },
 
             body: JSON.stringify({
@@ -318,12 +347,87 @@ sendBtn.addEventListener("click", async (e) => {
 
         }, 1800);
 
-    }catch(error){
+    } catch (error) {
 
         status.innerText =
         "Error al enviar";
 
         console.error(error);
+    }
+
+});
+
+/* =========================
+   ENVÍO MENSAJES
+========================= */
+
+sendMessageBtn.addEventListener("click", async (e) => {
+
+    const nombre =
+    document.getElementById("message-name").value.trim();
+
+    const mensaje =
+    document.getElementById("memory-message").value.trim();
+
+    const status =
+    document.getElementById("message-status");
+
+    if (!nombre || !mensaje) {
+
+        status.innerText =
+        "Completa todos los datos ✨";
+
+        return;
+    }
+
+    status.innerText =
+    "Guardando magia...";
+
+    try {
+
+        await fetch(MESSAGE_API_URL, {
+
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                nombre,
+                mensaje
+            })
+
+        });
+
+        status.innerText =
+        "Tu recuerdo quedó grabado ✨";
+
+        smokeEffect(
+            e.clientX || window.innerWidth / 2,
+            e.clientY || window.innerHeight / 2
+        );
+
+        setTimeout(() => {
+
+            messageModal.classList.remove("active");
+
+            status.innerText = "";
+
+            document.getElementById("message-name").value = "";
+            document.getElementById("memory-message").value = "";
+
+        }, 2000);
+
+    } catch (error) {
+
+        status.innerText =
+        "Error al guardar";
+
+        console.error(error);
+
     }
 
 });
@@ -335,152 +439,32 @@ sendBtn.addEventListener("click", async (e) => {
 const eventDate =
 new Date("August 8, 2026 19:00:00").getTime();
 
-function updateCountdown(){
+function updateCountdown() {
 
-    const now =
-    new Date().getTime();
+    const now = new Date().getTime();
 
-    const distance =
-    eventDate - now;
+    const distance = eventDate - now;
 
-    if(distance < 0){
-        return;
-    }
-
-    const days =
-    document.getElementById("days");
-
-    if(!days){
-        return;
-    }
+    if (distance < 0) return;
 
     document.getElementById("days").textContent =
     Math.floor(distance / (1000 * 60 * 60 * 24));
 
     document.getElementById("hours").textContent =
-    Math.floor(
-        (distance % (1000 * 60 * 60 * 24))
-        / (1000 * 60 * 60)
-    );
+    Math.floor((distance % (1000 * 60 * 60 * 24))
+    / (1000 * 60 * 60));
 
     document.getElementById("minutes").textContent =
-    Math.floor(
-        (distance % (1000 * 60 * 60))
-        / (1000 * 60)
-    );
+    Math.floor((distance % (1000 * 60 * 60))
+    / (1000 * 60));
 
     document.getElementById("seconds").textContent =
-    Math.floor(
-        (distance % (1000 * 60))
-        / 1000
-    );
+    Math.floor((distance % (1000 * 60))
+    / 1000);
 }
 
 updateCountdown();
 
-setInterval(
-    updateCountdown,
-    1000
-);
-
-});
-///////////
-
-const messageModal =
-document.getElementById("message-modal");
-
-const openMessageBtn =
-document.getElementById("open-message");
-
-const closeMessageBtn =
-document.getElementById("close-message");
-
-const sendMessageBtn =
-document.getElementById("send-message");
-
-const messageStatus =
-document.getElementById("message-status");
-
-openMessageBtn.addEventListener("click", () => {
-
-    messageModal.classList.add("active");
-
-});
-
-closeMessageBtn.addEventListener("click", () => {
-
-    messageModal.classList.remove("active");
-
-    messageStatus.innerText = "";
-
-});
-
-sendMessageBtn.addEventListener("click", async (e) => {
-
-    const nombre =
-    document.getElementById("message-name")
-    .value.trim();
-
-    const mensaje =
-    document.getElementById("memory-message")
-    .value.trim();
-
-    if(!nombre || !mensaje){
-
-        messageStatus.innerText =
-        "Completa todos los datos ✨";
-
-        return;
-    }
-
-    messageStatus.innerText =
-    "Guardando magia...";
-
-    try{
-
-        await fetch(MESSAGE_API_URL,{
-
-            method:"POST",
-
-            mode:"no-cors",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body: JSON.stringify({
-                nombre,
-                mensaje
-            })
-
-        });
-
-        messageStatus.innerText =
-        "Tu recuerdo quedó grabado ✨";
-
-        smokeEffect(
-            e.clientX || window.innerWidth/2,
-            e.clientY || window.innerHeight/2
-        );
-
-        setTimeout(() => {
-
-            document.getElementById("message-name").value = "";
-            document.getElementById("memory-message").value = "";
-
-            messageModal.classList.remove("active");
-
-            messageStatus.innerText = "";
-
-        },2000);
-
-    }catch(error){
-
-        messageStatus.innerText =
-        "Error al guardar";
-
-        console.error(error);
-
-    }
+setInterval(updateCountdown, 1000);
 
 });
