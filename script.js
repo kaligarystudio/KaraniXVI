@@ -326,4 +326,60 @@ sendBtn.addEventListener("click", async (e) => {
     }
 
 });
+
+/* =========================
+   CUENTA REGRESIVA
+========================= */
+
+const eventDate =
+new Date("August 8, 2026 19:00:00").getTime();
+
+function updateCountdown(){
+
+    const now =
+    new Date().getTime();
+
+    const distance =
+    eventDate - now;
+
+    if(distance < 0){
+        return;
+    }
+
+    const days =
+    document.getElementById("days");
+
+    if(!days){
+        return;
+    }
+
+    document.getElementById("days").textContent =
+    Math.floor(distance / (1000 * 60 * 60 * 24));
+
+    document.getElementById("hours").textContent =
+    Math.floor(
+        (distance % (1000 * 60 * 60 * 24))
+        / (1000 * 60 * 60)
+    );
+
+    document.getElementById("minutes").textContent =
+    Math.floor(
+        (distance % (1000 * 60 * 60))
+        / (1000 * 60)
+    );
+
+    document.getElementById("seconds").textContent =
+    Math.floor(
+        (distance % (1000 * 60))
+        / 1000
+    );
+}
+
+updateCountdown();
+
+setInterval(
+    updateCountdown,
+    1000
+);
+
 });
