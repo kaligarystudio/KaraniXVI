@@ -9,9 +9,14 @@
 </head>
 <body>
 
-    <video autoplay muted loop playsinline id="bg-video">
+    <video autoplay muted loop playsinline id="bg-video-intro">
         <source src="fondo-misterioso.mp4" type="video/mp4">
     </video>
+
+    <video muted loop playsinline id="bg-video-scene" class="video-hidden">
+        <source src="bosque-encantado.mp4" type="video/mp4">
+    </video>
+    
     <div class="forest-overlay"></div>
 
     <section id="intro">
@@ -74,7 +79,7 @@
             </p>
             
             <div class="gift-buttons" style="margin-top: 20px;">
-                <a href="https://maps.google.com" target="_blank" class="gift-link" style="background: #ba0c0c; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                <a href="https://maps.google.com" target="_blank" class="gift-link" style="background: #ba0c0c; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
                     Cómo llegar con Google Maps 🗺️
                 </a>
             </div>

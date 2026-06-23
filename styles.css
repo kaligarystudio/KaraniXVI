@@ -17,37 +17,39 @@ body {
 }
 
 /* ==========================================================================
-   VIDEO DE FONDO FIJO UNIVERSAL (INTRO + INVITACIÓN)
+   VIDEOS DE FONDO INDEPENDIENTES (CORREGIDO PARA EXPANDIR TOTALMENTE)
    ========================================================================== */
-#bg-video {
+#bg-video-intro, #bg-video-scene {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
+    top: 0;
+    left: 0;
+    width: 100vw;       /* Fuerza el ancho exacto de la pantalla visual */
+    height: 100vh;      /* Fuerza el alto exacto de la pantalla visual */
     z-index: -2; 
-    transform: translate(-50%, -50%);
-    object-fit: cover;
+    object-fit: cover;  /* Recorta y expande el video de forma cinematográfica sin deformarlo */
+    object-position: center; /* Mantiene el centro del video siempre visible */
+    transition: opacity 1s ease-in-out;
 }
 
-/* Capa oscura superpuesta universal para asegurar legibilidad */
-.forest-overlay {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(15, 2, 2, 0.82) 0%, rgba(0, 0, 0, 0.9) 100%);
-    z-index: -1; 
+/* Fix específico para navegadores móviles (iOS / Android) */
+@supports (-webkit-touch-callout: none) {
+    #bg-video-intro, #bg-video-scene {
+        height: -webkit-fill-available; /* Evita que la barra de direcciones de Safari/Chrome rompa el alto */
+    }
+}
+
+/* El segundo video (Bosque) inicia completamente invisible */
+.video-hidden {
+    opacity: 0;
     pointer-events: none;
 }
-
 /* ==========================================================================
    2. INTRO DE REVELACIÓN (ESTILO SOBRE EXPLOSIVO)
    ========================================================================== */
 #intro {
     position: fixed;
     inset: 0;
-    background: transparent; /* Permite ver el video desde el inicio */
+    background: transparent; /* Permite ver el video 1 desde el inicio */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +63,7 @@ body {
     inset: 0;
     background: radial-gradient(circle, rgba(218, 8, 8, 0.15), transparent 70%);
     animation: fog 6s infinite alternate ease-in-out;
-    pointer-events: none;
+    pointer-events: none; /* Evita bloquear clics */
 }
 
 @keyframes fog {
@@ -85,7 +87,7 @@ body {
     align-items: center;
 }
 
-/* SELLO DE CERA REALISTA */
+/* SELLO DE CERA INTERACTIVO REFORZADO */
 .wax-seal {
     position: relative;
     width: 110px;
@@ -98,6 +100,8 @@ body {
     justify-content: center;
     align-items: center;
     animation: sealPulse 2.5s infinite ease-in-out;
+    z-index: 10; /* Eleva el botón sobre cualquier capa flotante */
+    pointer-events: auto !important; /* Fuerza la recepción de clics */
 }
 
 .wax-seal::before {
@@ -137,7 +141,7 @@ body {
 #explosion-container {
     position: absolute;
     inset: 0;
-    pointer-events: none;
+    pointer-events: none; /* Permite que el clic pase a través del contenedor hacia el botón */
     z-index: 3;
 }
 
@@ -148,7 +152,7 @@ body {
     font-size: var(--size);
     user-select: none;
     will-change: transform, opacity;
-    /* Cubic-bezier de frenado extremo para simular Slow-Motion de video */
+    /* Cubic-bezier de frenado extremo para simular Slow-Motion de cine */
     animation: flyOut var(--duration) forwards cubic-bezier(0.05, 0.7, 0.1, 1);
 }
 
@@ -192,7 +196,7 @@ body {
 }
 
 /* ==========================================================================
-   4. ESCENA PRINCIPAL (TRANSPARENTE SOBRE EL VIDEO)
+   4. ESCENA PRINCIPAL (TRANSPARENTE SOBRE EL SEGUNDO VIDEO)
    ========================================================================== */
 .scene {
     min-height: 100vh;

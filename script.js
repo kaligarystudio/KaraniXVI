@@ -30,17 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const MESSAGE_API_URL = "https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1ksgkS7PrT2-KQ9D7gxcXUt3YdKxFs6GTf-aLqRhXhU5yHVRlwQWip/exec";
 
     /* ==========================================================================
-       3. LÓGICA DE LA INTRO Y EXPLOSIÓN EN CÁMARA LENTA
+       3. LÓGICA DE LA INTRO Y TRANSICIÓN DE VIDEOS EN CÁMARA LENTA
        ========================================================================== */
     if (enterBtn) {
         enterBtn.addEventListener("click", () => {
             const explosionContainer = document.getElementById("explosion-container");
             const introContent = document.querySelector(".intro-content");
             
-            // Ocultar suavemente el texto del sobre
+            // Referencias a los dos videos de fondo independientes
+            const videoIntro = document.getElementById("bg-video-intro");
+            const videoScene = document.getElementById("bg-video-scene");
+            
+            // Ocultar suavemente el texto del sobre mientras estalla
             if (introContent) introContent.style.opacity = "0";
 
-            // Configuración del estallido cinemático
+            // CONFIGURACIÓN DEL ESTALLIDO EN CÁMARA LENTA
             const particleTypes = ["⚙️", "✉️", "✨", "🕰️", "📜", "⚙️"]; 
             const totalParticles = 75; 
 
@@ -55,13 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const x = Math.cos(angle) * velocity + "px";
                 const y = Math.sin(angle) * velocity + "px";
                 
-                // Tiempos prolongados para simular la cámara lenta (Slow-Motion)
+                // Tiempos extendidos para simular la cámara lenta (Slow-Motion)
                 const duration = 2.5 + Math.random() * 1.5 + "s";
                 const size = 16 + Math.random() * 26 + "px";
                 const rotate = (Math.random() - 0.5) * 360 + "deg"; 
                 const scaleEnd = 0.7 + Math.random() * 0.8;
 
-                // Asignar variables al CSS de cada partícula
+                // Inyección de variables dinámicas al CSS de la partícula
                 particle.style.setProperty("--x", x);
                 particle.style.setProperty("--y", y);
                 particle.style.setProperty("--duration", duration);
@@ -72,7 +76,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 explosionContainer?.appendChild(particle);
             }
 
-            // Activar el portal de transición a mitad de la flotación (1.5 segundos)
+            // INTERCAMBIO DE VIDEOS DE FONDO (Sincronizado a los 800ms del estallido)
+            setTimeout(() => {
+                if (videoScene) {
+                    videoScene.classList.remove("video-hidden"); // Revela el video del bosque encantado
+                    videoScene.play().catch(err => console.log("Error al reproducir video 2:", err));
+                }
+                if (videoIntro) {
+                    videoIntro.style.opacity = "0"; // Desvanece el video de humo de la intro
+                    setTimeout(() => videoIntro.pause(), 1000); // Pausa el video oculto para liberar RAM
+                }
+            }, 800);
+
+            // Activar el portal de transición oscura a mitad de la flotación (1.5 segundos)
             setTimeout(() => {
                 portal?.classList.add("active");
             }, 1500);
@@ -80,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Encendido gradual de la música de fondo (Fade-in)
             if (music) {
                 music.volume = 0;
-                music.play().catch(err => console.log("Audio bloqueado temporalmente por navegador:", err));
+                music.play().catch(err => console.log("Audio retenido por el navegador:", err));
                 let volume = 0;
                 const fade = setInterval(() => {
                     volume += 0.05;
@@ -93,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 150);
             }
 
-            // Revelación definitiva de la invitación principal
+            // Revelación definitiva de la escena principal e invitaciones
             setTimeout(() => {
                 if (intro) intro.style.display = "none";
                 scene?.classList.remove("hidden");
@@ -102,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ==========================================================================
-       4. CONTROL DE MODALES (ASISTENCIA Y MENSAJES)
+       4. CONTROL DE VENTANAS EMERGENTES (MODALES)
        ========================================================================== */
     // Abrir / Cerrar Asistencia
     openBtn?.addEventListener("click", () => modal?.classList.add("active"));
@@ -112,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     openMessageBtn?.addEventListener("click", () => messageModal?.classList.add("active"));
     closeMessageBtn?.addEventListener("click", () => messageModal?.classList.remove("active"));
 
-    // Cerrar modales haciendo clic fuera del recuadro
+    // Cerrar modales haciendo clic en el fondo oscuro
     window.addEventListener("click", (e) => {
         if (e.target === modal) modal.classList.remove("active");
         if (e.target === messageModal) messageModal.classList.remove("active");
@@ -193,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ==========================================================================
-       7. RELOJ DE CUENTA REGRESIVA
+       7. RELOJ DE CUENTA REGRESIVA REAL
        ========================================================================== */
     const eventDate = new Date("August 8, 2026 19:00:00").getTime();
 
@@ -201,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const now = new Date().getTime();
         const distance = eventDate - now;
 
-        // Si la fecha ya pasó, detener el intervalo
         if (distance < 0) {
             clearInterval(countdownInterval);
             return;
@@ -212,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Renderizado en el DOM con ceros a la izquierda si es necesario
         const daysEl = document.getElementById("days");
         const hoursEl = document.getElementById("hours");
         const minutesEl = document.getElementById("minutes");
@@ -224,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (secondsEl) secondsEl.textContent = seconds < 10 ? "0" + seconds : seconds;
     }
 
-    // Ejecutar inmediatamente y programar actualización cada segundo
+    // Inicialización del temporizador
     updateCountdown();
     const countdownInterval = setInterval(updateCountdown, 1000);
 });
