@@ -9,7 +9,6 @@ const portal = document.getElementById("portal");
 const enterBtn = document.getElementById("enter-btn");
 
 const scene = document.querySelector(".scene");
-
 const music = document.getElementById("bg-music");
 
 const openBtn = document.getElementById("open-form");
@@ -18,21 +17,17 @@ const modal = document.getElementById("form-modal");
 const closeBtn = document.getElementById("close");
 const sendBtn = document.getElementById("send");
 
-/* LIBRO DE RECUERDOS */
+/* LIBRO DE RECUERDOS (SOLO UNA VEZ) */
 
-const messageModal =
-document.getElementById("message-modal");
+const messageModal = document.getElementById("message-modal");
+const openMessageBtn = document.getElementById("open-message");
+const closeMessageBtn = document.getElementById("close-message");
+const sendMessageBtn = document.getElementById("send-message");
+const messageStatus = document.getElementById("message-status");
 
-const openMessageBtn =
-document.getElementById("open-message");
-
-const closeMessageBtn =
-document.getElementById("close-message");
-
-const sendMessageBtn =
-document.getElementById("send-message");
-
-/* URLs */
+/* =========================
+   URLS
+========================= */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
@@ -44,74 +39,57 @@ const MESSAGE_API_URL =
    ENTRADA
 ========================= */
 
-enterBtn.addEventListener("click", () => {
+if (enterBtn) {
+    enterBtn.addEventListener("click", () => {
 
-    portal.classList.add("active");
+        portal?.classList.add("active");
 
-    if (music) {
+        if (music) {
+            music.volume = 0;
+            music.play().catch(() => {});
 
-        music.volume = 0;
+            let volume = 0;
 
-        music.play().catch(() => {});
+            const fade = setInterval(() => {
+                volume += 0.05;
+                music.volume = volume;
 
-        let volume = 0;
+                if (volume >= 0.5) {
+                    clearInterval(fade);
+                }
+            }, 200);
+        }
 
-        const fade = setInterval(() => {
+        setTimeout(() => {
+            if (intro) intro.style.display = "none";
+            scene?.classList.remove("hidden");
 
-            volume += 0.05;
+            startLights();
+            startFairies();
+            startClocks();
+            startDragons();
 
-            music.volume = volume;
-
-            if (volume >= 0.5) {
-                clearInterval(fade);
-            }
-
-        }, 200);
-    }
-
-    setTimeout(() => {
-
-        intro.style.display = "none";
-
-        scene.classList.remove("hidden");
-
-        startLights();
-        startFairies();
-        startClocks();
-        startDragons();
-
-    }, 1700);
-
-});
+        }, 1700);
+    });
+}
 
 /* =========================
    LUCES
 ========================= */
 
 function startLights() {
-
-    const container =
-    document.getElementById("lights");
+    const container = document.getElementById("lights");
 
     setInterval(() => {
-
-        const light =
-        document.createElement("div");
-
+        const light = document.createElement("div");
         light.className = "light";
 
-        light.style.left =
-        Math.random() * 100 + "vw";
+        light.style.left = Math.random() * 100 + "vw";
+        light.style.animationDuration = (6 + Math.random() * 6) + "s";
 
-        light.style.animationDuration =
-        (6 + Math.random() * 6) + "s";
+        container?.appendChild(light);
 
-        container.appendChild(light);
-
-        setTimeout(() => {
-            light.remove();
-        }, 12000);
-
+        setTimeout(() => light.remove(), 12000);
     }, 200);
 }
 
@@ -120,31 +98,19 @@ function startLights() {
 ========================= */
 
 function startFairies() {
-
-    const container =
-    document.getElementById("fairies");
+    const container = document.getElementById("fairies");
 
     setInterval(() => {
-
-        const fairy =
-        document.createElement("div");
-
+        const fairy = document.createElement("div");
         fairy.className = "fairy";
-
         fairy.innerHTML = "🧚";
 
-        fairy.style.left =
-        Math.random() * 100 + "vw";
+        fairy.style.left = Math.random() * 100 + "vw";
+        fairy.style.animationDuration = (10 + Math.random() * 8) + "s";
 
-        fairy.style.animationDuration =
-        (10 + Math.random() * 8) + "s";
+        container?.appendChild(fairy);
 
-        container.appendChild(fairy);
-
-        setTimeout(() => {
-            fairy.remove();
-        }, 18000);
-
+        setTimeout(() => fairy.remove(), 18000);
     }, 3000);
 }
 
@@ -153,31 +119,19 @@ function startFairies() {
 ========================= */
 
 function startClocks() {
-
-    const container =
-    document.getElementById("clocks");
+    const container = document.getElementById("clocks");
 
     setInterval(() => {
-
-        const clock =
-        document.createElement("div");
-
+        const clock = document.createElement("div");
         clock.className = "clock";
-
         clock.innerHTML = "🕰️";
 
-        clock.style.left =
-        Math.random() * 100 + "vw";
+        clock.style.left = Math.random() * 100 + "vw";
+        clock.style.top = Math.random() * 100 + "vh";
 
-        clock.style.top =
-        Math.random() * 100 + "vh";
+        container?.appendChild(clock);
 
-        container.appendChild(clock);
-
-        setTimeout(() => {
-            clock.remove();
-        }, 15000);
-
+        setTimeout(() => clock.remove(), 15000);
     }, 4000);
 }
 
@@ -186,28 +140,18 @@ function startClocks() {
 ========================= */
 
 function startDragons() {
-
-    const container =
-    document.getElementById("dragons");
+    const container = document.getElementById("dragons");
 
     setInterval(() => {
-
-        const dragon =
-        document.createElement("div");
-
+        const dragon = document.createElement("div");
         dragon.className = "dragon";
-
         dragon.innerHTML = "🐉";
 
-        dragon.style.top =
-        Math.random() * 60 + "vh";
+        dragon.style.top = Math.random() * 60 + "vh";
 
-        container.appendChild(dragon);
+        container?.appendChild(dragon);
 
-        setTimeout(() => {
-            dragon.remove();
-        }, 25000);
-
+        setTimeout(() => dragon.remove(), 25000);
     }, 12000);
 }
 
@@ -215,113 +159,55 @@ function startDragons() {
    MODAL ASISTENCIA
 ========================= */
 
-openBtn.addEventListener("click", () => {
+if (openBtn) {
+    openBtn.addEventListener("click", () => modal?.classList.add("active"));
+}
 
-    modal.classList.add("active");
-
-});
-
-closeBtn.addEventListener("click", () => {
-
-    modal.classList.remove("active");
-
-});
+if (closeBtn) {
+    closeBtn.addEventListener("click", () => modal?.classList.remove("active"));
+}
 
 /* =========================
-   MODAL LIBRO DE RECUERDOS
+   LIBRO DE RECUERDOS
 ========================= */
 
-const messageModal =
-document.getElementById("message-modal");
-
-const openMessageBtn =
-document.getElementById("open-message");
-
-const closeMessageBtn =
-document.getElementById("close-message");
-
-const sendMessageBtn =
-document.getElementById("send-message");
-
-const messageStatus =
-document.getElementById("message-status");
-
-// Abrir modal
-
-if(openMessageBtn){
-
+if (openMessageBtn) {
     openMessageBtn.addEventListener("click", () => {
-
-        messageModal.classList.add("active");
-
+        messageModal?.classList.add("active");
     });
-
 }
 
-// Cerrar modal
-
-if(closeMessageBtn){
-
+if (closeMessageBtn) {
     closeMessageBtn.addEventListener("click", () => {
-
-        messageModal.classList.remove("active");
-
-        if(messageStatus){
-            messageStatus.innerText = "";
-        }
-
+        messageModal?.classList.remove("active");
+        if (messageStatus) messageStatus.innerText = "";
     });
-
 }
 
-// Enviar mensaje
-
-if(sendMessageBtn){
-
+if (sendMessageBtn) {
     sendMessageBtn.addEventListener("click", async (e) => {
 
-        const nombre =
-        document.getElementById("message-name")
-        .value
-        .trim();
+        const nombre = document.getElementById("message-name")?.value.trim();
+        const mensaje = document.getElementById("memory-message")?.value.trim();
 
-        const mensaje =
-        document.getElementById("memory-message")
-        .value
-        .trim();
-
-        if(!nombre || !mensaje){
-
-            messageStatus.innerText =
-            "Completa todos los datos ✨";
-
+        if (!nombre || !mensaje) {
+            if (messageStatus) messageStatus.innerText = "Completa todos los datos ✨";
             return;
         }
 
-        messageStatus.innerText =
-        "Guardando magia...";
+        if (messageStatus) messageStatus.innerText = "Guardando magia...";
 
-        try{
-
-            await fetch(MESSAGE_API_URL,{
-
-                method:"POST",
-
-                mode:"no-cors",
-
-                headers:{
-                    "Content-Type":"application/json"
+        try {
+            await fetch(MESSAGE_API_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-
-                body: JSON.stringify({
-                    nombre,
-                    mensaje
-                })
-
+                body: JSON.stringify({ nombre, mensaje })
             });
 
-            messageStatus.innerText =
-            "Tu recuerdo quedó grabado ✨";
+            if (messageStatus) messageStatus.innerText = "Tu recuerdo quedó grabado ✨";
 
             smokeEffect(
                 e.clientX || window.innerWidth / 2,
@@ -329,27 +215,18 @@ if(sendMessageBtn){
             );
 
             setTimeout(() => {
-
                 document.getElementById("message-name").value = "";
                 document.getElementById("memory-message").value = "";
 
-                messageModal.classList.remove("active");
-
-                messageStatus.innerText = "";
-
+                messageModal?.classList.remove("active");
+                if (messageStatus) messageStatus.innerText = "";
             }, 2000);
 
-        }catch(error){
-
-            messageStatus.innerText =
-            "Error al guardar";
-
+        } catch (error) {
+            if (messageStatus) messageStatus.innerText = "Error al guardar";
             console.error(error);
-
         }
-
     });
-
 }
 
 /* =========================
@@ -357,12 +234,8 @@ if(sendMessageBtn){
 ========================= */
 
 function smokeEffect(x, y) {
-
     for (let i = 0; i < 25; i++) {
-
-        const smoke =
-        document.createElement("div");
-
+        const smoke = document.createElement("div");
         smoke.className = "smoke";
 
         smoke.style.left = x + "px";
@@ -371,133 +244,93 @@ function smokeEffect(x, y) {
         document.body.appendChild(smoke);
 
         smoke.animate([
+            { transform: "translate(0,0) scale(1)", opacity: 1 },
             {
-                transform: "translate(0,0) scale(1)",
-                opacity: 1
-            },
-            {
-                transform:
-                `translate(${Math.random()*200-100}px,-200px) scale(3)`,
-
+                transform: `translate(${Math.random()*200-100}px,-200px) scale(3)`,
                 opacity: 0
             }
-        ], {
-            duration: 1400
-        });
+        ], { duration: 1400 });
 
-        setTimeout(() => {
-            smoke.remove();
-        }, 1400);
+        setTimeout(() => smoke.remove(), 1400);
     }
 }
 
 /* =========================
-   ENVÍO ASISTENCIA
+   ASISTENCIA
 ========================= */
 
-sendBtn.addEventListener("click", async (e) => {
+if (sendBtn) {
+    sendBtn.addEventListener("click", async (e) => {
 
-    const nombre =
-    document.getElementById("nombre").value.trim();
+        const nombre = document.getElementById("nombre")?.value.trim();
+        const personas = document.getElementById("personas")?.value.trim();
+        const status = document.getElementById("status");
 
-    const personas =
-    document.getElementById("personas").value.trim();
+        if (!nombre || !personas) {
+            if (status) status.innerText = "Completa todos los datos ✨";
+            return;
+        }
 
-    const status =
-    document.getElementById("status");
+        if (status) status.innerText = "Enviando magia...";
 
-    if (!nombre || !personas) {
+        try {
+            await fetch(API_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ nombre, personas })
+            });
 
-        status.innerText =
-        "Completa todos los datos ✨";
+            if (status) status.innerText = "¡Asistencia confirmada! ✨";
 
-        return;
-    }
+            smokeEffect(
+                e.clientX || window.innerWidth / 2,
+                e.clientY || window.innerHeight / 2
+            );
 
-    status.innerText =
-    "Enviando magia...";
+            setTimeout(() => {
+                modal?.classList.remove("active");
+                if (status) status.innerText = "";
 
-    try {
+                document.getElementById("nombre").value = "";
+                document.getElementById("personas").value = "";
+            }, 1800);
 
-        await fetch(API_URL, {
-
-            method: "POST",
-
-            mode: "no-cors",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                nombre,
-                personas
-            })
-        });
-
-        status.innerText =
-        "¡Asistencia confirmada! ✨";
-
-        smokeEffect(
-            e.clientX || window.innerWidth / 2,
-            e.clientY || window.innerHeight / 2
-        );
-
-        setTimeout(() => {
-
-            modal.classList.remove("active");
-
-            status.innerText = "";
-
-            document.getElementById("nombre").value = "";
-            document.getElementById("personas").value = "";
-
-        }, 1800);
-
-    } catch (error) {
-
-        status.innerText =
-        "Error al enviar";
-
-        console.error(error);
-    }
-
-});
-
+        } catch (error) {
+            if (status) status.innerText = "Error al enviar";
+            console.error(error);
+        }
+    });
+}
 
 /* =========================
    CUENTA REGRESIVA
 ========================= */
 
-const eventDate =
-new Date("August 8, 2026 19:00:00").getTime();
+const eventDate = new Date("August 8, 2026 19:00:00").getTime();
 
 function updateCountdown() {
-
     const now = new Date().getTime();
-
     const distance = eventDate - now;
 
     if (distance < 0) return;
 
     document.getElementById("days").textContent =
-    Math.floor(distance / (1000 * 60 * 60 * 24));
+        Math.floor(distance / (1000 * 60 * 60 * 24));
 
     document.getElementById("hours").textContent =
-    Math.floor((distance % (1000 * 60 * 60 * 24))
-    / (1000 * 60 * 60));
+        Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
     document.getElementById("minutes").textContent =
-    Math.floor((distance % (1000 * 60 * 60))
-    / (1000 * 60));
+        Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
     document.getElementById("seconds").textContent =
-    Math.floor((distance % (1000 * 60))
-    / 1000);
+        Math.floor((distance % (1000 * 60)) / 1000);
 }
 
 updateCountdown();
-
 setInterval(updateCountdown, 1000);
 
 });
