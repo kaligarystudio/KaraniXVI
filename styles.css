@@ -1183,3 +1183,83 @@ h2{
         opacity:0;
     }
 }
+
+
+/* =====================================
+   NUEVAS SECCIONES INVITACIÓN
+===================================== */
+
+.scene{
+    min-height:100vh;
+    height:auto;
+    padding:100px 0;
+}
+
+.content{
+    max-width:800px;
+    padding:120px 0;
+    transform:none;
+    top:auto;
+}
+
+.event-card{
+    margin-top:50px;
+    padding:30px;
+    border-radius:25px;
+    background:rgba(10,10,20,.45);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 0 25px rgba(255,220,120,.08);
+}
+
+.event-card h3{
+    font-family:'Cinzel', serif;
+    color:#ffe7a3;
+    margin-bottom:20px;
+}
+
+.countdown{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.time-box{
+    width:90px;
+    padding:15px;
+    border-radius:15px;
+    background:rgba(255,255,255,.08);
+}
+
+.time-box span{
+    display:block;
+    font-size:32px;
+    font-weight:bold;
+    color:#fff3d8;
+}
+
+.time-box small{
+    color:#ddd;
+}
+
+.location-text{
+    color:#eee;
+    line-height:1.8;
+}
+
+.magic-link{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 25px;
+    border-radius:30px;
+    text-decoration:none;
+    background:linear-gradient(45deg,#e8c77a,#fff0bf);
+    color:#111;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.magic-link:hover{
+    transform:scale(1.05);
+}
