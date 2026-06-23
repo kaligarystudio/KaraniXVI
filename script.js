@@ -19,7 +19,7 @@ const closeBtn = document.getElementById("close");
 const sendBtn = document.getElementById("send");
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbx1gnXkf2c9uXVO2a8JjNE24Rbxha-hQfq3gNrG9z2fZ0kNVKEP5XeFaADjXSojKSeS/exec";
+"https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
 
 /* =========================
    ENTRADA
