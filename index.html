@@ -145,7 +145,6 @@
                 Toluca, Estado de México
             </p>
 
-            <!-- Reemplaza el enlace por tu ubicación real -->
             <a
                 href="https://maps.app.goo.gl/PW44HjnYZs2YhMnc8"
                 target="_blank"
@@ -154,6 +153,61 @@
             </a>
 
         </section>
+
+        <!-- LIBRO DE RECUERDOS -->
+        <section class="event-card">
+
+            <h3>📖 Libro de Recuerdos</h3>
+
+            <p class="location-text">
+                Deja unas palabras mágicas para Karani y forma parte de esta noche inolvidable.
+            </p>
+
+            <button
+                id="open-message"
+                class="magic-link">
+
+                Escribir mensaje ✨
+
+            </button>
+
+        </section>
+
+    </section>
+
+</main>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div id="form-modal">
+
+    <div class="form-box">
+
+        <h3>Confirmar asistencia</h3>
+
+        <input
+            type="text"
+            id="nombre"
+            placeholder="Tu nombre">
+
+        <input
+            type="number"
+            id="personas"
+            placeholder="¿Cuántas personas?"
+            min="1">
+
+        <button id="send">
+            Enviar ✨
+        </button>
+
+        <button id="close">
+            Cancelar
+        </button>
+
+        <p id="status"></p>
+
+    </div>
+
+</div>
 
 <!-- MODAL LIBRO DE RECUERDOS -->
 <div id="message-modal">
@@ -181,42 +235,6 @@
         </button>
 
         <p id="message-status"></p>
-
-    </div>
-
-</div>
-
-    </section>
-
-</main>
-
-<!-- MODAL -->
-<div id="form-modal">
-
-    <div class="form-box">
-
-        <h3>Confirmar asistencia</h3>
-
-        <input
-            type="text"
-            id="nombre"
-            placeholder="Tu nombre">
-
-        <input
-            type="number"
-            id="personas"
-            placeholder="¿Cuántas personas?"
-            min="1">
-
-        <button id="send">
-            Enviar ✨
-        </button>
-
-        <button id="close">
-            Cancelar
-        </button>
-
-        <p id="status"></p>
 
     </div>
 
