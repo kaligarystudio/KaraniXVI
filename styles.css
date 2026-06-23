@@ -1266,31 +1266,49 @@ h2{
 
 ///////////
 
+/* =========================
+   MODAL LIBRO DE RECUERDOS
+========================= */
+
 #message-modal{
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
     background: rgba(0,0,0,.85);
-    display: flex;
+
+    display: none; /* IMPORTANTE */
+
     justify-content: center;
     align-items: center;
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: .4s;
+
+    z-index: 9999;
 }
 
 #message-modal.active{
-    opacity: 1;
-    visibility: visible;
+    display: flex;
 }
 
-#message-modal textarea{
+#message-modal .form-box{
+    max-width: 450px;
+    width: 90%;
+}
+
+#memory-message{
     width: 100%;
+    min-height: 140px;
+
     border: none;
-    outline: none;
-    border-radius: 15px;
+    border-radius: 20px;
+
     padding: 15px;
+
     resize: none;
-    font-family: inherit;
+
     margin-bottom: 15px;
+
+    font-family: inherit;
+    font-size: 1rem;
 }
