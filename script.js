@@ -1,8 +1,8 @@
 /* ==========================================================================
-   CONFIGURACIÓN GENERAL Y ESTADOS
+   CONFIGURACIÓN GENERAL Y ESTADOS (FECHA AJUSTADA: 8 DE AGOSTO 2026, 18:30 HRS)
    ========================================================================== */
-// Fecha de la fiesta (Reemplaza con el año, mes [0-11] y día exacto de la gala)
-const EVENT_DATE = new Date(2026, 10, 16, 19, 0, 0).getTime(); 
+// Parámetros: Año, Mes (0-11 -> 7 es Agosto), Día, Hora, Minutos, Segundos
+const EVENT_DATE = new Date(2026, 7, 8, 18, 30, 0).getTime(); 
 
 window.addEventListener('DOMContentLoaded', () => {
     // 1. Efecto Inicial: Las cartas de la baraja revelan el botón al cargar la página

@@ -380,3 +380,12 @@ body {
 #close, #close-message { background: transparent; color: #b3b3b3; margin-top: 10px; }
 #close:hover, #close-message:hover { color: #ffffff; }
 #status, #message-status { margin-top: 12px; font-size: 14px; font-weight: bold; color: #e8c77a; }
+.countdown-date {
+    margin-top: 25px;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: #e8c77a;
+    text-shadow: 0 0 10px rgba(232, 199, 122, 0.4);
+    font-weight: 600;
+}
