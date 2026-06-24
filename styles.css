@@ -1,391 +1,388 @@
-/* ==========================================================================
-   1. RESET GENERAL, TIPOGRAFÍA Y COMPORTAMIENTO MAGNÉTICO
-   ========================================================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-html {
-    /* Fuerza a que el navegador actúe como un libro de páginas magnéticas */
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-}
+    /* ==========================================================================
+       ELEMENTOS
+       ========================================================================== */
+    const intro = document.getElementById("intro");
+    const portal = document.getElementById("portal");
+    const enterBtn = document.getElementById("enter-btn");
 
-body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-color: #000000;
-    font-family: 'Playfair Display', serif;
-    color: #ffffff;
-    -webkit-font-smoothing: antialiased;
-}
+    const scene = document.querySelector(".scene");
+    const music = document.getElementById("bg-music");
 
-/* ==========================================================================
-   VIDEOS DE FONDO INDEPENDIENTES (PANTALLA COMPLETA TOTAL)
-   ========================================================================== */
-#bg-video-intro, #bg-video-scene {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;       
-    height: 100vh;      
-    z-index: -2; 
-    object-fit: cover;  
-    object-position: center; 
-    transition: opacity 1s ease-in-out;
-}
+    const openBtn = document.getElementById("open-form");
+    const modal = document.getElementById("form-modal");
 
-/* Fix estructural para barras de navegación en celulares (iOS / Android) */
-@supports (-webkit-touch-callout: none) {
-    #bg-video-intro, #bg-video-scene {
-        height: -webkit-fill-available; 
+    const closeBtn = document.getElementById("close");
+    const sendBtn = document.getElementById("send");
+
+    /* LIBRO DE RECUERDOS */
+    const messageModal = document.getElementById("message-modal");
+    const openMessageBtn = document.getElementById("open-message");
+    const closeMessageBtn = document.getElementById("close-message");
+    const sendMessageBtn = document.getElementById("send-message");
+    const messageStatus = document.getElementById("message-status");
+
+    /* VIDEOS DE FONDO (INTERCAMBIO FLUIDO) */
+    const videoIntro = document.getElementById("bg-video-intro");
+    const videoScene = document.getElementById("bg-video-scene");
+
+    /* ==========================================================================
+       URLS (MÉTODOS CORRECTOS DE GOOGLE SHEETS)
+       ========================================================================== */
+    const API_URL =
+    "https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
+
+    const MESSAGE_API_URL =
+    "https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1ksgkS7PrT2-KQ9D7gxcXUt3YdKxFs6GTf-aLqRhXhU5yHVRlwQWip/exec";
+
+    /* ==========================================================================
+       EFECTO INICIAL: APERTURA CONTROLADA DE CARTAS AL CARGAR
+       ========================================================================== */
+    setTimeout(() => {
+        const stage = document.querySelector('.doors-stage');
+        if (stage) stage.classList.add('doors-open');
+    }, 400);
+
+    /* ==========================================================================
+       ENTRADA Y TRANSICIÓN CINEMATOGRÁFICA
+       ========================================================================== */
+    if (enterBtn) {
+        enterBtn.addEventListener("click", () => {
+            // Desactivar clics repetidos en el sello
+            enterBtn.style.pointerEvents = 'none';
+
+            // 1. Lanzar explosión mágica de naipes y destellos
+            createMagicExplosion();
+
+            // 2. Activar destello de portal intermedio
+            portal?.classList.add("active");
+
+            // 3. Encendido y Fade-In gradual de la música de fondo
+            if (music) {
+                music.volume = 0;
+                music.play().catch((err) => console.log("Auto-play musical contenido:", err));
+
+                let volume = 0;
+                const fade = setInterval(() => {
+                    volume += 0.05;
+                    if (volume >= 0.4) {
+                        music.volume = 0.4;
+                        clearInterval(fade);
+                    } else {
+                        music.volume = volume;
+                    }
+                }, 200);
+            }
+
+            // 4. Intercambio de cortinas escénicas y videos
+            setTimeout(() => {
+                if (intro) intro.style.display = "none";
+                scene?.classList.remove("hidden");
+
+                if (videoIntro) videoIntro.classList.add('video-hidden');
+                if (videoScene) {
+                    videoScene.classList.remove('video-hidden');
+                    videoScene.play().catch(() => {});
+                }
+
+                // Disparadores de partículas ambientales del bosque
+                startLights();
+                startFairies();
+                startClocks();
+                startDragons();
+
+            }, 1200); // Sincronizado con el pico opaco del portal
+        });
     }
-}
 
-.video-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
+    /* GENERADOR DE PARTÍCULAS EN SLOW-MOTION (EXPLOSIÓN DE SELLO) */
+    function createMagicExplosion() {
+        const container = document.getElementById('explosion-container');
+        if (!container) return;
 
-/* Capa oscura superpuesta mística para legibilidad universal */
-.forest-overlay {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(15, 2, 2, 0.85) 0%, rgba(0, 0, 0, 0.93) 100%);
-    z-index: -1; 
-    pointer-events: none;
-}
+        const particlesPool = ['♦', '♥', '♣', '♠', '✨', '⭐', '🃏', '👑'];
+        const particleCount = 75;
 
-/* ==========================================================================
-   2. INTRO: CARTAS DE BARAJA EN 3D (APERTURA MAJESTUOSA RALENTIZADA)
-   ========================================================================== */
-#intro {
-    position: fixed;
-    inset: 0;
-    background: transparent; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    overflow: hidden;
-}
+        for (let i = 0; i < particleCount; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = particlesPool[Math.floor(Math.random() * particlesPool.length)];
 
-.mist {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, rgba(218, 8, 8, 0.15), transparent 70%);
-    animation: fog 6s infinite alternate ease-in-out;
-    pointer-events: none; 
-}
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 150 + Math.random() * 300;
 
-@keyframes fog {
-    from { transform: scale(1); opacity: 0.7; }
-    to { transform: scale(1.15); opacity: 0.9; }
-}
+            const destX = Math.cos(angle) * velocity + 'px';
+            const destY = Math.sin(angle) * velocity + 'px';
 
-.doors-stage {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    perspective: 2000px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+            p.style.setProperty('--x', destX);
+            p.style.setProperty('--y', destY);
+            p.style.setProperty('--duration', (1.8 + Math.random() * 1.5) + 's');
+            p.style.setProperty('--rotate', (Math.random() * 720 - 360) + 'deg');
+            p.style.setProperty('--size', (14 + Math.random() * 22) + 'px');
+            p.style.setProperty('--scale-end', 0.2 + Math.random() * 0.7);
 
-/* Estilo base de los naipes reales de gala */
-.playing-card {
-    position: absolute;
-    top: 0;
-    width: 50.2vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #1a0202 0%, #0a0000 100%);
-    z-index: 5;
-    will-change: transform;
-    /* Ralentizado a 3.8s para una sensación de peso dramático */
-    transition: transform 3.8s cubic-bezier(0.4, 0, 0.2, 1); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+            p.style.color = Math.random() > 0.5 ? '#e8c77a' : '#ef233c';
+            if (p.textContent === '✨' || p.textContent === '⭐') p.style.color = '#fffdf0';
 
-/* Filete dorado perimetral de baraja de colección */
-.playing-card::after {
-    content: '';
-    position: absolute;
-    inset: 20px;
-    border: 2px solid rgba(232, 199, 122, 0.25);
-    border-radius: 8px;
-    pointer-events: none;
-    box-shadow: inset 0 0 15px rgba(186, 12, 12, 0.2);
-}
+            container.appendChild(p);
+            p.addEventListener('animationend', () => p.remove());
+        }
+    }
 
-.left-door {
-    left: 0;
-    transform-origin: left center;
-    box-shadow: 15px 0 35px rgba(0, 0, 0, 0.9);
-}
+    /* ==========================================================================
+       AMBIENTACIÓN MÁGICA EN SEGUNDO PLANO
+       ========================================================================== */
+    function startLights() {
+        const container = document.getElementById("lights");
+        setInterval(() => {
+            const light = document.createElement("div");
+            light.className = "light";
+            light.style.left = Math.random() * 100 + "vw";
+            light.style.animationDuration = (6 + Math.random() * 6) + "s";
+            container?.appendChild(light);
+            setTimeout(() => light.remove(), 12000);
+        }, 200);
+    }
 
-.right-door {
-    right: 0;
-    transform-origin: right center;
-    box-shadow: -15px 0 35px rgba(0, 0, 0, 0.9);
-}
+    function startFairies() {
+        const container = document.getElementById("fairies");
+        setInterval(() => {
+            const fairy = document.createElement("div");
+            fairy.className = "fairy";
+            fairy.innerHTML = "🧚";
+            fairy.style.left = Math.random() * 100 + "vw";
+            fairy.style.animationDuration = (10 + Math.random() * 8) + "s";
+            container?.appendChild(fairy);
+            setTimeout(() => fairy.remove(), 18000);
+        }, 3000);
+    }
 
-/* Animación de apertura teatral */
-.doors-stage.doors-open .left-door { transform: rotateY(-115deg); }
-.doors-stage.doors-open .right-door { transform: rotateY(115deg); }
+    function startClocks() {
+        const container = document.getElementById("clocks");
+        setInterval(() => {
+            const clock = document.createElement("div");
+            clock.className = "clock";
+            clock.innerHTML = "🕰️";
+            clock.style.left = Math.random() * 100 + "vw";
+            clock.style.top = Math.random() * 100 + "vh";
+            container?.appendChild(clock);
+            setTimeout(() => clock.remove(), 15000);
+        }, 4000);
+    }
 
-/* ÍNDICES DE LAS ESQUINAS DE LOS NAIPES */
-.card-corner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    color: #e8c77a; 
-    line-height: 1.1;
-    user-select: none;
-    z-index: 6;
-    transition: opacity 2.5s ease-in-out;
-}
+    function startDragons() {
+        const container = document.getElementById("dragons");
+        setInterval(() => {
+            const dragon = document.createElement("div");
+            dragon.className = "dragon";
+            dragon.innerHTML = "🐉";
+            dragon.style.top = Math.random() * 60 + "vh";
+            container?.appendChild(dragon);
+            setTimeout(() => dragon.remove(), 25000);
+        }, 12000);
+    }
 
-.top-left { top: 35px; left: 35px; font-size: clamp(18px, 2.5vw, 26px); }
-.bottom-right { bottom: 35px; right: 35px; font-size: clamp(18px, 2.5vw, 26px); transform: rotate(180deg); }
+    /* ==========================================================================
+       MODAL ASISTENCIA
+       ========================================================================== */
+    if (openBtn) openBtn.addEventListener("click", () => modal?.classList.add("active"));
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            modal?.classList.remove("active");
+            const status = document.getElementById("status");
+            if (status) status.innerText = "";
+        });
+    }
 
-.card-corner span:last-child {
-    font-size: 1.2em;
-    color: #ef233c; 
-    margin-top: 2px;
-    filter: drop-shadow(0 0 4px rgba(239, 35, 60, 0.5));
-}
+    /* ==========================================================================
+       LIBRO DE RECUERDOS (GOOGLE WEB APP + EFECTO HUMO)
+       ========================================================================== */
+    if (openMessageBtn) openMessageBtn.addEventListener("click", () => messageModal?.classList.add("active"));
+    if (closeMessageBtn) {
+        closeMessageBtn.addEventListener("click", () => {
+            messageModal?.classList.remove("active");
+            if (messageStatus) messageStatus.innerText = "";
+        });
+    }
 
-/* EMBLEMAS CENTRALES EN PAN DE ORO */
-.door-emblem {
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    background: linear-gradient(to bottom, #cfac62 0%, #edd69a 40%, #b38728 70%, #fef1c9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.9));
-    user-select: none;
-    transition: opacity 2.5s ease-in-out;
-    z-index: 6;
-}
+    if (sendMessageBtn) {
+        sendMessageBtn.addEventListener("click", async (e) => {
+            const nombre = document.getElementById("message-name")?.value.trim();
+            const mensaje = document.getElementById("memory-message")?.value.trim();
 
-.left-door .door-emblem { font-size: clamp(110px, 16vw, 190px); transform: translateX(25%); }
-.right-door .door-emblem { font-size: clamp(70px, 10vw, 120px); transform: translateX(-25%); }
+            if (!nombre || !mensaje) {
+                if (messageStatus) messageStatus.innerText = "Completa todos los datos ✨";
+                return;
+            }
 
-/* Atenuación sutil sincronizada al abrirse */
-.doors-stage.doors-open .door-emblem,
-.doors-stage.doors-open .card-corner {
-    opacity: 0.15;
-}
+            if (messageStatus) messageStatus.innerText = "Guardando magia...";
 
-/* REVELACIÓN DEL BOTÓN CENTRAL DE ENTRADA */
-.intro-content {
-    text-align: center;
-    width: 90%;
-    max-width: 450px;
-    z-index: 10;
-    opacity: 0;
-    transform: scale(0.9) translateZ(-150px);
-    transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition-delay: 0.6s;
-}
+            try {
+                await fetch(MESSAGE_API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre, mensaje })
+                });
 
-.doors-stage.doors-open .intro-content { opacity: 1; transform: scale(1) translateZ(0); }
-.envelope-wrapper { position: relative; margin-bottom: 40px; display: flex; justify-content: center; align-items: center; }
+                if (messageStatus) messageStatus.innerText = "Tu recuerdo quedó grabado ✨";
 
-/* SELLO DE CERA INTERACTIVO */
-.wax-seal {
-    position: relative;
-    width: 110px;
-    height: 110px;
-    background: radial-gradient(circle, #e8c77a 20%, #b8913b 70%, #805f1d 100%);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), inset 0 -4px 10px rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: sealPulse 2.5s infinite ease-in-out;
-    z-index: 12; 
-    pointer-events: auto !important;
-}
+                smokeEffect(
+                    e.clientX || window.innerWidth / 2,
+                    e.clientY || window.innerHeight / 2
+                );
 
-.wax-seal::before {
-    content: ''; position: absolute; inset: -6px; background: inherit; border-radius: 42% 58% 45% 55% / 45% 45% 55% 55%; z-index: -1; transform: rotate(15deg);
-}
-.seal-inner { width: 84px; height: 84px; border: 2px dashed rgba(128, 95, 29, 0.5); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.seal-icon { font-size: 26px; }
-.seal-initials { font-family: 'Cinzel', serif; font-size: 32px; font-weight: 700; color: #4a3407; }
-.seal-glow { position: absolute; inset: -20px; background: radial-gradient(circle, rgba(232, 199, 122, 0.25) 0%, transparent 70%); z-index: -2; }
+                setTimeout(() => {
+                    document.getElementById("message-name").value = "";
+                    document.getElementById("memory-message").value = "";
+                    messageModal?.classList.remove("active");
+                    if (messageStatus) messageStatus.innerText = "";
+                }, 2000);
 
-@keyframes sealPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-.intro-title { margin-top: 15px; font-size: clamp(28px, 5vw, 44px); font-family: 'Cinzel', serif; color: #e8c77a; text-shadow: 0 0 15px rgba(186, 12, 12, 0.7); }
-.intro-text { margin-top: 12px; color: #b3b3b3; font-size: 16px; font-style: italic; }
+            } catch (error) {
+                if (messageStatus) messageStatus.innerText = "Error al guardar";
+                console.error(error);
+            }
+        });
+    }
 
-/* EXPLOSIÓN LENTA EN PANTALLA */
-#explosion-container { position: absolute; inset: 0; pointer-events: none; z-index: 15; }
-.particle { position: absolute; left: 50%; top: 50%; font-size: var(--size); user-select: none; will-change: transform, opacity; animation: flyOut var(--duration) forwards cubic-bezier(0.05, 0.7, 0.1, 1); }
+    /* ==========================================================================
+       EFECTO PARTICULAS DE HUMO
+       ========================================================================== */
+    function smokeEffect(x, y) {
+        for (let i = 0; i < 25; i++) {
+            const smoke = document.createElement("div");
+            smoke.className = "smoke";
+            smoke.style.left = x + "px";
+            smoke.style.top = y + "px";
+            document.body.appendChild(smoke);
 
-@keyframes flyOut {
-    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.4); opacity: 0; }
-    5% { opacity: 1; }
-    85% { opacity: 0.9; }
-    100% { transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate)) scale(var(--scale-end)); opacity: 0; }
-}
+            smoke.animate([
+                { transform: "translate(0,0) scale(1)", opacity: 1 },
+                {
+                    transform: `translate(${Math.random() * 200 - 100}px,-200px) scale(3)`,
+                    opacity: 0
+                }
+            ], { duration: 1400 });
 
-/* ==========================================================================
-   3. EFECTO PORTAL (TRANSICIÓN DE FLASH)
-   ========================================================================== */
-#portal { position: fixed; inset: 0; background: #000000; opacity: 0; pointer-events: none; z-index: 90; }
-#portal.active { animation: portalCover 1.8s forwards ease-in-out; }
-@keyframes portalCover { 0% { opacity: 0; } 30%, 70% { opacity: 1; } 100% { opacity: 0; } }
+            setTimeout(() => smoke.remove(), 1400);
+        }
+    }
 
-/* ==========================================================================
-   4. ESCENA PRINCIPAL (CONFIGURACIÓN FULL-PAGE POR SECCIÓN)
-   ========================================================================== */
-.scene {
-    width: 100%;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-}
+    /* ==========================================================================
+       ASISTENCIA REALIZADA (GOOGLE WEB APP + DESCARGA AGENDAMIENTO ICS)
+       ========================================================================== */
+    if (sendBtn) {
+        sendBtn.addEventListener("click", async (e) => {
+            const nombre = document.getElementById("nombre")?.value.trim();
+            const personas = document.getElementById("personas")?.value.trim();
+            const status = document.getElementById("status");
 
-.hidden { display: none !important; }
+            if (!nombre || !personas) {
+                if (status) status.innerText = "Completa todos los datos ✨";
+                return;
+            }
 
-/* DISEÑO DE PANTALLA COMPLETA INDEPENDIENTE */
-.hero-section, 
-.countdown-section,
-.event-card {
-    height: 100vh;
-    width: 100vw;
-    max-width: 100% !important;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 30px 20px;
-    
-    /* Configuración Magnética Obligatoria */
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-}
+            if (status) status.innerText = "Enviando magia...";
 
-/* ENVOLTURAS INTERNAS: EL CRISTAL DE GALA FLOTANTE */
-.card-wrapper {
-    background: rgba(15, 3, 3, 0.65);
-    border: 1px solid rgba(232, 199, 122, 0.18);
-    border-radius: 24px;
-    padding: 35px 28px;
-    width: 100%;
-    max-width: 520px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    text-align: center;
-}
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre, personas })
+                });
 
-/* ANIMACIONES DE ENTRADA AL DESPLAZAR */
-.fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUpMatch 1.2s forwards cubic-bezier(0.25, 1, 0.5, 1);
-}
-@keyframes fadeInUpMatch { to { opacity: 1; transform: translateY(0); } }
+                if (status) status.innerText = "¡Confirmado! Agendando evento... ✨";
 
-/* TITULACIONES PRINCIPALES */
-.main-title { font-family: 'Cinzel', serif; font-size: clamp(48px, 9vw, 75px); color: #e8c77a; text-shadow: 0 0 20px rgba(186,12,12,0.6); letter-spacing: 2px; }
-.subtitle { font-size: 22px; color: #ef233c; letter-spacing: 4px; text-transform: uppercase; margin-top: -5px; font-weight: bold; }
-.welcome-msg { margin-top: 20px; font-style: italic; font-size: 17px; line-height: 1.6; color: #dddddd; }
-.scroll-indicator { margin-top: 30px; font-size: 13px; color: rgba(232, 199, 122, 0.6); letter-spacing: 1px; animation: bounce 2s infinite; }
-@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } 60% { transform: translateY(-3px); } }
+                // Ejecución paralela de humo estético
+                smokeEffect(
+                    e.clientX || window.innerWidth / 2,
+                    e.clientY || window.innerHeight / 2
+                );
 
-/* ELEMENTOS DE TEXTO INTERNOS DE SECCIÓN */
-.card-wrapper h3, .section-title { font-family: 'Cinzel', serif; color: #e8c77a; font-size: 24px; margin-bottom: 20px; border-bottom: 1px solid rgba(232, 199, 122, 0.2); padding-bottom: 12px; }
-.location-text { color: #dddddd; font-size: 16px; line-height: 1.6; }
+                // Disparar la descarga automática del calendario nativo del smartphone
+                descargarCalendarioGala();
 
-/* LISTA DE PROGRAMAS */
-.program-list { list-style: none; text-align: left; }
-.program-list li { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); font-size: 15px; }
-.program-list li:last-child { border-bottom: none; }
-.time { color: #ef233c; font-weight: bold; font-family: 'Cinzel', serif; }
-.activity { color: #f5f5f5; text-align: right; padding-left: 15px; }
+                setTimeout(() => {
+                    modal?.classList.remove("active");
+                    if (status) status.innerText = "";
+                    document.getElementById("nombre").value = "";
+                    document.getElementById("personas").value = "";
+                }, 2000);
 
-/* RELOJ RECUADROS CUENTA REGRESIVA */
-.countdown { display: flex; justify-content: center; gap: 12px; }
-.time-box { width: 85px; padding: 14px; border-radius: 14px; background: rgba(186, 12, 12, 0.12); border: 1px solid rgba(232, 199, 122, 0.25); }
-.time-box span { display: block; font-size: 30px; font-weight: bold; color: #ffffff; }
-.time-box small { color: #e8c77a; text-transform: uppercase; font-size: 11px; }
+            } catch (error) {
+                if (status) status.innerText = "Error al enviar";
+                console.error(error);
+            }
+        });
+    }
 
-/* VESTIMENTA */
-.alert-box { background: rgba(186, 12, 12, 0.18); border-left: 4px solid #ba0c0c; padding: 15px; border-radius: 6px; font-size: 14px; text-align: left; line-height: 1.5; }
-.reserved-colors { color: #ff4d4d; font-weight: bold; text-decoration: underline; }
+    /* GENERADOR DE ARCHIVO ICS UNIVERSAL (APPLE / GOOGLE CALENDAR) */
+    function descargarCalendarioGala() {
+        const titulo = "Dulces 16 de Karani ✨";
+        const descripcion = "¡Tu pase real está agendado! Te esperamos para celebrar este momento mágico. Recuerda respetar el Dress Code (Rojo y Negro reservados exclusivamente para Karani). 🐈‍⬛🌹";
+        const ubicacion = "Salón de Eventos 'El Reino Mágico', Av. Principal de la Magia #16";
+        
+        // Sincronizado exactamente para el 8 de Agosto de 2026 a las 18:30 hrs
+        const fechaInicio = "20260808T183000";
+        const fechaFin = "20260808T235900";
 
-/* REGALOS DE GALA */
-.gifts-container { display: flex; flex-direction: column; gap: 15px; text-align: left; }
-.gift-option { background: rgba(255, 255, 255, 0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 15px; }
-.gift-icon { font-size: 28px; }
-.gift-option h4 { color: #e8c77a; font-family: 'Cinzel', serif; font-size: 16px; margin-bottom: 2px; }
-.gift-option p { font-size: 13px; color: #b3b3b3; }
+        const icsStructure = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Invitacion Gala//Karani//ES",
+            "BEGIN:VEVENT",
+            `UID:${new Date().getTime()}@karani16.com`,
+            `DTSTAMP:${new Date().getTime()}`,
+            `DTSTART:${fechaInicio}`,
+            `DTEND:${fechaFin}`,
+            `SUMMARY:${titulo}`,
+            `DESCRIPTION:${descripcion}`,
+            `LOCATION:${ubicacion}`,
+            "END:VEVENT",
+            "END:VCALENDAR"
+        ].join("\n");
 
-/* BOTONES DE ENLACES EXTERNOS (MESA/MAPA) */
-.gift-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
-.gift-link { padding: 11px 22px; border-radius: 25px; text-decoration: none; font-size: 14px; font-weight: bold; color: #ffffff; transition: transform 0.2s; }
-.amazon { background: #ff9900; color: #111; }
-.liverpool { background: #e0077a; }
-.gift-link:hover { transform: scale(1.04); }
+        const blob = new Blob([icsStructure], { type: "text/calendar;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.setAttribute("download", "Karani_Dulces_16.ics");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
-/* CONTROL INTERACTIVO DE ASISTENCIA */
-.action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 5px; }
-.magic-link { display: inline-block; padding: 14px 26px; border: none; cursor: pointer; border-radius: 30px; text-decoration: none; background: linear-gradient(45deg, #ba0c0c, #ef233c); color: white; font-weight: bold; font-size: 15px; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(186, 12, 12, 0.4); }
-.magic-link.secondary { background: transparent; border: 2px solid #e8c77a; color: #e8c77a; box-shadow: none; }
-.magic-link:hover { transform: scale(1.04); }
-.text-center { text-align: center; }
+    /* ==========================================================================
+       SISTEMA DE RELOJ: CUENTA REGRESIVA CON ANTEPOSICIÓN DE CEROS
+       ========================================================================== */
+    const eventDate = new Date("August 8, 2026 18:30:00").getTime();
 
-/* ==========================================================================
-   5. MODALES DE CONFIRMACIÓN (INTEGRIDAD ABSOLUTA SOBRE CAPAS)
-   ========================================================================== */
-#form-modal, #message-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 200;
-    padding: 15px;
-}
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
 
-#form-modal.active, #message-modal.active { opacity: 1; pointer-events: auto; }
-.form-box { background: #1c0505; border: 2px solid #ba0c0c; padding: 30px 25px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 30px rgba(186, 12, 12, 0.4); animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); }
-@keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        if (distance < 0) {
+            document.getElementById("days").textContent = "00";
+            document.getElementById("hours").textContent = "00";
+            document.getElementById("minutes").textContent = "00";
+            document.getElementById("seconds").textContent = "00";
+            return;
+        }
 
-.form-box h3 { color: #e8c77a; margin-bottom: 18px; font-family: 'Cinzel', serif; }
-.form-box input, .form-box textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(232, 199, 122, 0.3); border-radius: 8px; color: #ffffff; font-family: inherit; }
-.form-box input:focus, .form-box textarea:focus { outline: none; border-color: #ef233c; }
-.form-box button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-#send, #send-message { background: #ba0c0c; color: white; }
-#send:hover, #send-message:hover { background: #ef233c; }
-#close, #close-message { background: transparent; color: #b3b3b3; margin-top: 10px; }
-#close:hover, #close-message:hover { color: #ffffff; }
-#status, #message-status { margin-top: 12px; font-size: 14px; font-weight: bold; color: #e8c77a; }
-.countdown-date {
-    margin-top: 25px;
-    font-family: 'Cinzel', serif;
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: #e8c77a;
-    text-shadow: 0 0 10px rgba(232, 199, 122, 0.4);
-    font-weight: 600;
-}
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Añade ceros a la izquierda para mantener la simetría visual de las cajas
+        document.getElementById("days").textContent = d < 10 ? "0" + d : d;
+        document.getElementById("hours").textContent = h < 10 ? "0" + h : h;
+        document.getElementById("minutes").textContent = m < 10 ? "0" + m : m;
+        document.getElementById("seconds").textContent = s < 10 ? "0" + s : s;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+});
