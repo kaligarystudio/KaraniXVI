@@ -53,7 +53,7 @@ body {
 .forest-overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, rgba(15, 2, 2, 0.85) 0%, rgba(0, 0, 0, 0.93) 100%);
+    background: linear-gradient(135deg, rgba(15, 2, 2, 0.40) 0%, rgba(0, 0, 0, 0.55) 100%);
     z-index: -1; 
     pointer-events: none;
 }
