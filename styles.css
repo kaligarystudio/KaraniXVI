@@ -22,6 +22,25 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+@media(max-width:768px){
+    h1{
+        font-size:78px;
+    }
+}
+h1{
+    font-family:'Great Vibes', cursive;
+
+    font-size:clamp(70px,10vw,120px);
+
+    color:#fff3d8;
+
+    font-weight:normal;
+
+    text-shadow:
+    0 0 12px rgba(255,220,160,0.5),
+    0 0 30px rgba(255,220,160,0.3);
+}
+
 /* ==========================================================================
    VIDEOS DE FONDO INDEPENDIENTES (PANTALLA COMPLETA TOTAL)
    ========================================================================== */
