@@ -1,244 +1,238 @@
-document.addEventListener("DOMContentLoaded", () => {
+/* ==========================================================================
+   CONFIGURACIÓN GENERAL Y ESTADOS
+   ========================================================================== */
+// Fecha de la fiesta (Reemplaza con el año, mes [0-11] y día exacto de la gala)
+const EVENT_DATE = new Date(2026, 10, 16, 19, 0, 0).getTime(); 
 
-    /* ==========================================================================
-       1. ELEMENTOS DEL DOM
-       ========================================================================== */
-    const intro = document.getElementById("intro");
-    const portal = document.getElementById("portal");
-    const enterBtn = document.getElementById("enter-btn");
-    const scene = document.querySelector(".scene");
-    const music = document.getElementById("bg-music");
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Efecto Inicial: Las cartas de la baraja revelan el botón al cargar la página
+    setTimeout(() => {
+        const stage = document.querySelector('.doors-stage');
+        if (stage) stage.classList.add('doors-open');
+    }, 400);
 
-    // Modal de Asistencia
-    const openBtn = document.getElementById("open-form");
-    const modal = document.getElementById("form-modal");
-    const closeBtn = document.getElementById("close");
-    const sendBtn = document.getElementById("send");
-    const status = document.getElementById("status");
+    // 2. Inicializar Cuenta Regresiva Activa
+    initCountdown();
 
-    // Modal de Libro de Recuerdos
-    const messageModal = document.getElementById("message-modal");
-    const openMessageBtn = document.getElementById("open-message");
-    const closeMessageBtn = document.getElementById("close-message");
-    const sendMessageBtn = document.getElementById("send-message");
-    const messageStatus = document.getElementById("message-status");
-
-    /* ==========================================================================
-       2. URLS DE GOOGLE APPS SCRIPT (APIs)
-       ========================================================================== */
-    const API_URL = "https://script.google.com/macros/s/AKfycbwszSOWqX2raT8YmIqiU0l_QuewJti4YoDYJdZwf33Gi08_x6okwjPWV3HhKIM6xRP_/exec";
-    const MESSAGE_API_URL = "https://script.google.com/macros/s/AKfycbxJdOSoVnGIdC1ksgkS7PrT2-KQ9D7gxcXUt3YdKxFs6GTf-aLqRhXhU5yHVRlwQWip/exec";
-
-    /* ==========================================================================
-       3. LÓGICA DE LA INTRO Y TRANSICIÓN DE VIDEOS EN CÁMARA LENTA
-       ========================================================================== */
+    // 3. Configurar Eventos del Sello de Cera e Interactividad
+    const enterBtn = document.getElementById('enter-btn');
     if (enterBtn) {
-        enterBtn.addEventListener("click", () => {
-            const explosionContainer = document.getElementById("explosion-container");
-            const introContent = document.querySelector(".intro-content");
-            
-            // Referencias a los dos videos de fondo independientes
-            const videoIntro = document.getElementById("bg-video-intro");
-            const videoScene = document.getElementById("bg-video-scene");
-            
-            // Ocultar suavemente el texto del sobre mientras estalla
-            if (introContent) introContent.style.opacity = "0";
+        enterBtn.addEventListener('click', triggerGalaTransition);
+    }
 
-            // CONFIGURACIÓN DEL ESTALLIDO EN CÁMARA LENTA
-            const particleTypes = ["⚙️", "✉️", "✨", "🕰️", "📜", "⚙️"]; 
-            const totalParticles = 75; 
+    // 4. Configurar Ventanas Emergentes (Modales)
+    initModals();
+});
 
-            for (let i = 0; i < totalParticles; i++) {
-                const particle = document.createElement("div");
-                particle.className = "particle";
-                particle.innerText = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+/* ==========================================================================
+   TRANSICIÓN CINEMATOGRÁFICA Y EXPLOSIÓN MÁGICA
+   ========================================================================== */
+function triggerGalaTransition() {
+    const enterBtn = document.getElementById('enter-btn');
+    const introSection = document.getElementById('intro');
+    const mainScene = document.querySelector('.scene');
+    const portal = document.getElementById('portal');
+    const videoIntro = document.getElementById('bg-video-intro');
+    const videoScene = document.getElementById('bg-video-scene');
+    const bgMusic = document.getElementById('bg-music');
 
-                // Física radial del disparo de partículas
-                const angle = Math.random() * Math.PI * 2;
-                const velocity = 120 + Math.random() * 280; 
-                const x = Math.cos(angle) * velocity + "px";
-                const y = Math.sin(angle) * velocity + "px";
-                
-                // Tiempos extendidos para simular la cámara lenta (Slow-Motion)
-                const duration = 2.5 + Math.random() * 1.5 + "s";
-                const size = 16 + Math.random() * 26 + "px";
-                const rotate = (Math.random() - 0.5) * 360 + "deg"; 
-                const scaleEnd = 0.7 + Math.random() * 0.8;
+    // Desactivar el botón para evitar múltiples clics durante la animación
+    if (enterBtn) enterBtn.style.pointerEvents = 'none';
 
-                // Inyección de variables dinámicas al CSS de la partícula
-                particle.style.setProperty("--x", x);
-                particle.style.setProperty("--y", y);
-                particle.style.setProperty("--duration", duration);
-                particle.style.setProperty("--size", size);
-                particle.style.setProperty("--rotate", rotate);
-                particle.style.setProperty("--scale-end", scaleEnd);
+    // A. Lanzar explosión de naipes y destellos flotantes
+    createMagicExplosion();
 
-                explosionContainer?.appendChild(particle);
+    // B. Activar el Flash del Portal Intermedio (Transición limpia de video)
+    setTimeout(() => {
+        if (portal) portal.classList.add('active');
+    }, 600);
+
+    // C. Intercambio de contenidos y arranque de música de fondo
+    setTimeout(() => {
+        // Ocultar Intro y mostrar panel principal de invitación
+        if (introSection) introSection.classList.add('hidden');
+        if (mainScene) mainScene.classList.remove('hidden');
+
+        // Swap de Videos de fondo fluidos
+        if (videoIntro) videoIntro.classList.add('video-hidden');
+        if (videoScene) {
+            videoScene.classList.remove('video-hidden');
+            videoScene.play().catch(err => console.log("Video auto-play prevenido:", err));
+        }
+
+        // Intento controlado de reproducción de música (Políticas de navegador)
+        if (bgMusic) {
+            bgMusic.volume = 0.4;
+            bgMusic.play().catch(err => {
+                console.log("La música requiere interacción previa o permisos:", err);
+                // Intento secundario al primer clic del usuario en pantalla
+                document.body.addEventListener('click', () => bgMusic.play(), { once: true });
+            });
+        }
+    }, 1200); // Sincronizado exactamente con el pico opaco del portal
+}
+
+/* GENERADOR DE PARTÍCULAS EN SLOW-MOTION (CARTA/MAGIA) */
+function createMagicExplosion() {
+    const container = document.getElementById('explosion-container');
+    if (!container) return;
+
+    // Elementos temáticos que saldrán despedidos de adentro hacia afuera
+    const particlesPool = ['♦', '♥', '♣', '♠', '✨', '⭐', '🃏', '👑'];
+    const particleCount = 75; // Cantidad para poblar la pantalla sin saturar móviles
+
+    for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = particlesPool[Math.floor(Math.random() * particlesPool.length)];
+
+        // Ángulo aleatorio de dispersión en 360 grados
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 150 + Math.random() * 300; // Fuerza de empuje de la explosión
+
+        // Variables de destino calculadas nativamente por CSS (--x, --y)
+        const destX = Math.cos(angle) * velocity + 'px';
+        const destY = Math.sin(angle) * velocity + 'px';
+
+        // Estilos aleatorios inyectados individualmente
+        p.style.setProperty('--x', destX);
+        p.style.setProperty('--y', destY);
+        p.style.setProperty('--duration', (1.8 + Math.random() * 1.5) + 's'); // Cámara lenta prolongada
+        p.style.setProperty('--rotate', (Math.random() * 720 - 360) + 'deg');
+        p.style.setProperty('--size', (14 + Math.random() * 22) + 'px');
+        p.style.setProperty('--scale-end', 0.2 + Math.random() * 0.7);
+
+        // Color aleatorio entre los tonos dorados y rojos de la baraja
+        p.style.color = Math.random() > 0.5 ? '#e8c77a' : '#ef233c';
+        if (p.textContent === '✨' || p.textContent === '⭐') p.style.color = '#fffdf0';
+
+        container.appendChild(p);
+
+        // Limpieza de memoria eliminando los nodos una vez termine la animación
+        p.addEventListener('animationend', () => p.remove());
+    }
+}
+
+/* ==========================================================================
+   SISTEMA DE RELOJ: CUENTA REGRESIVA EN TIEMPO REAL
+   ========================================================================== */
+function initCountdown() {
+    const daysSpan = document.getElementById('days');
+    const hoursSpan = document.getElementById('hours');
+    const minutesSpan = document.getElementById('minutes');
+    const secondsSpan = document.getElementById('seconds');
+
+    function updateClock() {
+        const now = new Date().getTime();
+        const timeLeft = EVENT_DATE - now;
+
+        if (timeLeft <= 0) {
+            if (daysSpan) daysSpan.textContent = "00";
+            if (hoursSpan) hoursSpan.textContent = "00";
+            if (minutesSpan) minutesSpan.textContent = "00";
+            if (secondsSpan) secondsSpan.textContent = "00";
+            clearInterval(clockInterval);
+            return;
+        }
+
+        // Cálculos matemáticos estándar para conversión de tiempo
+        const d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Renderizado anteponiendo ceros a la izquierda
+        if (daysSpan) daysSpan.textContent = d < 10 ? '0' + d : d;
+        if (hoursSpan) hoursSpan.textContent = h < 10 ? '0' + h : h;
+        if (minutesSpan) minutesSpan.textContent = m < 10 ? '0' + m : m;
+        if (secondsSpan) secondsSpan.textContent = s < 10 ? '0' + s : s;
+    }
+
+    updateClock(); // Ejecución instantánea inicial
+    const clockInterval = setInterval(updateClock, 1000);
+}
+
+/* ==========================================================================
+   CONTROL DE MODALES (CONFIRMACIONES Y LIBRO DE RECUERDOS)
+   ========================================================================== */
+function initModals() {
+    // Modal de Asistencia
+    const openFormBtn = document.getElementById('open-form');
+    const closeFormBtn = document.getElementById('close');
+    const formModal = document.getElementById('form-modal');
+    const sendFormBtn = document.getElementById('send');
+
+    // Modal de Mensajes/Recuerdos
+    const openMessageBtn = document.getElementById('open-message');
+    const closeMessageBtn = document.getElementById('close-message');
+    const messageModal = document.getElementById('message-modal');
+    const sendMessageBtn = document.getElementById('send-message');
+
+    // Lógica para Abrir / Cerrar Asistencia
+    if (openFormBtn && formModal) openFormBtn.addEventListener('click', () => formModal.classList.add('active'));
+    if (closeFormBtn && formModal) closeFormBtn.addEventListener('click', () => {
+        formModal.classList.remove('active');
+        document.getElementById('status').textContent = "";
+    });
+
+    // Lógica para Abrir / Cerrar Mensajes
+    if (openMessageBtn && messageModal) openMessageBtn.addEventListener('click', () => messageModal.classList.add('active'));
+    if (closeMessageBtn && messageModal) closeMessageBtn.addEventListener('click', () => {
+        messageModal.classList.remove('active');
+        document.getElementById('message-status').textContent = "";
+    });
+
+    // PROCESAMIENTO: Envío de Confirmación de Asistencia vía WhatsApp
+    if (sendFormBtn) {
+        sendFormBtn.addEventListener('click', () => {
+            const name = document.getElementById('nombre').value.trim();
+            const guests = document.getElementById('personas').value.trim();
+            const statusTxt = document.getElementById('status');
+
+            if (!name || !guests) {
+                if (statusTxt) statusTxt.textContent = "⚠️ Por favor, llena todos los campos.";
+                return;
             }
 
-            // INTERCAMBIO DE VIDEOS DE FONDO (Sincronizado a los 800ms del estallido)
+            // Construcción del mensaje preestablecido para Karani
+            const whatsappText = encodeURIComponent(`¡Hola Karani! ✨ Confirmo mi asistencia a tus Dulces 16. Nombre: ${name}. Lugares reservados: ${guests}. ¡Ahí nos vemos! 🐈‍⬛🌹`);
+            const phoneNumber = "1234567890"; // Reemplaza aquí con el número telefónico real (incluyendo código de país)
+            
+            if (statusTxt) statusTxt.textContent = "¡Abriendo WhatsApp... Mágicamente enviado! 🚀";
+            
             setTimeout(() => {
-                if (videoScene) {
-                    videoScene.classList.remove("video-hidden"); // Revela el video del bosque encantado
-                    videoScene.play().catch(err => console.log("Error al reproducir video 2:", err));
-                }
-                if (videoIntro) {
-                    videoIntro.style.opacity = "0"; // Desvanece el video de humo de la intro
-                    setTimeout(() => videoIntro.pause(), 1000); // Pausa el video oculto para liberar RAM
-                }
+                window.open(`https://wa.me/${phoneNumber}?text=${whatsappText}`, '_blank');
+                formModal.classList.remove('active');
+                // Limpiar formulario
+                document.getElementById('nombre').value = "";
+                document.getElementById('personas').value = "";
+                if (statusTxt) statusTxt.textContent = "";
             }, 800);
-
-            // Activar el portal de transición oscura a mitad de la flotación (1.5 segundos)
-            setTimeout(() => {
-                portal?.classList.add("active");
-            }, 1500);
-
-            // Encendido gradual de la música de fondo (Fade-in)
-            if (music) {
-                music.volume = 0;
-                music.play().catch(err => console.log("Audio retenido por el navegador:", err));
-                let volume = 0;
-                const fade = setInterval(() => {
-                    volume += 0.05;
-                    if (volume >= 0.5) {
-                        music.volume = 0.5;
-                        clearInterval(fade);
-                    } else {
-                        music.volume = volume;
-                    }
-                }, 150);
-            }
-
-            // Revelación definitiva de la escena principal e invitaciones
-            setTimeout(() => {
-                if (intro) intro.style.display = "none";
-                scene?.classList.remove("hidden");
-            }, 2400); 
         });
     }
 
-    /* ==========================================================================
-       4. CONTROL DE VENTANAS EMERGENTES (MODALES)
-       ========================================================================== */
-    // Abrir / Cerrar Asistencia
-    openBtn?.addEventListener("click", () => modal?.classList.add("active"));
-    closeBtn?.addEventListener("click", () => modal?.classList.remove("active"));
+    // PROCESAMIENTO: Guardado Simulado en el Libro de Recuerdos Digital
+    if (sendMessageBtn) {
+        sendMessageBtn.addEventListener('click', () => {
+            const msgName = document.getElementById('message-name').value.trim();
+            const msgText = document.getElementById('memory-message').value.trim();
+            const msgStatus = document.getElementById('message-status');
 
-    // Abrir / Cerrar Libro de Recuerdos
-    openMessageBtn?.addEventListener("click", () => messageModal?.classList.add("active"));
-    closeMessageBtn?.addEventListener("click", () => messageModal?.classList.remove("active"));
+            if (!msgName || !msgText) {
+                if (msgStatus) msgStatus.textContent = "⚠️ Escribe tu nombre y un mensaje antes de guardar.";
+                return;
+            }
 
-    // Cerrar modales haciendo clic en el fondo oscuro
-    window.addEventListener("click", (e) => {
-        if (e.target === modal) modal.classList.remove("active");
-        if (e.target === messageModal) messageModal.classList.remove("active");
-    });
-
-    /* ==========================================================================
-       5. ENVÍO DE FORMULARIO DE ASISTENCIA (API 1)
-       ========================================================================== */
-    sendBtn?.addEventListener("click", async () => {
-        const nombre = document.getElementById("nombre").value.trim();
-        const personas = document.getElementById("personas").value.trim();
-
-        if (!nombre || !personas) {
-            if (status) status.innerText = "Por favor, llena todos los campos.";
-            return;
-        }
-
-        if (status) status.innerText = "Enviando confirmación... ✨";
-
-        try {
-            await fetch(API_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre, personas })
-            });
-
-            if (status) status.innerText = "¡Asistencia confirmada! 🎉";
+            if (msgStatus) msgStatus.textContent = "Escribiendo en las hojas del bosque... ✨ Guardado.";
 
             setTimeout(() => {
-                modal?.classList.remove("active");
-                if (status) status.innerText = "";
-                document.getElementById("nombre").value = "";
-                document.getElementById("personas").value = "";
-            }, 1800);
-
-        } catch (error) {
-            if (status) status.innerText = "Error al enviar. Intenta de nuevo.";
-            console.error(error);
-        }
-    });
-
-    /* ==========================================================================
-       6. ENVÍO DE MENSAJES AL LIBRO DE RECUERDOS (API 2)
-       ========================================================================== */
-    sendMessageBtn?.addEventListener("click", async () => {
-        const nombre = document.getElementById("message-name").value.trim();
-        const mensaje = document.getElementById("memory-message").value.trim();
-
-        if (!nombre || !mensaje) {
-            if (messageStatus) messageStatus.innerText = "Por favor, llena todos los campos.";
-            return;
-        }
-
-        if (messageStatus) messageStatus.innerText = "Guardando en el bosque... 📜";
-
-        try {
-            await fetch(MESSAGE_API_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre, mensaje })
-            });
-
-            if (messageStatus) messageStatus.innerText = "¡Tu mensaje ha sido guardado! ✨";
-
-            setTimeout(() => {
-                messageModal?.classList.remove("active");
-                if (messageStatus) messageStatus.innerText = "";
-                document.getElementById("message-name").value = "";
-                document.getElementById("memory-message").value = "";
-            }, 1800);
-
-        } catch (error) {
-            if (messageStatus) messageStatus.innerText = "Error al guardar el mensaje.";
-            console.error(error);
-        }
-    });
-
-    /* ==========================================================================
-       7. RELOJ DE CUENTA REGRESIVA REAL
-       ========================================================================== */
-    const eventDate = new Date("August 8, 2026 19:00:00").getTime();
-
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = eventDate - now;
-
-        if (distance < 0) {
-            clearInterval(countdownInterval);
-            return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-
-        if (daysEl) daysEl.textContent = days < 10 ? "0" + days : days;
-        if (hoursEl) hoursEl.textContent = hours < 10 ? "0" + hours : hours;
-        if (minutesEl) minutesEl.textContent = minutes < 10 ? "0" + minutes : minutes;
-        if (secondsEl) secondsEl.textContent = seconds < 10 ? "0" + seconds : seconds;
+                messageModal.classList.remove('active');
+                // Limpiar campos del bloque de notas
+                document.getElementById('message-name').value = "";
+                document.getElementById('memory-message').value = "";
+                if (msgStatus) msgStatus.textContent = "";
+                alert(`¡Gracias ${msgName}! Tu dedicatoria ha quedado grabada permanentemente.`);
+            }, 1000);
+        });
     }
-
-    // Inicialización del temporizador
-    updateCountdown();
-    const countdownInterval = setInterval(updateCountdown, 1000);
-});
+}

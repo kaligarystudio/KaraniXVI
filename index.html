@@ -4,128 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karani · Dulces 16 ✨</title>
+    <!-- Tipografías elegantes para el estilo místico y de gala -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- VIDEO DE FONDO 1: EXCLUSIVO PARA LA INTRO (HUMO Y DESTELLOS) -->
     <video autoplay muted loop playsinline id="bg-video-intro">
         <source src="fondo-misterioso.mp4" type="video/mp4">
     </video>
 
+    <!-- VIDEO DE FONDO 2: EXCLUSIVO PARA LA INVITACIÓN (BOSQUE ENCANTADO, DRAGONES Y HADAS) -->
     <video muted loop playsinline id="bg-video-scene" class="video-hidden">
         <source src="bosque-encantado.mp4" type="video/mp4">
     </video>
     
+    <!-- Capa oscura superpuesta universal para legibilidad del texto -->
     <div class="forest-overlay"></div>
 
+    <!-- INTRO REVELADORA (PUERTAS TRANSFORMADAS EN CARTAS DE BARAJA EN 3D) -->
     <section id="intro">
         <div class="mist"></div>
         
+        <!-- Contenedor donde estallarán las partículas al pulsar el sello -->
         <div id="explosion-container"></div>
 
-        <div class="intro-content">
-            <div class="envelope-wrapper">
-                <div class="wax-seal" id="enter-btn">
-                    <div class="seal-inner">
-                        <span class="seal-icon">🐈‍⬛</span>
-                        <div class="seal-initials">K</div>
-                    </div>
-                    <div class="seal-glow"></div>
-                </div>
+        <!-- Escenario 3D: Estructura de naipes reales con sus palos e índices -->
+        <div class="doors-stage">
+            
+            <!-- CARTA IZQUIERDA: MONOGRAMA K (DIAMANTES) -->
+            <div class="card-door left-door playing-card">
+                <div class="card-corner top-left"><span>K</span><span>♦</span></div>
+                <div class="door-emblem">K</div>
+                <div class="card-corner bottom-right"><span>K</span><span>♦</span></div>
             </div>
-            <h2 class="intro-title">Has sido invitado...</h2>
-            <p class="intro-text">Toca el sello real para abrir el tiempo y el destino.</p>
+            
+            <!-- CARTA DERECHA: NUMERAL XVI (CORAZONES) -->
+            <div class="card-door right-door playing-card">
+                <div class="card-corner top-left"><span>XVI</span><span>♥</span></div>
+                <div class="door-emblem">XVI</div>
+                <div class="card-corner bottom-right"><span>XVI</span><span>♥</span></div>
+            </div>
+            
+            <!-- CONTENIDO DETRÁS O DEBAJO DE LAS CARTAS -->
+            <div class="intro-content">
+                <div class="envelope-wrapper">
+                    <!-- Sello de cera interactivo -->
+                    <div class="wax-seal" id="enter-btn">
+                        <div class="seal-inner">
+                            <span class="seal-icon">🐈‍⬛</span>
+                            <div class="seal-initials">K</div>
+                        </div>
+                        <div class="seal-glow"></div>
+                    </div>
+                </div>
+                <h2 class="intro-title">Has sido invitado...</h2>
+                <p class="intro-text">Toca el sello real para abrir el tiempo y el destino.</p>
+            </div>
         </div>
     </section>
 
+    <!-- EFECTO PORTAL PARA LA TRANSICIÓN DE CORTE DE VIDEO -->
     <div id="portal"></div>
 
+    <!-- CONTENIDO DE LA ESCENA PRINCIPAL (CON COMPORTAMIENTO FULL-PAGE SCROLL) -->
     <main class="scene hidden">
 
+        <!-- PANTALLA 1: BIENVENIDA -->
         <header class="hero-section fade-in-up">
-            <h1 class="main-title">Karani</h1>
-            <p class="subtitle">Mis Dulces 16</p>
-            <p class="welcome-msg">
-                "Los mejores momentos se viven con las personas que amamos, por eso estás cordialmente invitado a mi celebración."
-            </p>
+            <div class="card-wrapper">
+                <h1 class="main-title">Karani</h1>
+                <p class="subtitle">Mis Dulces 16</p>
+                <p class="welcome-msg">
+                    "Los mejores momentos se viven con las personas que amamos, por eso estás cordialmente invitado a mi celebración."
+                </p>
+                <div class="scroll-indicator">Desliza para explorar 🔀</div>
+            </div>
         </header>
 
-        <section class="countdown-section fade-in-up delay-1">
-            <div class="countdown">
-                <div class="time-box"><span id="days">00</span><small>Días</small></div>
-                <div class="time-box"><span id="hours">00</span><small>Horas</small></div>
-                <div class="time-box"><span id="minutes">00</span><small>Minutos</small></div>
-                <div class="time-box"><span id="seconds">00</span><small>Segundos</small></div>
-            </div>
-        </section>
-
-        <section class="event-card fade-in-up delay-2">
-            <h3>✨ Programa del Evento</h3>
-            <ul class="program-list">
-                <li><span class="time">18:30 PM</span> <span class="activity">Recepción Real & Alfombra Roja</span></li>
-                <li><span class="time">20:00 PM</span> <span class="activity">Entrada Triunfal de la Festejada</span></li>
-                <li><span class="time">20:30 PM</span> <span class="activity">El Vals Mágico & Brindis de Honor</span></li>
-                <li><span class="time">21:00 PM</span> <span class="activity">Banquete de Gala</span></li>
-                <li><span class="time">22:30 PM</span> <span class="activity">Apertura de la Pista (Gran Baile)</span></li>
-            </ul>
-        </section>
-
-        <section class="event-card fade-in-up delay-2">
-            <h3>📍 Lugar de la Celebración</h3>
-            <p class="location-text"><strong>Salón de Eventos Red Point </strong></p>
-            <p class="location-text" style="font-size: 14px; color: #aaa; margin-top: 5px;">
-                50180, Azteca, 50180 Toluca de Lerdo, Méx.
-            </p>
-            
-            <div class="gift-buttons" style="margin-top: 20px;">
-                <a href="https://maps.app.goo.gl/oEJhxqkQXUvGC6fF9" target="_blank" class="gift-link" style="background: #ba0c0c; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
-                    Cómo llegar con Google Maps 🗺️
-                </a>
-            </div>
-        </section>
-
-        <section class="event-card fade-in-up delay-2">
-            <h3>🌹 Código de Vestimenta</h3>
-            <p class="location-text" style="text-align: center;"><strong>Semiformal elegante</strong></p>
-            <div class="alert-box" style="margin-top: 15px;">
-                <p>⚠️ <strong>Nota importante:</strong> Los colores <span class="reserved-colors">Rojo y Negro</span> quedan estrictamente reservados de forma exclusiva para <strong>KARANI</strong>. Agradecemos tu apoyo vistiendo otros tonos.</p>
-            </div>
-        </section>
-
-        <section class="event-card fade-in-up delay-3">
-            <h3>🎁 Opciones de Regalo</h3>
-            <p class="location-text">Tu presencia es mi mayor regalo, pero si deseas obsequiarme algo, estas son mis opciones:</p>
-            <div class="gifts-container">
-                <div class="gift-option">
-                    <div class="gift-icon">✉️</div>
-                    <h4>Lluvia de Sobres</h4>
-                    <p>Habrá una urna disponible en la entrada del salón para depositar tu presente en efectivo.</p>
+        <!-- PANTALLA 2: CUENTA REGRESIVA -->
+        <section class="countdown-section fade-in-up">
+            <div class="card-wrapper">
+                <h3 class="section-title">El Tiempo se Agota</h3>
+                <div class="countdown">
+                    <div class="time-box"><span id="days">00</span><small>Días</small></div>
+                    <div class="time-box"><span id="hours">00</span><small>Horas</small></div>
+                    <div class="time-box"><span id="minutes">00</span><small>Minutos</small></div>
+                    <div class="time-box"><span id="seconds">00</span><small>Segundos</small></div>
                 </div>
-                <div class="gift-option">
-                    <div class="gift-icon">🛒</div>
-                    <h4>Mesa de Regalos</h4>
-                    <p>Puedes consultar mis listas organizadas externamente:</p>
-                    <div class="gift-buttons">
-                        <a href="#" target="_blank" class="gift-link amazon">Amazon 📦</a>
-                        <a href="#" target="_blank" class="gift-link liverpool">Liverpool 🏬</a>
+            </div>
+        </section>
+
+        <!-- PANTALLA 3: PROGRAMA DEL EVENTO -->
+        <section class="event-card fade-in-up">
+            <div class="card-wrapper">
+                <h3>✨ Programa del Evento</h3>
+                <ul class="program-list">
+                    <li><span class="time">18:30 PM</span> <span class="activity">Recepción Real & Alfombra Roja</span></li>
+                    <li><span class="time">20:00 PM</span> <span class="activity">Entrada Triunfal de la Festejada</span></li>
+                    <li><span class="time">20:30 PM</span> <span class="activity">El Vals Mágico & Brindis de Honor</span></li>
+                    <li><span class="time">21:00 PM</span> <span class="activity">Banquete de Gala</span></li>
+                    <li><span class="time">22:30 PM</span> <span class="activity">Apertura de la Pista (Gran Baile)</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PANTALLA 4: UBICACIÓN Y LUGAR -->
+        <section class="event-card fade-in-up">
+            <div class="card-wrapper">
+                <h3>📍 Lugar de la Celebración</h3>
+                <p class="location-text"><strong>Salón de Eventos Red Point</strong></p>
+                <p class="location-text" style="font-size: 14px; color: #aaa; margin-top: 5px;">
+                    Av. Principal de la Magia #16, Ciudad de los Sueños.
+                </p>
+                
+                <!-- Botón interactivo para navegación -->
+                <div class="gift-buttons" style="margin-top: 25px; width: 100%;">
+                    <a href="https://maps.app.goo.gl/e8t2ANQg1jdrsg3a6" target="_blank" class="gift-link" style="background: #ba0c0c; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                        Cómo llegar con Google Maps 🗺️
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA 5: DRESS CODE (CÓDIGO DE VESTIMENTA RESERVADO) -->
+        <section class="event-card fade-in-up">
+            <div class="card-wrapper">
+                <h3>🌹 Código de Vestimenta</h3>
+                <p class="location-text" style="text-align: center; font-size: 18px; margin-bottom: 15px;"><strong>Semiformal elegante</strong></p>
+                <div class="alert-box">
+                    <p>⚠️ <strong>Nota importante:</strong> Los colores <span class="reserved-colors">Rojo y Negro</span> quedan estrictamente reservados de forma exclusiva para <strong>KARANI</strong>. Agradecemos tu apoyo vistiendo otros tonos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA 6: OPCIONES DE REGALO -->
+        <section class="event-card fade-in-up">
+            <div class="card-wrapper">
+                <h3>🎁 Opciones de Regalo</h3>
+                <p class="location-text" style="margin-bottom: 15px;">Tu presencia es mi mayor regalo, pero si deseas obsequiarme algo, estas son mis opciones:</p>
+                <div class="gifts-container">
+                    <div class="gift-option">
+                        <div class="gift-icon">✉️</div>
+                        <h4>Lluvia de Sobres</h4>
+                        <p>Habrá una urna disponible en la entrada del salón para depositar tu presente en efectivo.</p>
+                    </div>
+                    <div class="gift-option">
+                        <div class="gift-icon">🛒</div>
+                        <h4>Mesa de Regalos</h4>
+                        <div class="gift-buttons">
+                            <a href="#" target="_blank" class="gift-link amazon">Amazon 📦</a>
+                            <a href="#" target="_blank" class="gift-link liverpool">Liverpool 🏬</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="event-card fade-in-up delay-3 text-center">
-            <h3>Confirmación & Recuerdos</h3>
-            <p class="location-text">Por favor confirma tu asistencia o déjale un mágico deseo en nuestro bosque digital.</p>
-            
-            <div class="action-buttons">
-                <button id="open-form" class="magic-link">Confirmar Asistencia 📝</button>
-                <button id="open-message" class="magic-link secondary">Escribir Mensaje ✨</button>
+        <!-- PANTALLA 7: RESERVACIÓN Y LIBRO DE RECUERDOS -->
+        <section class="event-card fade-in-up text-center">
+            <div class="card-wrapper">
+                <h3>Confirmación & Recuerdos</h3>
+                <p class="location-text" style="margin-bottom: 20px;">Por favor confirma tu asistencia o déjale un mágico deseo en nuestro bosque digital.</p>
+                
+                <div class="action-buttons">
+                    <button id="open-form" class="magic-link">Confirmar Asistencia 📝</button>
+                    <button id="open-message" class="magic-link secondary">Escribir Mensaje ✨</button>
+                </div>
             </div>
         </section>
 
     </main>
 
+    <!-- MODAL CONFIRMACIÓN DE ASISTENCIA -->
     <div id="form-modal">
         <div class="form-box">
             <h3>Confirmar asistencia</h3>
@@ -137,6 +189,7 @@
         </div>
     </div>
 
+    <!-- MODAL LIBRO DE RECUERDOS -->
     <div id="message-modal">
         <div class="form-box">
             <h3>📖 Libro de Recuerdos</h3>
@@ -148,6 +201,7 @@
         </div>
     </div>
 
+    <!-- AUDIO DE FONDO -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>

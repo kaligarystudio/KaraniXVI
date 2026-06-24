@@ -1,10 +1,16 @@
 /* ==========================================================================
-   1. RESET GENERAL Y TIPOGRAFÍA
+   1. RESET GENERAL, TIPOGRAFÍA Y COMPORTAMIENTO MAGNÉTICO
    ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    /* Fuerza a que el navegador actúe como un libro de páginas magnéticas */
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -17,44 +23,52 @@ body {
 }
 
 /* ==========================================================================
-   VIDEOS DE FONDO INDEPENDIENTES (CORREGIDO PARA EXPANDIR TOTALMENTE)
+   VIDEOS DE FONDO INDEPENDIENTES (PANTALLA COMPLETA TOTAL)
    ========================================================================== */
 #bg-video-intro, #bg-video-scene {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;       /* Fuerza el ancho exacto de la pantalla visual */
-    height: 100vh;      /* Fuerza el alto exacto de la pantalla visual */
+    width: 100vw;       
+    height: 100vh;      
     z-index: -2; 
-    object-fit: cover;  /* Recorta y expande el video de forma cinematográfica sin deformarlo */
-    object-position: center; /* Mantiene el centro del video siempre visible */
+    object-fit: cover;  
+    object-position: center; 
     transition: opacity 1s ease-in-out;
 }
 
-/* Fix específico para navegadores móviles (iOS / Android) */
+/* Fix estructural para barras de navegación en celulares (iOS / Android) */
 @supports (-webkit-touch-callout: none) {
     #bg-video-intro, #bg-video-scene {
-        height: -webkit-fill-available; /* Evita que la barra de direcciones de Safari/Chrome rompa el alto */
+        height: -webkit-fill-available; 
     }
 }
 
-/* El segundo video (Bosque) inicia completamente invisible */
 .video-hidden {
     opacity: 0;
     pointer-events: none;
 }
+
+/* Capa oscura superpuesta mística para legibilidad universal */
+.forest-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15, 2, 2, 0.85) 0%, rgba(0, 0, 0, 0.93) 100%);
+    z-index: -1; 
+    pointer-events: none;
+}
+
 /* ==========================================================================
-   2. INTRO DE REVELACIÓN (ESTILO SOBRE EXPLOSIVO)
+   2. INTRO: CARTAS DE BARAJA EN 3D (APERTURA MAJESTUOSA RALENTIZADA)
    ========================================================================== */
 #intro {
     position: fixed;
     inset: 0;
-    background: transparent; /* Permite ver el video 1 desde el inicio */
+    background: transparent; 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
-    perspective: 1000px; /* Habilita física 3D para la explosión */
     overflow: hidden;
 }
 
@@ -63,7 +77,7 @@ body {
     inset: 0;
     background: radial-gradient(circle, rgba(218, 8, 8, 0.15), transparent 70%);
     animation: fog 6s infinite alternate ease-in-out;
-    pointer-events: none; /* Evita bloquear clics */
+    pointer-events: none; 
 }
 
 @keyframes fog {
@@ -71,23 +85,123 @@ body {
     to { transform: scale(1.15); opacity: 0.9; }
 }
 
-.intro-content {
-    text-align: center;
-    width: 90%;
-    max-width: 450px;
-    z-index: 2;
-    transition: opacity 0.4s ease;
-}
-
-.envelope-wrapper {
+.doors-stage {
     position: relative;
-    margin-bottom: 40px;
+    width: 100vw;
+    height: 100vh;
+    perspective: 2000px; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* SELLO DE CERA INTERACTIVO REFORZADO */
+/* Estilo base de los naipes reales de gala */
+.playing-card {
+    position: absolute;
+    top: 0;
+    width: 50.2vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a0202 0%, #0a0000 100%);
+    z-index: 5;
+    will-change: transform;
+    /* Ralentizado a 3.8s para una sensación de peso dramático */
+    transition: transform 3.8s cubic-bezier(0.4, 0, 0.2, 1); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Filete dorado perimetral de baraja de colección */
+.playing-card::after {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border: 2px solid rgba(232, 199, 122, 0.25);
+    border-radius: 8px;
+    pointer-events: none;
+    box-shadow: inset 0 0 15px rgba(186, 12, 12, 0.2);
+}
+
+.left-door {
+    left: 0;
+    transform-origin: left center;
+    box-shadow: 15px 0 35px rgba(0, 0, 0, 0.9);
+}
+
+.right-door {
+    right: 0;
+    transform-origin: right center;
+    box-shadow: -15px 0 35px rgba(0, 0, 0, 0.9);
+}
+
+/* Animación de apertura teatral */
+.doors-stage.doors-open .left-door { transform: rotateY(-115deg); }
+.doors-stage.doors-open .right-door { transform: rotateY(115deg); }
+
+/* ÍNDICES DE LAS ESQUINAS DE LOS NAIPES */
+.card-corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: #e8c77a; 
+    line-height: 1.1;
+    user-select: none;
+    z-index: 6;
+    transition: opacity 2.5s ease-in-out;
+}
+
+.top-left { top: 35px; left: 35px; font-size: clamp(18px, 2.5vw, 26px); }
+.bottom-right { bottom: 35px; right: 35px; font-size: clamp(18px, 2.5vw, 26px); transform: rotate(180deg); }
+
+.card-corner span:last-child {
+    font-size: 1.2em;
+    color: #ef233c; 
+    margin-top: 2px;
+    filter: drop-shadow(0 0 4px rgba(239, 35, 60, 0.5));
+}
+
+/* EMBLEMAS CENTRALES EN PAN DE ORO */
+.door-emblem {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    background: linear-gradient(to bottom, #cfac62 0%, #edd69a 40%, #b38728 70%, #fef1c9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.9));
+    user-select: none;
+    transition: opacity 2.5s ease-in-out;
+    z-index: 6;
+}
+
+.left-door .door-emblem { font-size: clamp(110px, 16vw, 190px); transform: translateX(25%); }
+.right-door .door-emblem { font-size: clamp(70px, 10vw, 120px); transform: translateX(-25%); }
+
+/* Atenuación sutil sincronizada al abrirse */
+.doors-stage.doors-open .door-emblem,
+.doors-stage.doors-open .card-corner {
+    opacity: 0.15;
+}
+
+/* REVELACIÓN DEL BOTÓN CENTRAL DE ENTRADA */
+.intro-content {
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.9) translateZ(-150px);
+    transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: 0.6s;
+}
+
+.doors-stage.doors-open .intro-content { opacity: 1; transform: scale(1) translateZ(0); }
+.envelope-wrapper { position: relative; margin-bottom: 40px; display: flex; justify-content: center; align-items: center; }
+
+/* SELLO DE CERA INTERACTIVO */
 .wax-seal {
     position: relative;
     width: 110px;
@@ -100,287 +214,149 @@ body {
     justify-content: center;
     align-items: center;
     animation: sealPulse 2.5s infinite ease-in-out;
-    z-index: 10; /* Eleva el botón sobre cualquier capa flotante */
-    pointer-events: auto !important; /* Fuerza la recepción de clics */
+    z-index: 12; 
+    pointer-events: auto !important;
 }
 
 .wax-seal::before {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    background: inherit;
-    border-radius: 42% 58% 45% 55% / 45% 45% 55% 55%;
-    z-index: -1;
-    transform: rotate(15deg);
+    content: ''; position: absolute; inset: -6px; background: inherit; border-radius: 42% 58% 45% 55% / 45% 45% 55% 55%; z-index: -1; transform: rotate(15deg);
 }
-
-.seal-inner {
-    width: 84px;
-    height: 84px;
-    border: 2px dashed rgba(128, 95, 29, 0.5);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
+.seal-inner { width: 84px; height: 84px; border: 2px dashed rgba(128, 95, 29, 0.5); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .seal-icon { font-size: 26px; }
 .seal-initials { font-family: 'Cinzel', serif; font-size: 32px; font-weight: 700; color: #4a3407; }
 .seal-glow { position: absolute; inset: -20px; background: radial-gradient(circle, rgba(232, 199, 122, 0.25) 0%, transparent 70%); z-index: -2; }
 
-@keyframes sealPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
+@keyframes sealPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 .intro-title { margin-top: 15px; font-size: clamp(28px, 5vw, 44px); font-family: 'Cinzel', serif; color: #e8c77a; text-shadow: 0 0 15px rgba(186, 12, 12, 0.7); }
 .intro-text { margin-top: 12px; color: #b3b3b3; font-size: 16px; font-style: italic; }
 
-/* CONTENEDOR Y PARTÍCULAS VOLADORAS (CÁMARA LENTA) */
-#explosion-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none; /* Permite que el clic pase a través del contenedor hacia el botón */
-    z-index: 3;
-}
-
-.particle {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    font-size: var(--size);
-    user-select: none;
-    will-change: transform, opacity;
-    /* Cubic-bezier de frenado extremo para simular Slow-Motion de cine */
-    animation: flyOut var(--duration) forwards cubic-bezier(0.05, 0.7, 0.1, 1);
-}
+/* EXPLOSIÓN LENTA EN PANTALLA */
+#explosion-container { position: absolute; inset: 0; pointer-events: none; z-index: 15; }
+.particle { position: absolute; left: 50%; top: 50%; font-size: var(--size); user-select: none; will-change: transform, opacity; animation: flyOut var(--duration) forwards cubic-bezier(0.05, 0.7, 0.1, 1); }
 
 @keyframes flyOut {
-    0% {
-        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.4);
-        opacity: 0;
-    }
-    5% {
-        opacity: 1; /* Brote rápido inicial */
-    }
-    85% {
-        opacity: 0.9;
-    }
-    100% {
-        transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate)) scale(var(--scale-end));
-        opacity: 0;
-    }
+    0% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.4); opacity: 0; }
+    5% { opacity: 1; }
+    85% { opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate)) scale(var(--scale-end)); opacity: 0; }
 }
 
 /* ==========================================================================
-   3. EFECTO PORTAL (GLITCH / PARPADEO DE TRANSICIÓN)
+   3. EFECTO PORTAL (TRANSICIÓN DE FLASH)
    ========================================================================== */
-#portal {
-    position: fixed;
-    inset: 0;
-    background: #000000;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 90;
-}
-
-#portal.active {
-    animation: portalCover 1.8s forwards ease-in-out;
-}
-
-@keyframes portalCover {
-    0% { opacity: 0; }
-    30%, 70% { opacity: 1; }
-    100% { opacity: 0; }
-}
+#portal { position: fixed; inset: 0; background: #000000; opacity: 0; pointer-events: none; z-index: 90; }
+#portal.active { animation: portalCover 1.8s forwards ease-in-out; }
+@keyframes portalCover { 0% { opacity: 0; } 30%, 70% { opacity: 1; } 100% { opacity: 0; } }
 
 /* ==========================================================================
-   4. ESCENA PRINCIPAL (TRANSPARENTE SOBRE EL SEGUNDO VIDEO)
+   4. ESCENA PRINCIPAL (CONFIGURACIÓN FULL-PAGE POR SECCIÓN)
    ========================================================================== */
 .scene {
-    min-height: 100vh;
     width: 100%;
-    padding: 40px 20px;
+    background: transparent;
     display: flex;
     flex-direction: column;
+}
+
+.hidden { display: none !important; }
+
+/* DISEÑO DE PANTALLA COMPLETA INDEPENDIENTE */
+.hero-section, 
+.countdown-section,
+.event-card {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100% !important;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 30px;
-    background: transparent;
+    padding: 30px 20px;
+    
+    /* Configuración Magnética Obligatoria */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
 }
 
-.hidden {
-    display: none !important;
+/* ENVOLTURAS INTERNAS: EL CRISTAL DE GALA FLOTANTE */
+.card-wrapper {
+    background: rgba(15, 3, 3, 0.65);
+    border: 1px solid rgba(232, 199, 122, 0.18);
+    border-radius: 24px;
+    padding: 35px 28px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-align: center;
 }
 
-/* ANIMACIONES TRANSICIÓN FADE-IN UP */
+/* ANIMACIONES DE ENTRADA AL DESPLAZAR */
 .fade-in-up {
     opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUpMatch 1s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateY(20px);
+    animation: fadeInUpMatch 1.2s forwards cubic-bezier(0.25, 1, 0.5, 1);
 }
+@keyframes fadeInUpMatch { to { opacity: 1; transform: translateY(0); } }
 
-.delay-1 { animation-delay: 0.3s; }
-.delay-2 { animation-delay: 0.6s; }
-.delay-3 { animation-delay: 0.9s; }
+/* TITULACIONES PRINCIPALES */
+.main-title { font-family: 'Cinzel', serif; font-size: clamp(48px, 9vw, 75px); color: #e8c77a; text-shadow: 0 0 20px rgba(186,12,12,0.6); letter-spacing: 2px; }
+.subtitle { font-size: 22px; color: #ef233c; letter-spacing: 4px; text-transform: uppercase; margin-top: -5px; font-weight: bold; }
+.welcome-msg { margin-top: 20px; font-style: italic; font-size: 17px; line-height: 1.6; color: #dddddd; }
+.scroll-indicator { margin-top: 30px; font-size: 13px; color: rgba(232, 199, 122, 0.6); letter-spacing: 1px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } 60% { transform: translateY(-3px); } }
 
-@keyframes fadeInUpMatch {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* ELEMENTOS DE TEXTO INTERNOS DE SECCIÓN */
+.card-wrapper h3, .section-title { font-family: 'Cinzel', serif; color: #e8c77a; font-size: 24px; margin-bottom: 20px; border-bottom: 1px solid rgba(232, 199, 122, 0.2); padding-bottom: 12px; }
+.location-text { color: #dddddd; font-size: 16px; line-height: 1.6; }
 
-/* HERO SECTION */
-.hero-section {
-    text-align: center;
-    margin-top: 20px;
-    max-width: 600px;
-}
-
-.main-title {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(45px, 8vw, 75px);
-    color: #e8c77a;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(186,12,12,0.6);
-    letter-spacing: 2px;
-}
-
-.subtitle {
-    font-size: 24px;
-    color: #ef233c;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-top: -10px;
-    font-weight: bold;
-}
-
-.welcome-msg {
-    margin-top: 25px;
-    font-style: italic;
-    font-size: 18px;
-    line-height: 1.6;
-    color: #dddddd;
-}
-
-/* ==========================================================================
-   5. TARJETAS DE CONTENIDO (CRISTAL OSCURO ELEGANTE)
-   ========================================================================== */
-.event-card {
-    background: rgba(15, 3, 3, 0.65);
-    border: 1px solid rgba(232, 199, 122, 0.2);
-    border-radius: 20px;
-    padding: 30px 25px;
-    width: 100%;
-    max-width: 550px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s, border-color 0.3s;
-}
-
-.event-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(232, 199, 122, 0.4);
-}
-
-.event-card h3 {
-    font-family: 'Cinzel', serif;
-    color: #e8c77a;
-    font-size: 22px;
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 1px solid rgba(232, 199, 122, 0.2);
-    padding-bottom: 10px;
-}
-
-.location-text {
-    color: #dddddd;
-    font-size: 16px;
-    line-height: 1.6;
-    text-align: center;
-}
-
-/* PROGRAMA */
-.program-list { list-style: none; }
-.program-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-    font-size: 16px;
-}
+/* LISTA DE PROGRAMAS */
+.program-list { list-style: none; text-align: left; }
+.program-list li { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); font-size: 15px; }
 .program-list li:last-child { border-bottom: none; }
-.time { color: #ef233c; font-weight: bold; font-family: 'Cinzel', serif; flex-shrink: 0; }
-.activity { color: #f5f5f5; text-align: right; padding-left: 10px; }
+.time { color: #ef233c; font-weight: bold; font-family: 'Cinzel', serif; }
+.activity { color: #f5f5f5; text-align: right; padding-left: 15px; }
 
-/* CUENTA REGRESIVA */
-.countdown { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-.time-box {
-    width: 90px;
-    padding: 15px;
-    border-radius: 15px;
-    background: rgba(186, 12, 12, 0.12);
-    border: 1px solid rgba(232, 199, 122, 0.25);
-    text-align: center;
-}
-.time-box span { display: block; font-size: 32px; font-weight: bold; color: #ffffff; }
-.time-box small { color: #e8c77a; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+/* RELOJ RECUADROS CUENTA REGRESIVA */
+.countdown { display: flex; justify-content: center; gap: 12px; }
+.time-box { width: 85px; padding: 14px; border-radius: 14px; background: rgba(186, 12, 12, 0.12); border: 1px solid rgba(232, 199, 122, 0.25); }
+.time-box span { display: block; font-size: 30px; font-weight: bold; color: #ffffff; }
+.time-box small { color: #e8c77a; text-transform: uppercase; font-size: 11px; }
 
-/* VESTIMENTA RESERVADA */
-.alert-box { background: rgba(186, 12, 12, 0.18); border-left: 4px solid #ba0c0c; padding: 15px; border-radius: 4px; font-size: 14px; }
+/* VESTIMENTA */
+.alert-box { background: rgba(186, 12, 12, 0.18); border-left: 4px solid #ba0c0c; padding: 15px; border-radius: 6px; font-size: 14px; text-align: left; line-height: 1.5; }
 .reserved-colors { color: #ff4d4d; font-weight: bold; text-decoration: underline; }
 
-/* MESA Y OPCIONES DE REGALOS */
-.gifts-container { display: flex; flex-direction: column; gap: 20px; margin-top: 15px; }
-.gift-option { background: rgba(255, 255, 255, 0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
-.gift-icon { font-size: 34px; margin-bottom: 8px; }
-.gift-option h4 { color: #e8c77a; font-family: 'Cinzel', serif; margin-bottom: 8px; font-size: 18px; }
-.gift-option p { font-size: 14px; color: #ccc; }
-.gift-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
-.gift-link {
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    color: #ffffff;
-    transition: transform 0.2s, opacity 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+/* REGALOS DE GALA */
+.gifts-container { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+.gift-option { background: rgba(255, 255, 255, 0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 15px; }
+.gift-icon { font-size: 28px; }
+.gift-option h4 { color: #e8c77a; font-family: 'Cinzel', serif; font-size: 16px; margin-bottom: 2px; }
+.gift-option p { font-size: 13px; color: #b3b3b3; }
+
+/* BOTONES DE ENLACES EXTERNOS (MESA/MAPA) */
+.gift-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
+.gift-link { padding: 11px 22px; border-radius: 25px; text-decoration: none; font-size: 14px; font-weight: bold; color: #ffffff; transition: transform 0.2s; }
 .amazon { background: #ff9900; color: #111; }
 .liverpool { background: #e0077a; }
-.gift-link:hover { transform: scale(1.04); opacity: 0.95; }
+.gift-link:hover { transform: scale(1.04); }
 
-/* BOTONES PRINCIPALES INTERACTIVOS */
-.action-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-.magic-link {
-    display: inline-block;
-    padding: 14px 28px;
-    border: none;
-    cursor: pointer;
-    border-radius: 30px;
-    text-decoration: none;
-    background: linear-gradient(45deg, #ba0c0c, #ef233c);
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 15px rgba(186, 12, 12, 0.4);
-}
+/* CONTROL INTERACTIVO DE ASISTENCIA */
+.action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 5px; }
+.magic-link { display: inline-block; padding: 14px 26px; border: none; cursor: pointer; border-radius: 30px; text-decoration: none; background: linear-gradient(45deg, #ba0c0c, #ef233c); color: white; font-weight: bold; font-size: 15px; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(186, 12, 12, 0.4); }
 .magic-link.secondary { background: transparent; border: 2px solid #e8c77a; color: #e8c77a; box-shadow: none; }
-.magic-link:hover { transform: scale(1.05); }
+.magic-link:hover { transform: scale(1.04); }
 .text-center { text-align: center; }
 
 /* ==========================================================================
-   6. VENTANAS EMERGENTES (MODALES INTEGRADOS)
+   5. MODALES DE CONFIRMACIÓN (INTEGRIDAD ABSOLUTA SOBRE CAPAS)
    ========================================================================== */
 #form-modal, #message-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.88);
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -392,38 +368,15 @@ body {
 }
 
 #form-modal.active, #message-modal.active { opacity: 1; pointer-events: auto; }
-.form-box {
-    background: #1c0505;
-    border: 2px solid #ba0c0c;
-    padding: 30px 25px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(186, 12, 12, 0.4);
-    animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
+.form-box { background: #1c0505; border: 2px solid #ba0c0c; padding: 30px 25px; border-radius: 20px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 30px rgba(186, 12, 12, 0.4); animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); }
+@keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-@keyframes scaleUp {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.form-box h3 { color: #e8c77a; margin-bottom: 20px; font-family: 'Cinzel', serif; }
-.form-box input, .form-box textarea {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 16px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(232, 199, 122, 0.3);
-    border-radius: 8px;
-    color: #ffffff;
-    font-family: inherit;
-}
+.form-box h3 { color: #e8c77a; margin-bottom: 18px; font-family: 'Cinzel', serif; }
+.form-box input, .form-box textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(232, 199, 122, 0.3); border-radius: 8px; color: #ffffff; font-family: inherit; }
 .form-box input:focus, .form-box textarea:focus { outline: none; border-color: #ef233c; }
-.form-box button { width: 100%; padding: 12px; margin-top: 5px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.form-box button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 #send, #send-message { background: #ba0c0c; color: white; }
 #send:hover, #send-message:hover { background: #ef233c; }
 #close, #close-message { background: transparent; color: #b3b3b3; margin-top: 10px; }
 #close:hover, #close-message:hover { color: #ffffff; }
-#status, #message-status { margin-top: 15px; font-size: 14px; font-weight: bold; color: #e8c77a; }
+#status, #message-status { margin-top: 12px; font-size: 14px; font-weight: bold; color: #e8c77a; }
