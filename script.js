@@ -386,3 +386,116 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 });
+
+/* ==========================================================================
+   SISTEMA DE ANIMACIÓN DINÁMICA DE MARIPOSAS E HILOS MÍSTICOS
+   ========================================================================== */
+window.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('mariposas-container');
+    const canvas = document.getElementById('canvas-hilos');
+    if (!container || !canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    // Redimensionado dinámico del lienzo
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
+    class MariposaMagica {
+        constructor() {
+            this.domElement = document.createElement('div');
+            this.domElement.className = 'mariposa';
+            container.appendChild(this.domElement);
+            this.reset();
+        }
+
+        reset() {
+            // Dirección aleatoria de entrada de los extremos laterales
+            this.lado = Math.random() > 0.5 ? 'izquierda' : 'derecha';
+            
+            if (this.lado === 'izquierda') {
+                this.x = -40;
+                this.targetX = width + 40;
+                this.speedX = Math.random() * 1.5 + 1;
+            } else {
+                this.x = width + 40;
+                this.targetX = -40;
+                this.speedX = -(Math.random() * 1.5 + 1);
+            }
+
+            this.y = Math.random() * (height * 0.7) + (height * 0.15);
+            this.baseY = this.y;
+            
+            this.amplitude = Math.random() * 40 + 30; // Ondulación vertical
+            this.angle = Math.random() * Math.PI * 2;
+            this.angleSpeed = Math.random() * 0.02 + 0.01;
+            
+            this.scale = Math.random() * 0.4 + 0.5; // Tamaño sutil de gala
+            this.historialPosiciones = [];
+            this.maxHilo = 45; // Longitud de la estela de luz
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.angle += this.angleSpeed;
+            this.y = this.baseY + Math.sin(this.angle) * this.amplitude;
+
+            // Almacenar el rastro para dibujar la línea fluida
+            this.historialPosiciones.push({ x: this.x + 12, y: this.y + 10 });
+            if (this.historialPosiciones.length > this.maxHilo) {
+                this.historialPosiciones.shift();
+            }
+
+            let rotacionAdelante = this.lado === 'izquierda' ? 0 : 180;
+            let inclinacionVertical = Math.cos(this.angle) * 15;
+
+            this.domElement.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) scale(${this.scale}) rotate(${rotacionAdelante + inclinacionVertical}deg)`;
+
+            if ((this.lado === 'izquierda' && this.x > this.targetX) || (this.lado === 'derecha' && this.x < this.targetX)) {
+                this.reset();
+            }
+        }
+
+        dibujarHilo() {
+            if (this.historialPosiciones.length < 2) return;
+
+            ctx.beginPath();
+            ctx.moveTo(this.historialPosiciones[0].x, this.historialPosiciones[0].y);
+
+            for (let i = 1; i < this.historialPosiciones.length; i++) {
+                ctx.lineTo(this.historialPosiciones[i].x, this.historialPosiciones[i].y);
+            }
+
+            // Renderizado estético del rastro de luz
+            ctx.lineWidth = this.scale * 1.8;
+            ctx.strokeStyle = `rgba(232, 199, 122, 0.25)`;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#e8c77a';
+            ctx.stroke();
+        }
+    }
+
+    // Inicializar población sutil de 4 mariposas concurrentes
+    const numeroMariposas = 4;
+    const mariposas = Array.from({ length: numeroMariposas }, () => new MariposaMagica());
+
+    function animar() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.shadowBlur = 0; // Optimización de renderizado móvil
+
+        mariposas.forEach(mariposa => {
+            mariposa.update();
+            mariposa.dibujarHilo();
+        });
+
+        requestAnimationFrame(animar);
+    }
+
+    animar();
+});
