@@ -105,7 +105,7 @@ body {
     z-index: 5;
     will-change: transform;
     /* Ralentizado a 3.8s para una sensación de peso dramático */
-    transition: transform 3.8s cubic-bezier(0.4, 0, 0.2, 1); 
+    transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -253,8 +253,7 @@ body {
    ========================================================================== */
 .scene {
     width: 100%;
-    /*background: transparent;*/
-    background:rgba(0, 0, 0, 0.5);
+    background: transparent;
     display: flex;
     flex-direction: column;
 }
